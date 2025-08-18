@@ -1,12 +1,11 @@
 import '@/styles/globals.css';
 
-// Libraries
-import dynamic from 'next/dynamic';
+import { Provider as JotaiProvider } from 'jotai';
 import { type Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
 // Providers
 import { ThemeProvider } from 'next-themes';
-import { Provider as JotaiProvider } from 'jotai';
+
 import ThemeButton from './components/theme-button';
 
 export const metadata: Metadata = {
