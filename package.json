@@ -56,6 +56,8 @@
     "@playwright/test": "^1.54.2",
     "@storybook/addon-a11y": "^9.1.2",
     "@storybook/addon-docs": "^9.1.2",
+    "@storybook/addon-styling-webpack": "^2.0.0",
+    "@storybook/addon-themes": "^9.1.2",
     "@storybook/addon-vitest": "^9.1.2",
     "@storybook/nextjs-vite": "^9.1.2",
     "@tailwindcss/postcss": "^4",
