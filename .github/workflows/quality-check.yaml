@@ -11,6 +11,8 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+      DISCORD_ID: ${{ secrets.DISCORD_ID }}
+      DISCORD_SECRET: ${{ secrets.DISCORD_SECRET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
