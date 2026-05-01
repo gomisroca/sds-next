@@ -20,14 +20,14 @@ function EmberField() {
   const [embers, setEmbers] = useState<Ember[]>([]);
 
   useEffect(() => {
-    const generated: Ember[] = Array.from({ length: 40 }, (_, i) => ({
+    const generated: Ember[] = Array.from({ length: 30 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
-      size: Math.random() * 3 + 1.5,
-      duration: Math.random() * 8 + 6,
-      delay: Math.random() * 10,
-      drift: (Math.random() - 0.5) * 60,
-      opacity: Math.random() * 0.7 + 0.3,
+      size: Math.random() * 2.5 + 1,
+      duration: Math.random() * 10 + 8,
+      delay: Math.random() * 12,
+      drift: (Math.random() - 0.5) * 50,
+      opacity: Math.random() * 0.5 + 0.2,
     }));
     setEmbers(generated);
   }, []);
@@ -43,8 +43,8 @@ function EmberField() {
             bottom: '-10px',
             width: ember.size,
             height: ember.size,
-            background: `radial-gradient(circle, #ff4422 0%, #cc1100 60%, transparent 100%)`,
-            boxShadow: `0 0 ${ember.size * 3}px ${ember.size}px rgba(200,30,0,0.6)`,
+            background: `radial-gradient(circle, #ff6644 0%, #cc2200 60%, transparent 100%)`,
+            boxShadow: `0 0 ${ember.size * 3}px ${ember.size}px rgba(200,60,0,0.5)`,
           }}
           animate={{
             y: [0, -(window?.innerHeight ?? 900) - 100],
@@ -87,10 +87,8 @@ function DragonSigil() {
         </filter>
       </defs>
 
-      {/* Glow backdrop */}
       <circle cx="100" cy="100" r="90" fill="url(#sigilGlow)" />
 
-      {/* Outer ring */}
       <motion.circle
         cx="100"
         cy="100"
@@ -115,35 +113,27 @@ function DragonSigil() {
         style={{ transformOrigin: '100px 100px' }}
       />
 
-      {/* Dragon body — stylised sleeping coil */}
       <g filter="url(#glow)" stroke="#cc2200" strokeLinecap="round" fill="none">
-        {/* Main coil */}
         <path
           d="M100 55 C130 55 155 70 160 90 C165 110 150 130 130 138 C110 146 85 140 70 125 C55 110 58 88 72 76 C82 68 95 65 105 70 C118 77 122 92 115 102 C108 112 92 112 85 104 C80 98 82 88 90 86"
           strokeWidth="3"
         />
-        {/* Tail */}
         <path d="M160 90 C170 85 175 75 170 62 C166 52 158 48 152 50" strokeWidth="2" />
-        {/* Head */}
         <path d="M100 55 C95 48 88 42 85 38 C90 34 98 35 103 40" strokeWidth="2.5" />
-        {/* Horn */}
         <path d="M85 38 C80 30 76 24 78 20" strokeWidth="1.5" />
-        {/* Eye */}
         <circle cx="91" cy="42" r="2.5" fill="#cc2200" stroke="none" />
         <motion.circle
           cx="91"
           cy="42"
           r="2.5"
-          fill="#ff4422"
+          fill="#ff6644"
           animate={{ opacity: [1, 0.3, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         />
-        {/* Wings suggestion */}
         <path d="M130 95 C145 80 160 75 168 82 C160 90 148 95 135 98" strokeWidth="1.5" />
         <path d="M75 95 C60 80 42 75 34 82 C42 90 54 95 68 98" strokeWidth="1.5" />
       </g>
 
-      {/* Rune marks around ring */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
         const rad = (angle * Math.PI) / 180;
         const x = 100 + 72 * Math.cos(rad);
@@ -168,14 +158,14 @@ function DragonSigil() {
 function ScrollCue() {
   return (
     <motion.div
-      className="flex flex-col items-center gap-2 text-red-900"
+      className="flex flex-col items-center gap-2"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2.8, duration: 0.8 }}>
-      <span className="text-xs font-light tracking-[0.3em] text-red-800/60 uppercase">Scroll</span>
+      <span className="text-xs font-light tracking-[0.3em] text-red-700/50 uppercase">Scroll</span>
       <motion.div
-        className="h-8 w-px bg-gradient-to-b from-red-800/60 to-transparent"
-        animate={{ scaleY: [1, 0.4, 1], opacity: [0.6, 1, 0.6] }}
+        className="h-8 w-px bg-gradient-to-b from-red-700/50 to-transparent"
+        animate={{ scaleY: [1, 0.4, 1], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         style={{ transformOrigin: 'top' }}
       />
@@ -183,49 +173,65 @@ function ScrollCue() {
   );
 }
 
-// ── Info cards section ───────────────────────────────────────────────────────
+// ── Welcome banner ───────────────────────────────────────────────────────────
+function WelcomeBanner() {
+  return (
+    <motion.div
+      className="mx-auto mb-16 max-w-2xl px-6 text-center"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true }}>
+      <h2 className="mb-4 text-2xl font-light tracking-[0.15em] text-white/80 uppercase md:text-3xl">
+        Welcome, Warrior of Light
+      </h2>
+      <p className="text-base leading-relaxed font-light text-white/50">
+        Sleeping Dragons is a friendly home for adventurers of all kinds - whether you&apos;re here to clear savage
+        tier, tend your garden, or simply share a glass of Ul&apos;dahn wine by the hearth. Pull up a chair.
+      </p>
+    </motion.div>
+  );
+}
+
+// ── Info cards ───────────────────────────────────────────────────────────────
 const INFO = [
   {
     icon: '⚔',
-    title: 'Who We Are',
-    body: 'A tight-knit fellowship of adventurers on the Phoenix server. We raid, craft, and explore Eorzea together — from casual levelling to savage content.',
+    title: 'Adventure Together',
+    body: "From casual levelling runs to savage raids, we do it as a group. No elitism, no pressure - just a crew that has each other's backs in every corner of Eorzea.",
   },
   {
-    icon: '🏰',
-    title: 'Our House',
-    body: 'Our Free Company estate sits in the Goblet, always open to members. Drop by for crafting facilities, the aesthetics room, and good company.',
+    icon: '🏠',
+    title: 'A Place to Call Home',
+    body: 'Our estate in the Goblet is always open. Pop in to use the workshop, hang out in the garden, or just have somewhere warm to log in to at the end of a long day.',
   },
   {
     icon: '🐉',
-    title: 'Join the Den',
-    body: "We welcome Warriors of Light of all experience levels. Whether you're fresh off the MSQ or a seasoned raider, there's a place among the Dragons.",
+    title: 'All Are Welcome',
+    body: "Brand new to the game or a veteran of a dozen Ultimate clears - if you're kind, curious, and up for a good time, you already fit in here.",
   },
 ];
 
 function InfoCards() {
   return (
-    <section className="relative z-20 mx-auto max-w-5xl px-6 py-24">
+    <section className="relative z-20 mx-auto max-w-5xl px-6 pb-24">
+      <WelcomeBanner />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {INFO.map((card, i) => (
           <motion.div
             key={card.title}
-            className="group relative overflow-hidden rounded-sm border border-red-900/30 bg-black/50 p-7 backdrop-blur-sm"
+            className="group relative overflow-hidden rounded-sm border border-red-900/25 bg-white/[0.03] p-7 backdrop-blur-sm"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             viewport={{ once: true }}
-            whileHover={{ borderColor: 'rgba(153,30,0,0.7)' }}>
-            {/* Corner accent */}
-            <div className="absolute top-0 left-0 h-6 w-6 border-t border-l border-red-700/60" />
-            <div className="absolute right-0 bottom-0 h-6 w-6 border-r border-b border-red-700/60" />
-
-            {/* Hover glow */}
-            <motion.div className="absolute inset-0 bg-red-950/0 transition-colors duration-500 group-hover:bg-red-950/20" />
-
+            whileHover={{ borderColor: 'rgba(153,40,10,0.55)', backgroundColor: 'rgba(255,255,255,0.05)' }}>
+            <div className="absolute top-0 left-0 h-5 w-5 border-t border-l border-red-700/40" />
+            <div className="absolute right-0 bottom-0 h-5 w-5 border-r border-b border-red-700/40" />
             <div className="relative">
-              <span className="mb-4 block text-2xl">{card.icon}</span>
-              <h3 className="mb-3 text-xs font-light tracking-widest text-red-500 uppercase">{card.title}</h3>
-              <p className="text-sm leading-relaxed font-light text-white/60">{card.body}</p>
+              <span className="mb-5 block text-2xl">{card.icon}</span>
+              <h3 className="mb-3 text-xs font-light tracking-widest text-red-400/90 uppercase">{card.title}</h3>
+              <p className="text-sm leading-relaxed font-light text-white/55">{card.body}</p>
             </div>
           </motion.div>
         ))}
@@ -244,54 +250,47 @@ export default function Home() {
   return (
     <main
       ref={containerRef}
-      className="min-h-screen overflow-x-hidden bg-[#050303] text-white"
+      className="min-h-screen overflow-x-hidden bg-[#060404] text-white"
       style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* ── Background layers ── */}
-      {/* Deep radial vignette */}
+      {/* Background layers */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
-          background: 'radial-gradient(ellipse 80% 70% at 50% 40%, #1a0300 0%, #0a0101 50%, #020000 100%)',
+          background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)',
         }}
       />
-      {/* Grid texture */}
       <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(180,30,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(180,30,0,1) 1px, transparent 1px)',
+            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
           backgroundSize: '60px 60px',
         }}
       />
-      {/* Bottom glow */}
       <div
-        className="pointer-events-none fixed right-0 bottom-0 left-0 z-0 h-64"
+        className="pointer-events-none fixed right-0 bottom-0 left-0 z-0 h-80"
         style={{
-          background: 'radial-gradient(ellipse 80% 100% at 50% 100%, rgba(160,20,0,0.25) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 90% 100% at 50% 100%, rgba(180,40,0,0.2) 0%, transparent 70%)',
         }}
       />
 
-      {/* ── Embers ── */}
       <EmberField />
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <motion.section
         className="relative z-20 flex min-h-screen flex-col items-center justify-center px-6 text-center"
         style={{ y: heroY, opacity: heroOpacity }}>
-        {/* Sigil */}
         <div className="mb-8">
           <DragonSigil />
         </div>
 
-        {/* Title */}
         <motion.h1
           className="mb-2 text-6xl font-extralight tracking-[0.12em] uppercase md:text-8xl lg:text-9xl"
           style={{
-            background: 'linear-gradient(180deg, #ffffff 0%, #e8c8c0 40%, #c04030 100%)',
+            background: 'linear-gradient(180deg, #ffffff 0%, #edd8d0 45%, #c04030 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-            textShadow: 'none',
           }}
           initial={{ opacity: 0, y: 30, letterSpacing: '0.3em' }}
           animate={{ opacity: 1, y: 0, letterSpacing: '0.12em' }}
@@ -301,7 +300,7 @@ export default function Home() {
         <motion.h1
           className="mb-8 text-6xl font-thin tracking-[0.18em] uppercase md:text-8xl lg:text-9xl"
           style={{
-            background: 'linear-gradient(180deg, #cc3020 0%, #8b1a00 100%)',
+            background: 'linear-gradient(180deg, #dd4030 0%, #8b1a00 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -312,45 +311,48 @@ export default function Home() {
           Dragons
         </motion.h1>
 
-        {/* Ornamental divider */}
-        <OrnamentalRule />
+        {/* Wrap OrnamentalRule in a motion.div for the entrance animation */}
+        <motion.div
+          className="w-full"
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 1, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}>
+          <OrnamentalRule />
+        </motion.div>
 
-        {/* Subtitle */}
         <motion.p
-          className="mt-6 text-sm font-light tracking-[0.45em] text-white/40 uppercase md:text-base"
+          className="mt-6 text-sm font-light tracking-[0.45em] text-white/50 uppercase md:text-base"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.7, ease: 'easeOut' }}>
-          Light &nbsp;·&nbsp; Phoenix
+          EU &nbsp;·&nbsp; Light &nbsp;·&nbsp; Phoenix
         </motion.p>
 
-        {/* CTA */}
         <motion.div
-          className="mt-12 flex flex-col items-center gap-4 sm:flex-row"
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.1 }}>
+          transition={{ duration: 0.8, delay: 2.2 }}>
           <motion.button
-            className="border border-red-800/60 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-400/80 uppercase transition-all duration-300 hover:border-red-700 hover:bg-red-950/40 hover:text-red-300"
+            className="border border-red-700/50 bg-red-950/20 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all duration-300 hover:border-red-600/70 hover:bg-red-900/30 hover:text-red-200"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}>
-            Apply to Join
+            Join Us
           </motion.button>
           <motion.button
-            className="px-10 py-3 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors duration-300 hover:text-white/60"
+            className="px-10 py-3 text-xs font-light tracking-[0.25em] text-white/40 uppercase transition-colors duration-300 hover:text-white/65"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}>
             Learn More ↓
           </motion.button>
         </motion.div>
 
-        {/* Scroll cue */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
           <ScrollCue />
         </div>
       </motion.section>
 
-      {/* ── Info cards ── */}
+      {/* Info cards */}
       <InfoCards />
     </main>
   );
