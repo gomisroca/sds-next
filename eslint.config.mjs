@@ -37,7 +37,6 @@ const eslintConfig = [
       'src/app/_components/ui/',
       'README.md',
       'eslint.config.mjs',
-      '.husky/',
       '.prettierrc',
       '.prettierignore',
       'prisma/',
