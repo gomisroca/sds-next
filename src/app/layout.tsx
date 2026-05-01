@@ -5,8 +5,10 @@ import { type Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
 // Providers
 import { ThemeProvider } from 'next-themes';
+import { Toaster } from 'sileo';
 
 import ThemeButton from './components/theme-button';
+import Footer from './components/ui/footer';
 
 export const metadata: Metadata = {
   title: 'SleepingDragons',
@@ -55,6 +57,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={worksans.className} suppressHydrationWarning>
       <body className="text-zinc-800 dark:text-zinc-200">
+        <Toaster
+          position="top-center"
+          options={{
+            styles: { description: 'font-medium flex justify-center' },
+          }}
+        />
         <ThemeProvider attribute="class" defaultTheme="dark">
           <JotaiProvider>
             <div id="modal-root" />
@@ -63,7 +71,7 @@ export default function RootLayout({
               <ThemeButton />
             </header>
             {children}
-            {/* <Footer /> */}
+            <Footer />
           </JotaiProvider>
         </ThemeProvider>
       </body>
