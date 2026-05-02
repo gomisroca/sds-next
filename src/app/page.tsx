@@ -88,7 +88,6 @@ function DragonSigil() {
       </defs>
 
       <circle cx="100" cy="100" r="90" fill="url(#sigilGlow)" />
-
       <motion.circle
         cx="100"
         cy="100"
@@ -173,22 +172,84 @@ function ScrollCue() {
   );
 }
 
-// ── Welcome banner ───────────────────────────────────────────────────────────
-function WelcomeBanner() {
+// ── Featured event ────────────────────────────────────────────────────────────
+// TODO: Replace with real data
+const FEATURED_EVENT = {
+  label: 'Upcoming Event',
+  title: 'The Dragonsong Vigil',
+  date: 'Saturday, 10 May · 20:00 CEST',
+  description:
+    'Join us for our monthly social night — a relaxed evening of Gold Saucer games, Triple Triad tournaments, and a group fashion show in the estate yard. All members welcome, no sign-up needed. Prizes for the best glamour.',
+  image: 'https://picsum.photos/seed/ffxiv-dragon/900/500',
+  // TODO: wire up real attendance count via API
+  spots: '12 attending',
+};
+
+function FeaturedEventCard() {
   return (
     <motion.div
-      className="mx-auto mb-16 max-w-2xl px-6 text-center"
-      initial={{ opacity: 0, y: 24 }}
+      className="group relative mb-8 overflow-hidden rounded-sm border border-red-900/30 bg-white/[0.03] backdrop-blur-sm"
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true }}>
-      <h2 className="mb-4 text-2xl font-light tracking-[0.15em] text-white/80 uppercase md:text-3xl">
-        Welcome, Warrior of Light
-      </h2>
-      <p className="text-base leading-relaxed font-light text-white/50">
-        Sleeping Dragons is a friendly home for adventurers of all kinds - whether you&apos;re here to clear savage
-        tier, tend your garden, or simply share a glass of Ul&apos;dahn wine by the hearth. Pull up a chair.
-      </p>
+      {/* Corner accents */}
+      <div className="absolute top-0 left-0 z-10 h-6 w-6 border-t border-l border-red-600/50" />
+      <div className="absolute top-0 right-0 z-10 h-6 w-6 border-t border-r border-red-600/50" />
+      <div className="absolute bottom-0 left-0 z-10 h-6 w-6 border-b border-l border-red-600/50" />
+      <div className="absolute right-0 bottom-0 z-10 h-6 w-6 border-r border-b border-red-600/50" />
+
+      <div className="flex flex-col md:flex-row">
+        {/* Image */}
+        <div className="relative h-56 w-full shrink-0 overflow-hidden md:h-auto md:w-2/5">
+          {/* TODO: replace with Next.js  */}
+          <img
+            src={FEATURED_EVENT.image}
+            alt={FEATURED_EVENT.title}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          {/* Fade into card body on desktop, fade up on mobile */}
+          <div className="absolute inset-0 hidden bg-gradient-to-r from-transparent via-transparent to-black/70 md:block" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
+        </div>
+
+        {/* Content */}
+        <div className="flex flex-1 flex-col justify-center gap-5 p-7 md:p-10">
+          {/* Live indicator + label */}
+          <div className="flex items-center gap-3">
+            <motion.span
+              className="inline-block h-1.5 w-1.5 rounded-full bg-red-500"
+              animate={{ opacity: [1, 0.25, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity }}
+            />
+            <span className="text-xs font-light tracking-[0.3em] text-red-400/80 uppercase">
+              {FEATURED_EVENT.label}
+            </span>
+          </div>
+
+          <div>
+            <h3 className="mb-2 text-2xl font-light tracking-wide text-white/90 md:text-3xl">{FEATURED_EVENT.title}</h3>
+            <p className="text-xs font-light tracking-widest text-white/35 uppercase">{FEATURED_EVENT.date}</p>
+          </div>
+
+          <OrnamentalRule className="max-w-xs" />
+
+          <p className="text-sm leading-relaxed font-light text-white/55">{FEATURED_EVENT.description}</p>
+
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <motion.button
+              className="border border-red-700/50 bg-red-950/20 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all duration-300 hover:border-red-600/70 hover:bg-red-900/30 hover:text-red-200"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}>
+              View Event
+            </motion.button>
+            <span className="text-xs font-light tracking-widest text-white/25 uppercase">
+              {/* TODO: replace with real attendance component */}
+              {FEATURED_EVENT.spots}
+            </span>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -198,7 +259,7 @@ const INFO = [
   {
     icon: '⚔',
     title: 'Adventure Together',
-    body: "From casual levelling runs to savage raids, we do it as a group. No elitism, no pressure - just a crew that has each other's backs in every corner of Eorzea.",
+    body: "From casual levelling runs to savage raids, we do it as a group. No elitism, no pressure — just a crew that has each other's backs in every corner of Eorzea.",
   },
   {
     icon: '🏠',
@@ -208,33 +269,61 @@ const INFO = [
   {
     icon: '🐉',
     title: 'All Are Welcome',
-    body: "Brand new to the game or a veteran of a dozen Ultimate clears - if you're kind, curious, and up for a good time, you already fit in here.",
+    body: "Brand new to the game or a veteran of a dozen Ultimate clears — if you're kind, curious, and up for a good time, you already fit in here.",
   },
 ];
 
 function InfoCards() {
   return (
-    <section className="relative z-20 mx-auto max-w-5xl px-6 pb-24">
-      <WelcomeBanner />
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {INFO.map((card, i) => (
-          <motion.div
-            key={card.title}
-            className="group relative overflow-hidden rounded-sm border border-red-900/25 bg-white/[0.03] p-7 backdrop-blur-sm"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            viewport={{ once: true }}
-            whileHover={{ borderColor: 'rgba(153,40,10,0.55)', backgroundColor: 'rgba(255,255,255,0.05)' }}>
-            <div className="absolute top-0 left-0 h-5 w-5 border-t border-l border-red-700/40" />
-            <div className="absolute right-0 bottom-0 h-5 w-5 border-r border-b border-red-700/40" />
-            <div className="relative">
-              <span className="mb-5 block text-2xl">{card.icon}</span>
-              <h3 className="mb-3 text-xs font-light tracking-widest text-red-400/90 uppercase">{card.title}</h3>
-              <p className="text-sm leading-relaxed font-light text-white/55">{card.body}</p>
-            </div>
-          </motion.div>
-        ))}
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+      {INFO.map((card, i) => (
+        <motion.div
+          key={card.title}
+          className="group relative overflow-hidden rounded-sm border border-red-900/25 bg-white/[0.03] p-7 backdrop-blur-sm"
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}
+          whileHover={{ borderColor: 'rgba(153,40,10,0.55)', backgroundColor: 'rgba(255,255,255,0.05)' }}>
+          <div className="absolute top-0 left-0 h-5 w-5 border-t border-l border-red-700/40" />
+          <div className="absolute right-0 bottom-0 h-5 w-5 border-r border-b border-red-700/40" />
+          <div className="relative">
+            <span className="mb-4 block text-2xl">{card.icon}</span>
+            <h3 className="mb-3 text-xs font-light tracking-widest text-red-400/90 uppercase">{card.title}</h3>
+            <p className="text-sm leading-relaxed font-light text-white/55">{card.body}</p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ── Welcome section (full screen) ────────────────────────────────────────────
+function WelcomeSection() {
+  return (
+    <section className="relative z-20 flex min-h-screen flex-col justify-center px-6 py-24">
+      <div className="mx-auto w-full max-w-5xl">
+        {/* Section heading */}
+        <motion.div
+          className="mb-10 text-center"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}>
+          <h2 className="mb-4 text-2xl font-light tracking-[0.15em] text-white/80 uppercase md:text-3xl">
+            Welcome, Warrior of Light
+          </h2>
+          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/45">
+            Sleeping Dragons is a friendly home for adventurers of all kinds — whether you're here to clear savage tier,
+            tend your garden, or simply share a glass of Ul'dahn wine by the hearth. Pull up a chair.
+          </p>
+        </motion.div>
+
+        {/* Featured event */}
+        <FeaturedEventCard />
+
+        {/* Info cards */}
+        <InfoCards />
       </div>
     </section>
   );
@@ -276,7 +365,7 @@ export default function Home() {
 
       <EmberField />
 
-      {/* Hero */}
+      {/* Hero — screen 1 */}
       <motion.section
         className="relative z-20 flex min-h-screen flex-col items-center justify-center px-6 text-center"
         style={{ y: heroY, opacity: heroOpacity }}>
@@ -311,7 +400,6 @@ export default function Home() {
           Dragons
         </motion.h1>
 
-        {/* Wrap OrnamentalRule in a motion.div for the entrance animation */}
         <motion.div
           className="w-full"
           initial={{ opacity: 0, scaleX: 0 }}
@@ -326,6 +414,14 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.7, ease: 'easeOut' }}>
           EU &nbsp;·&nbsp; Light &nbsp;·&nbsp; Phoenix
+        </motion.p>
+
+        <motion.p
+          className="mt-4 text-base font-light text-white/35 italic md:text-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2.0 }}>
+          A friendly Free Company for every kind of adventurer
         </motion.p>
 
         <motion.div
@@ -352,8 +448,8 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Info cards */}
-      <InfoCards />
+      {/* Welcome + event + info cards — screen 2 */}
+      <WelcomeSection />
     </main>
   );
 }
