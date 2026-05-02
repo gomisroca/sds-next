@@ -4,11 +4,10 @@ import { Provider as JotaiProvider } from 'jotai';
 import { type Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
 // Providers
-import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'sileo';
 
-import ThemeButton from './components/theme-button';
 import Footer from './components/ui/footer';
+import NavBar from './components/ui/nav-bar';
 
 export const metadata: Metadata = {
   title: 'SleepingDragons',
@@ -63,17 +62,13 @@ export default function RootLayout({
             styles: { description: 'font-medium flex justify-center' },
           }}
         />
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <JotaiProvider>
-            <div id="modal-root" />
-            {modal}
-            <header>
-              <ThemeButton />
-            </header>
-            {children}
-            <Footer />
-          </JotaiProvider>
-        </ThemeProvider>
+        <JotaiProvider>
+          <div id="modal-root" />
+          {modal}
+          <NavBar />
+          {children}
+          <Footer />
+        </JotaiProvider>
       </body>
     </html>
   );
