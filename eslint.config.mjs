@@ -87,6 +87,7 @@ const eslintConfig = [
           },
         },
       ],
+      'react/no-unescaped-entities': 'off',
     },
   },
   ...storybook.configs['flat/recommended'],
