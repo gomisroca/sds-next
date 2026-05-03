@@ -36,6 +36,7 @@
     "@prisma/client": "^6.14.0",
     "@t3-oss/env-nextjs": "^0.13.8",
     "jotai": "^2.13.1",
+    "lucide-react": "^1.14.0",
     "motion": "^12.38.0",
     "next": "15.4.6",
     "next-auth": "^5.0.0-beta.25",
