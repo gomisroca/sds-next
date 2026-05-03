@@ -1,15 +1,139 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── NextAuth required tables ─────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // The Discord account linked via OAuth
+  accounts Account[]
+  sessions Session[]
+
+  // FC-specific
+  role        Role              @default(MEMBER)
+  events      Event[]           @relation("CreatedEvents")
+  attendances EventAttendance[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String // "discord"
+  providerAccountId String // Discord user ID — used for bot RSVP lookups
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ── FC-specific models ───────────────────────────────────────────────────────
+
+enum Role {
+  MEMBER
+  OFFICER
+  LEADER
+}
+
+enum EventStatus {
+  DRAFT // not yet posted to Discord
+  PUBLISHED // live, accepting RSVPs
+  CANCELLED
+  COMPLETED
+}
+
+enum AttendanceStatus {
+  ATTENDING
+  NOT_ATTENDING
+  MAYBE
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Core info
+  name        String
+  description String?
+  location    String? // "Estate Yard" or a zone name
+  imageUrl    String? // banner image for the event card
+  startsAt    DateTime
+  endsAt      DateTime?
+
+  status EventStatus @default(DRAFT)
+
+  // Who created it (must be OFFICER or LEADER)
+  createdById String
+  createdBy   User   @relation("CreatedEvents", fields: [createdById], references: [id])
+
+  // Discord integration — set once the bot posts the embed
+  discordChannelId String? // channel the message was posted in
+  discordMessageId String? // message ID for edits
+
+  attendances EventAttendance[]
+
+  @@map("events")
+}
+
+model EventAttendance {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eventId String
+  userId  String
+  status  AttendanceStatus
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // One row per user per event
+  @@unique([eventId, userId])
+  @@map("event_attendances")
 }
