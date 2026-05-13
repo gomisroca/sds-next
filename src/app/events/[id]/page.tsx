@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { getEventAttendanceCounts } from '@/utils/events';
 
-import AttendanceCounts from './attendance-counts';
+import { EventDetailClient } from './event-detail-client';
 
 export const revalidate = 30;
 
@@ -28,9 +29,7 @@ async function getEvent(id: string) {
   });
 
   if (!event || event.status !== EventStatus.PUBLISHED) return null;
-
-  const attendance = await getEventAttendanceCounts(event.id, db);
-  return { event, attendance };
+  return event;
 }
 
 function formatFull(date: Date) {
@@ -48,11 +47,20 @@ function formatTime(date: Date) {
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const data = await getEvent(id);
-  if (!data) notFound();
 
-  const { event, attendance } = data;
-  const hasImage = !!event.imageUrl;
+  // Run session, event, and attendance fetches in parallel
+  const [session, event] = await Promise.all([auth(), getEvent(id)]);
+  if (!event) notFound();
+
+  const attendance = await getEventAttendanceCounts(event.id, db);
+
+  // Look up the current user's existing RSVP if signed in
+  const existingRSVP = session?.user?.id
+    ? await db.eventAttendance.findUnique({
+        where: { eventId_userId: { eventId: event.id, userId: session.user.id } },
+        select: { status: true },
+      })
+    : null;
 
   return (
     <main
@@ -75,7 +83,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-16">
-        {/* Back link */}
+        {/* Back */}
         <Link
           href="/events"
           className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors duration-200 hover:text-white/60">
@@ -86,15 +94,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           All Events
         </Link>
 
-        {/* Banner image */}
-        {hasImage && (
+        {/* Banner */}
+        {event.imageUrl && (
           <div className="relative mb-10 h-56 w-full overflow-hidden rounded-sm border border-red-900/20 md:h-72">
-            <img src={event.imageUrl!} alt={event.name} className="h-full w-full object-cover" />
+            <img src={event.imageUrl} alt={event.name} className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#060404] via-transparent to-transparent" />
           </div>
         )}
 
-        {/* Header */}
+        {/* Heading */}
         <div className="mb-8">
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Upcoming Event</p>
           <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 md:text-4xl lg:text-5xl">
@@ -104,14 +112,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>
 
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-          {/* Left — description */}
+          {/* Description */}
           <div className="md:col-span-2">
             {event.description ? (
               <p className="text-base leading-relaxed font-light text-white/55">{event.description}</p>
             ) : (
               <p className="text-sm font-light text-white/25 italic">No description provided.</p>
             )}
-
             {event.createdBy.name && (
               <p className="mt-8 text-xs font-light tracking-widest text-white/20 uppercase">
                 Posted by {event.createdBy.name}
@@ -119,10 +126,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             )}
           </div>
 
-          {/* Right — meta + attendance */}
-          <div className="flex flex-col gap-6">
+          {/* Sidebar */}
+          <div className="flex flex-col gap-4">
             {/* Date / time / location */}
-            <div className="flex flex-col gap-3 border border-red-900/20 bg-white/[0.02] p-5">
+            <div className="relative flex flex-col gap-3 border border-red-900/20 bg-white/[0.02] p-5">
               <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-700/30" />
 
               <div className="flex items-start gap-3">
@@ -151,8 +158,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               )}
             </div>
 
-            {/* Attendance counts */}
-            <AttendanceCounts attendance={attendance} />
+            {/* Attendance + RSVP — client island */}
+            <EventDetailClient
+              eventId={event.id}
+              initialAttendance={attendance}
+              initialStatus={existingRSVP?.status ?? null}
+              isAuthenticated={!!session?.user?.id}
+            />
           </div>
         </div>
       </div>

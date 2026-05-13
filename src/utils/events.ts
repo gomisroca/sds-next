@@ -1,8 +1,6 @@
 import type { PrismaClient } from 'generated/prisma';
 
 // ── Constants ────────────────────────────────────────────────────────────────
-
-// Minimum ms between RSVP changes per user per event (prevents spam)
 export const RATE_LIMIT_MS = 5_000;
 
 // ── Types ────────────────────────────────────────────────────────────────────
