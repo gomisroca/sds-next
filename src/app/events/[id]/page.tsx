@@ -1,4 +1,3 @@
-import { EventStatus } from 'generated/prisma';
 import { ArrowLeft, Calendar, Clock, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -12,7 +11,7 @@ import { EventDetailClient } from './event-detail-client';
 
 export const revalidate = 30;
 
-async function getEvent(id: string) {
+async function getEvent(id: string, userId?: string) {
   const event = await db.event.findUnique({
     where: { id },
     select: {
@@ -24,11 +23,16 @@ async function getEvent(id: string) {
       startsAt: true,
       endsAt: true,
       status: true,
+      createdById: true,
       createdBy: { select: { name: true } },
     },
   });
 
-  if (!event || event.status !== EventStatus.PUBLISHED) return null;
+  if (!event) return null;
+
+  const isVisible = event.status === 'PUBLISHED' || (event.status === 'DRAFT' && event.createdById === userId);
+
+  if (!isVisible) return null;
   return event;
 }
 
@@ -48,13 +52,12 @@ function formatTime(date: Date) {
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  // Run session, event, and attendance fetches in parallel
-  const [session, event] = await Promise.all([auth(), getEvent(id)]);
+  const session = await auth();
+  const event = await getEvent(id, session?.user?.id);
   if (!event) notFound();
 
   const attendance = await getEventAttendanceCounts(event.id, db);
 
-  // Look up the current user's existing RSVP if signed in
   const existingRSVP = session?.user?.id
     ? await db.eventAttendance.findUnique({
         where: { eventId_userId: { eventId: event.id, userId: session.user.id } },

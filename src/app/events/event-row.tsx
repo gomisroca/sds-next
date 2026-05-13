@@ -12,6 +12,7 @@ interface EventRowProps {
     location: string | null;
     startsAt: Date;
     endsAt: Date | null;
+    status: string;
     _count: { attendances: number };
   };
   index: number;
@@ -56,9 +57,16 @@ export default function EventRow({ event, index }: EventRowProps) {
 
           {/* Main content */}
           <div className="relative z-10 flex flex-1 flex-col justify-center gap-1.5 px-5 py-5">
-            <h3 className="text-base font-light tracking-wide text-white/80 transition-colors duration-200 group-hover:text-white/95 md:text-lg">
-              {event.name}
-            </h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-base font-light tracking-wide text-white/80 transition-colors duration-200 group-hover:text-white/95 md:text-lg">
+                {event.name}
+              </h3>
+              {event.status === 'DRAFT' && (
+                <span className="shrink-0 border border-yellow-900/50 bg-yellow-950/30 px-1.5 py-0.5 text-[10px] font-light tracking-widest text-yellow-600/70 uppercase">
+                  Draft
+                </span>
+              )}
+            </div>
             {event.description && <p className="line-clamp-1 text-xs font-light text-white/35">{event.description}</p>}
             {/* Mobile time */}
             <p className="text-xs font-light text-white/30 tabular-nums md:hidden">

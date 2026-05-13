@@ -1,19 +1,23 @@
 import { EventStatus } from 'generated/prisma';
 import { Calendar } from 'lucide-react';
 
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 
+import OrnamentalRule from '../components/ui/ornamental-rule';
 import EventRow from './event-row';
 
-// Revalidate every 60 s so new events appear without a full redeploy
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
-async function getEvents() {
+async function getEvents(userId?: string) {
   return db.event.findMany({
     where: {
-      status: EventStatus.PUBLISHED,
       startsAt: { gte: new Date() },
+      OR: [
+        { status: EventStatus.PUBLISHED },
+        // Show the current user's own drafts so they can preview before publishing
+        ...(userId ? [{ status: EventStatus.DRAFT, createdById: userId }] : []),
+      ],
     },
     orderBy: { startsAt: 'asc' },
     select: {
@@ -24,6 +28,8 @@ async function getEvents() {
       imageUrl: true,
       startsAt: true,
       endsAt: true,
+      status: true,
+      createdById: true,
       createdBy: { select: { name: true } },
       _count: { select: { attendances: true } },
     },
@@ -31,7 +37,8 @@ async function getEvents() {
 }
 
 export default async function EventsPage() {
-  const events = await getEvents();
+  const session = await auth();
+  const events = await getEvents(session?.user?.id);
 
   return (
     <main
@@ -71,7 +78,6 @@ export default async function EventsPage() {
   );
 }
 
-// ── Schedule grouped by month ─────────────────────────────────────────────────
 type EventRow_Event = Awaited<ReturnType<typeof getEvents>>[number];
 
 function EventSchedule({ events }: { events: EventRow_Event[] }) {
