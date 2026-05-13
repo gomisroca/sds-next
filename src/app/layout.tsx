@@ -3,8 +3,11 @@ import '@/styles/globals.css';
 import { Provider as JotaiProvider } from 'jotai';
 import { type Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
+import { SessionProvider } from 'next-auth/react';
 // Providers
 import { Toaster } from 'sileo';
+
+import { auth } from '@/server/auth';
 
 import Footer from './components/ui/footer';
 import NavBar from './components/ui/nav-bar';
@@ -49,10 +52,11 @@ const worksans = Work_Sans({
   weight: ['400', '600'],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   modal,
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
+  const session = await auth();
   return (
     <html lang="en" className={worksans.className} suppressHydrationWarning>
       <body className="text-zinc-800 dark:text-zinc-200">
@@ -62,13 +66,15 @@ export default function RootLayout({
             styles: { description: 'font-medium flex justify-center' },
           }}
         />
-        <JotaiProvider>
-          <div id="modal-root" />
-          {modal}
-          <NavBar />
-          {children}
-          <Footer />
-        </JotaiProvider>
+        <SessionProvider session={session}>
+          <JotaiProvider>
+            <div id="modal-root" />
+            {modal}
+            <NavBar />
+            {children}
+            <Footer />
+          </JotaiProvider>
+        </SessionProvider>
       </body>
     </html>
   );
