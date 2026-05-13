@@ -7,7 +7,6 @@ import { db } from '@/server/db';
 import { getEventAttendanceCounts, postEventToDiscord } from '@/utils/events';
 
 // ── Validation ───────────────────────────────────────────────────────────────
-
 const CreateEventSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(2000).optional(),
@@ -15,20 +14,16 @@ const CreateEventSchema = z.object({
   imageUrl: z.url().optional(),
   startsAt: z.iso.datetime(),
   endsAt: z.iso.datetime().optional(),
-  // If true, immediately publish to Discord after creation
   publishNow: z.boolean().default(false),
 });
 
 // ── POST /api/events ─────────────────────────────────────────────────────────
-
 export async function POST(req: NextRequest): Promise<Response> {
-  // Auth — must be signed in
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  // Role — only officers and leaders can create events
   const user = await db.user.findUnique({
     where: { id: session.user.id },
     select: { id: true, name: true, role: true },
@@ -38,7 +33,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  // Validate body
   const parsed = CreateEventSchema.safeParse(await req.json());
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
@@ -53,7 +47,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'endsAt must be after startsAt' }, { status: 400 });
   }
 
-  // Create the event as DRAFT first
   const event = await db.event.create({
     data: {
       name,
@@ -67,7 +60,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     },
   });
 
-  // Optionally publish to Discord immediately
   if (publishNow) {
     const attendance = await getEventAttendanceCounts(event.id, db);
 
@@ -84,24 +76,20 @@ export async function POST(req: NextRequest): Promise<Response> {
 
     const botResult = await postEventToDiscord(eventForEmbed);
 
-    if (botResult) {
-      await db.event.update({
-        where: { id: event.id },
-        data: {
-          status: EventStatus.PUBLISHED,
+    const published = await db.event.update({
+      where: { id: event.id },
+      data: {
+        status: EventStatus.PUBLISHED,
+        ...(botResult && {
           discordChannelId: botResult.channelId,
           discordMessageId: botResult.messageId,
-        },
-      });
-    }
+        }),
+      },
+    });
 
     return NextResponse.json({
       success: true,
-      event: {
-        ...event,
-        status: botResult ? EventStatus.PUBLISHED : EventStatus.DRAFT,
-        discordPosted: !!botResult,
-      },
+      event: { ...published, discordPosted: !!botResult },
     });
   }
 
@@ -109,8 +97,6 @@ export async function POST(req: NextRequest): Promise<Response> {
 }
 
 // ── GET /api/events ───────────────────────────────────────────────────────────
-// Returns published (and upcoming) events for the homepage / events page.
-
 export async function GET(): Promise<Response> {
   const events = await db.event.findMany({
     where: {
