@@ -7,7 +7,6 @@ import { db } from '@/server/db';
 import { getEventAttendanceCounts, RATE_LIMIT_MS, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
 
 // ── Validation ───────────────────────────────────────────────────────────────
-
 const DiscordRSVPSchema = z.object({
   eventId: z.string(),
   discordUserId: z.string(),
@@ -15,8 +14,6 @@ const DiscordRSVPSchema = z.object({
 });
 
 // ── POST /api/discord/rsvp ────────────────────────────────────────────────────
-// Called exclusively by the Discord bot — protected by a shared secret.
-
 export async function POST(req: NextRequest): Promise<Response> {
   // Bot authentication
   if (req.headers.get('x-bot-secret') !== env.BOT_SECRET) {
@@ -72,13 +69,13 @@ export async function POST(req: NextRequest): Promise<Response> {
   });
 
   if (existing) {
-    // Same status — nothing to do
+    // Same status - nothing to do
     if (existing.status === status) {
       return NextResponse.json({ success: true });
     }
     // Changed too recently
     if (Date.now() - existing.updatedAt.getTime() < RATE_LIMIT_MS) {
-      return NextResponse.json({ error: 'Rate limited — please wait before changing your RSVP' }, { status: 429 });
+      return NextResponse.json({ error: 'Rate limited - please wait before changing your RSVP' }, { status: 429 });
     }
   }
 

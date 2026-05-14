@@ -62,7 +62,7 @@ const STATUS_EMOJI = {
 };
 
 function formatDate(date: Date): string {
-  // Discord timestamp format — renders in the user's local timezone
+  // Discord timestamp format - renders in the user's local timezone
   return `<t:${Math.floor(date.getTime() / 1000)}:F>`;
 }
 
@@ -75,7 +75,6 @@ function formatNameList(names: string[], total: number): string {
 
 /**
  * Renders a Discord embed object for an event.
- * Pass this to the bot's POST /update-event or POST /post-event endpoint.
  */
 export function renderEventEmbed(event: EventForEmbed): object {
   const { attendance } = event;
@@ -109,7 +108,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
   return {
     title: event.name,
     description: event.description ?? undefined,
-    color: 0x8b1a00, // deep crimson — matches the site palette
+    color: 0x8b1a00, // deep crimson
     fields,
     footer: {
       text: `Created by ${event.createdByName ?? 'Unknown'} · Sleeping Dragons FC`,
@@ -118,7 +117,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
   };
 }
 
-// ── Bot communication (stubbed until bot is ready) ───────────────────────────
+// ── Bot communication →PH ───────────────────────────
 export interface BotPostResult {
   channelId: string;
   messageId: string;
@@ -127,9 +126,7 @@ export interface BotPostResult {
 /**
  * Ask the bot to post a new event embed in the configured channel.
  * Returns the channelId + messageId to store on the Event row.
- *
- * TODO: implement once the Discord bot is running.
- * The bot should POST back (or return) { channelId, messageId }.
+ * →PH
  */
 export async function postEventToDiscord(_event: EventForEmbed): Promise<BotPostResult | null> {
   // TODO
@@ -145,14 +142,14 @@ export async function postEventToDiscord(_event: EventForEmbed): Promise<BotPost
   // if (!res.ok) return null;
   // return res.json() as Promise<BotPostResult>;
 
-  console.warn('[postEventToDiscord] Bot not configured — skipping Discord post');
+  console.warn('[postEventToDiscord] Bot not configured - skipping Discord post');
   return null;
 }
 
 /**
  * Ask the bot to update an existing embed after an RSVP change.
  *
- * TODO: implement once the Discord bot is running.
+ * →PH
  */
 export async function updateEventOnDiscord(args: {
   channelId: string;
@@ -172,5 +169,5 @@ export async function updateEventOnDiscord(args: {
   //   body: JSON.stringify(args),
   // });
 
-  console.warn('[updateEventOnDiscord] Bot not configured — skipping Discord update', args.eventId);
+  console.warn('[updateEventOnDiscord] Bot not configured - skipping Discord update', args.eventId);
 }

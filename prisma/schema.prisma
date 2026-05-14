@@ -36,8 +36,8 @@ model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
-  provider          String // "discord"
-  providerAccountId String // Discord user ID — used for bot RSVP lookups
+  provider          String
+  providerAccountId String
   refresh_token     String?
   access_token      String?
   expires_at        Int?
@@ -112,7 +112,7 @@ model Event {
   createdById String
   createdBy   User   @relation("CreatedEvents", fields: [createdById], references: [id])
 
-  // Discord integration — set once the bot posts the embed
+  // Discord integration
   discordChannelId String? // channel the message was posted in
   discordMessageId String? // message ID for edits
 

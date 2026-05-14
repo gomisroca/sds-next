@@ -118,7 +118,7 @@ function EmptyState() {
     <div className="flex flex-col items-center gap-4 py-24 text-center">
       <Calendar className="h-8 w-8 text-red-900/40" strokeWidth={1} />
       <p className="text-sm font-light tracking-widest text-white/25 uppercase">No upcoming events</p>
-      <p className="text-xs font-light text-white/20">Check back soon — officers post new events regularly.</p>
+      <p className="text-xs font-light text-white/20">Check back soon - we post new events regularly.</p>
     </div>
   );
 }

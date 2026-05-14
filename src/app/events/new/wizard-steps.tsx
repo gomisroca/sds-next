@@ -43,7 +43,7 @@ export function StepDetails({
       <div>
         <Label>Banner Image URL</Label>
         <Input value={data.imageUrl} onChange={(v) => onChange({ imageUrl: v })} placeholder="https://..." type="url" />
-        <p className="mt-1.5 text-xs font-light text-white/20">Optional — shown on the event detail page.</p>
+        <p className="mt-1.5 text-xs font-light text-white/20">Optional - shown on the event detail page.</p>
       </div>
     </div>
   );

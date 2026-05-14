@@ -7,7 +7,7 @@ import { db } from '@/server/db';
 import { getEventAttendanceCounts, RATE_LIMIT_MS, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
 
 const RSVPSchema = z.object({
-  status: z.nativeEnum(AttendanceStatus),
+  status: z.enum(AttendanceStatus),
 });
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       return NextResponse.json({ success: true });
     }
     if (Date.now() - existing.updatedAt.getTime() < RATE_LIMIT_MS) {
-      return NextResponse.json({ error: 'Rate limited — please wait before changing your RSVP' }, { status: 429 });
+      return NextResponse.json({ error: 'Rate limited - please wait before changing your RSVP' }, { status: 429 });
     }
   }
 

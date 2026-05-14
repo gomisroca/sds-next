@@ -149,7 +149,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 <Clock className="h-3.5 w-3.5 shrink-0 text-red-700/50" strokeWidth={1.5} />
                 <p className="text-sm font-light text-white/70">
                   {formatTime(event.startsAt)}
-                  {event.endsAt ? ` – ${formatTime(event.endsAt)}` : ''}
+                  {event.endsAt ? ` - ${formatTime(event.endsAt)}` : ''}
                 </p>
               </div>
 
@@ -161,7 +161,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               )}
             </div>
 
-            {/* Attendance + RSVP — client island */}
+            {/* Attendance + RSVP */}
             <EventDetailClient
               eventId={event.id}
               initialAttendance={attendance}
