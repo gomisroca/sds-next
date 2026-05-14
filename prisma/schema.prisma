@@ -28,6 +28,7 @@ model User {
   role        Role              @default(MEMBER)
   events      Event[]           @relation("CreatedEvents")
   attendances EventAttendance[]
+  profile     Profile?
 
   @@map("users")
 }
@@ -61,6 +62,141 @@ model Session {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+enum Job {
+  PLD // Paladin
+  WAR // Warrior
+  DRK // Dark Knight
+  GNB // Gunbreaker
+
+  // Healers
+  WHM // White Mage
+  SCH // Scholar
+  AST // Astrologian
+  SGE // Sage
+
+  // Melee DPS
+  MNK // Monk
+  DRG // Dragoon
+  NIN // Ninja
+  SAM // Samurai
+  RPR // Reaper
+  VPR // Viper
+
+  // Physical Ranged DPS
+  BRD // Bard
+  MCH // Machinist
+  DNC // Dancer
+
+  // Magical Ranged DPS
+  BLM // Black Mage
+  SMN // Summoner
+  RDM // Red Mage
+  PCT // Pictomancer
+  BLU // Blue Mage (Limited Job)
+
+  // Crafters
+  CRP // Carpenter
+  BSM // Blacksmith
+  ARM // Armorer
+  GSM // Goldsmith
+  LTW // Leatherworker
+  WVR // Weaver
+  ALC // Alchemist
+  CUL // Culinarian
+
+  // Gatherers
+  MIN // Miner
+  BTN // Botanist
+  FSH // Fisher
+}
+
+enum Activity {
+  // Combat
+  RAIDING
+  SAVAGE
+  ULTIMATE
+  EXTREME_TRIALS
+  DUNGEONS
+  ALLIANCE_RAIDS
+  DEEP_DUNGEONS
+  VARIANT_DUNGEONS
+  CRITERION_DUNGEONS
+  PVP
+  FRONTLINE
+  CRYSTALLINE_CONFLICT
+  RIVAL_WINGS
+  HUNTS
+  FATES
+  BLUE_MAGE
+
+  // Social
+  ROLEPLAY
+  VENUES
+  COMMUNITY_EVENTS
+  FC_EVENTS
+  SOCIALIZING
+  GPOSE
+
+  // Casual / Exploration
+  MSQ
+  SIDE_QUESTS
+  TREASURE_MAPS
+  ACHIEVEMENTS
+  COLLECTION
+
+  // Crafting & Gathering
+  CRAFTING
+  GATHERING
+  FISHING
+  MARKETBOARD
+
+  // Gold Saucer
+  GOLD_SAUCER
+  TRIPLE_TRIAD
+  MAHJONG
+  CHOCOBO_RACING
+
+  // Housing & Island
+  HOUSING
+  ISLAND_SANCTUARY
+
+  // Misc
+  MENTORING
+  ROULETTES
+  GLAMOUR
+}
+
+enum Playstyle {
+  CASUAL
+  MIDCORE
+  HARDCORE
+  ROLEPLAYER
+  SOCIAL
+  COLLECTOR
+}
+
+model Profile {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // Identity
+  name String
+  bio  String?
+
+  // Visuals
+  portrait String?
+  banner   String?
+
+  // Gameplay
+  job        Job
+  activities Activity[]
+  playstyle  Playstyle
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profile")
 }
 
 model VerificationToken {
