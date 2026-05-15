@@ -71,7 +71,8 @@ export const PLAYSTYLE_META: Record<Playstyle, PlaystyleMeta> = {
 
 // ── Role metadata ─────────────────────────────────────────────────────────────
 export const ROLE_META: Record<Role, { label: string; color: string }> = {
-  MEMBER: { label: 'Member', color: 'text-white/30' },
+  GUEST: { label: 'Guest', color: 'text-white/30' },
+  MEMBER: { label: 'Member', color: 'text-emerald-400/80' },
   OFFICER: { label: 'Officer', color: 'text-red-400/80' },
   LEADER: { label: 'Leader', color: 'text-yellow-400/80' },
 };
