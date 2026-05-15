@@ -48,6 +48,7 @@
     "sileo": "^0.1.5",
     "tailwind-merge": "^3.3.1",
     "uploadthing": "^7.7.4",
+    "uuid": "^14.0.0",
     "zod": "^4.0.17"
   },
   "devDependencies": {
