@@ -1,12 +1,15 @@
 import '@/styles/globals.css';
 
+import { NextSSRPlugin as UploadThingSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { Provider as JotaiProvider } from 'jotai';
 import { type Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 // Providers
 import { Toaster } from 'sileo';
+import { extractRouterConfig } from 'uploadthing/server';
 
+import { UploadThingRouter } from '@/app/api/uploadthing/core';
 import { auth } from '@/server/auth';
 
 import Footer from './components/ui/footer';
@@ -68,6 +71,7 @@ export default async function RootLayout({
         />
         <SessionProvider session={session}>
           <JotaiProvider>
+            <UploadThingSSRPlugin routerConfig={extractRouterConfig(UploadThingRouter)} />
             <div id="modal-root" />
             {modal}
             <NavBar />
