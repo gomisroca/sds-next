@@ -1,7 +1,10 @@
 'use client';
 
+import { UploadButton } from '@uploadthing/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, Check, MapPin } from 'lucide-react';
+import { Calendar, Check, MapPin, X } from 'lucide-react';
+
+import type { UploadThingRouter } from '@/app/api/uploadthing/core';
 
 import { FieldError, Input, Label, Textarea } from './form-fields';
 import type { FormData } from './types';
@@ -40,16 +43,51 @@ export function StepDetails({
           placeholder="Estate Yard, The Goblet"
         />
       </div>
+      {/* Banner image upload */}
       <div>
-        <Label>Banner Image URL</Label>
-        <Input value={data.imageUrl} onChange={(v) => onChange({ imageUrl: v })} placeholder="https://..." type="url" />
-        <p className="mt-1.5 text-xs font-light text-white/20">Optional - shown on the event detail page.</p>
+        <Label>Banner Image</Label>
+
+        {data.imageUrl ? (
+          <div className="relative h-40 w-full overflow-hidden border border-red-900/25">
+            <img src={data.imageUrl} alt="Event banner preview" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            <button
+              type="button"
+              onClick={() => onChange({ imageUrl: '' })}
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/60 transition-colors hover:bg-black/80 hover:text-white">
+              <X className="h-3 w-3" strokeWidth={2} />
+            </button>
+          </div>
+        ) : (
+          <UploadButton<UploadThingRouter, 'eventBanner'>
+            endpoint="eventBanner"
+            onClientUploadComplete={(res) => {
+              const url = res?.[0]?.ufsUrl;
+              if (url) onChange({ imageUrl: url });
+            }}
+            onUploadError={(err) => console.error('Upload error:', err)}
+            appearance={{
+              container: 'flex flex-col items-start w-full',
+              button:
+                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/40 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/60 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
+              allowedContent: 'text-xs font-light text-white/20 mt-1.5',
+            }}
+            content={{
+              button({ ready, isUploading }) {
+                if (isUploading) return 'Uploading…';
+                return ready ? 'Upload Banner Image' : 'Getting ready…';
+              },
+            }}
+          />
+        )}
+        <p className="mt-1.5 text-xs font-light text-white/20">Optional — shown on the event card and detail page.</p>
       </div>
     </div>
   );
 }
 
 // ── Step 2: Time ──────────────────────────────────────────────────────────────
+
 export function StepTime({
   data,
   errors,
@@ -134,6 +172,7 @@ export function StepTime({
 }
 
 // ── Step 3: Publish ───────────────────────────────────────────────────────────
+
 export function StepPublish({ data, onChange }: { data: FormData; onChange: (patch: Partial<FormData>) => void }) {
   return (
     <div className="flex flex-col gap-6">
