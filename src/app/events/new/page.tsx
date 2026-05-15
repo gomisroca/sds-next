@@ -17,7 +17,7 @@ export default async function NewEventPage() {
     select: { role: true },
   });
 
-  if (!user || (user.role !== 'OFFICER' && user.role !== 'LEADER')) {
+  if (!user || (user.role !== 'MEMBER' && user.role !== 'OFFICER' && user.role !== 'LEADER')) {
     redirect('/events');
   }
 

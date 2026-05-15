@@ -10,7 +10,6 @@ datasource db {
 }
 
 // ── NextAuth required tables ─────────────────────────────────────────────────
-
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -25,7 +24,7 @@ model User {
   sessions Session[]
 
   // FC-specific
-  role        Role              @default(MEMBER)
+  role        Role              @default(GUEST)
   events      Event[]           @relation("CreatedEvents")
   attendances EventAttendance[]
   profile     Profile?
@@ -209,8 +208,8 @@ model VerificationToken {
 }
 
 // ── FC-specific models ───────────────────────────────────────────────────────
-
 enum Role {
+  GUEST
   MEMBER
   OFFICER
   LEADER

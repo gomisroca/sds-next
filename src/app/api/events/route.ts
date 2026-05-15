@@ -29,7 +29,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     select: { id: true, name: true, role: true },
   });
 
-  if (!user || (user.role !== 'OFFICER' && user.role !== 'LEADER')) {
+  if (!user || (user.role !== 'MEMBER' && user.role !== 'OFFICER' && user.role !== 'LEADER')) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
