@@ -1,5 +1,6 @@
 import { EventStatus } from 'generated/prisma';
-import { Calendar } from 'lucide-react';
+import { Calendar, Pencil } from 'lucide-react';
+import Link from 'next/link';
 
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
@@ -66,9 +67,20 @@ export default async function EventsPage() {
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/70 uppercase">Sleeping Dragons</p>
           <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/85 uppercase md:text-5xl">Events</h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/40">
-            Upcoming gatherings, raids, and social nights for the Free Company. All times shown in your local timezone.
-          </p>
+          <div className="flex gap-2">
+            <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/40">
+              Upcoming gatherings, raids, and social nights for the Free Company. All times shown in your local
+              timezone.
+            </p>
+            {session?.user?.id && session.user.role !== 'GUEST' && (
+              <Link
+                href={`/events/new`}
+                className="my-auto flex h-fit items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/35 uppercase transition-all hover:border-red-800/40 hover:text-white/60">
+                <Pencil className="h-3 w-3" strokeWidth={1.5} />
+                Create Event
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Schedule */}
