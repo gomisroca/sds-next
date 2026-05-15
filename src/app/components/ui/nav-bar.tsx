@@ -171,6 +171,7 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
 
 // ── Nav bar ───────────────────────────────────────────────────────────────────
 export default function NavBar() {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -241,17 +242,21 @@ export default function NavBar() {
                 </Link>
               );
             })}
+            {!session?.user ||
+              (session.user.role === 'GUEST' && (
+                <>
+                  <div className="mx-3 h-3.5 w-px bg-red-900/40" />
 
-            <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-
-            <Link href="/apply">
-              <motion.span
-                className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}>
-                Join
-              </motion.span>
-            </Link>
+                  <Link href="/apply">
+                    <motion.span
+                      className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}>
+                      Join
+                    </motion.span>
+                  </Link>
+                </>
+              ))}
 
             <div className="mx-3 h-3.5 w-px bg-red-900/40" />
 
