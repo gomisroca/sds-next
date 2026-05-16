@@ -1,7 +1,8 @@
-import { createUploadthing, type FileRouter } from 'uploadthing/next';
+import { createUploadthing, type FileRouter, UTFiles } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 
 import { auth } from '@/server/auth';
+import { renameFile } from '@/utils/uploadthing';
 
 const f = createUploadthing();
 
@@ -14,19 +15,37 @@ async function verifyRequest() {
 
 export const UploadThingRouter = {
   eventBanner: f({ image: { maxFileSize: '2MB', maxFileCount: 1 } })
-    .middleware(verifyRequest)
+    .middleware(async ({ files }) => {
+      const metadata = await verifyRequest();
+      const fileOverrides = files.map((file) => {
+        return { ...file, name: renameFile(file) };
+      });
+      return { ...metadata, [UTFiles]: fileOverrides };
+    })
     .onUploadComplete(async ({ metadata, file }) => {
       return { uploadedBy: metadata.userId, url: file.ufsUrl };
     }),
 
   profileBanner: f({ image: { maxFileSize: '2MB', maxFileCount: 1 } })
-    .middleware(verifyRequest)
+    .middleware(async ({ files }) => {
+      const metadata = await verifyRequest();
+      const fileOverrides = files.map((file) => {
+        return { ...file, name: renameFile(file) };
+      });
+      return { ...metadata, [UTFiles]: fileOverrides };
+    })
     .onUploadComplete(async ({ metadata, file }) => {
       return { uploadedBy: metadata.userId, url: file.ufsUrl };
     }),
 
   profilePortrait: f({ image: { maxFileSize: '2MB', maxFileCount: 1 } })
-    .middleware(verifyRequest)
+    .middleware(async ({ files }) => {
+      const metadata = await verifyRequest();
+      const fileOverrides = files.map((file) => {
+        return { ...file, name: renameFile(file) };
+      });
+      return { ...metadata, [UTFiles]: fileOverrides };
+    })
     .onUploadComplete(async ({ metadata, file }) => {
       return { uploadedBy: metadata.userId, url: file.ufsUrl };
     }),

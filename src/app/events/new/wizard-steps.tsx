@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Check, MapPin, X } from 'lucide-react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
-import { renameFiles } from '@/utils/uploadthing';
 
 import { FieldError, Input, Label, Textarea } from './form-fields';
 import type { FormData } from './types';
@@ -62,9 +61,6 @@ export function StepDetails({
         ) : (
           <UploadButton<UploadThingRouter, 'eventBanner'>
             endpoint="eventBanner"
-            onBeforeUploadBegin={(files) => {
-              return renameFiles(files);
-            }}
             onClientUploadComplete={(res) => {
               const url = res?.[0]?.ufsUrl;
               if (url) onChange({ imageUrl: url });
