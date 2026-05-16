@@ -1,21 +1,24 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Calendar, Check, Loader2, Send, Type } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calendar, Check, FileText, Loader2, Send, Type } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { StepTemplateSelect } from './step-template-select';
 import { type FormData, INITIAL_FORM_DATA, validateStep } from './types';
 import { StepDetails, StepPublish, StepTime } from './wizard-steps';
 
+// Steps 1–3 shown in the indicator (step 0 is a pre-screen)
 const STEPS = [
   { number: 1, label: 'Details', icon: Type },
   { number: 2, label: 'Time', icon: Calendar },
   { number: 3, label: 'Publish', icon: Send },
 ];
 
-// ── Step indicator ────────────────────────────────────────────────────────────
+// ── Step indicator (only shown for steps 1–3) ────────────────────────────────
 function StepIndicator({ current }: { current: number }) {
+  if (current === 0) return null;
   return (
     <div className="mb-10 flex items-center">
       {STEPS.map((step, i) => {
@@ -57,7 +60,7 @@ function StepIndicator({ current }: { current: number }) {
 // ── Wizard ────────────────────────────────────────────────────────────────────
 export function CreateEventWizard() {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0); // start at step 0
   const [direction, setDirection] = useState(1);
   const [data, setData] = useState<FormData>(INITIAL_FORM_DATA);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -89,7 +92,11 @@ export function CreateEventWizard() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const startsAt = new Date(`${data.startsAtDate}T${data.startsAtTime}`).toISOString();
+      const startsAt =
+        data.isTemplate || !data.startsAtDate
+          ? undefined
+          : new Date(`${data.startsAtDate}T${data.startsAtTime}`).toISOString();
+
       const endsAt =
         data.hasEndTime && data.endsAtDate
           ? new Date(`${data.endsAtDate}T${data.endsAtTime}`).toISOString()
@@ -105,7 +112,9 @@ export function CreateEventWizard() {
           imageUrl: data.imageUrl.trim() || undefined,
           startsAt,
           endsAt,
-          publishNow: data.publishNow,
+          publishNow: data.isTemplate ? false : data.publishNow,
+          isTemplate: data.isTemplate,
+          templateName: data.isTemplate ? data.templateName.trim() : undefined,
         }),
       });
 
@@ -116,9 +125,15 @@ export function CreateEventWizard() {
         setSubmitError(!json.success ? json.error : 'Something went wrong.');
         return;
       }
-      router.push(`/events/${json.event.id}`);
+
+      // Templates redirect to the events page; real events go to their detail page
+      if (data.isTemplate) {
+        router.push('/events');
+      } else {
+        router.push(`/events/${json.event.id}`);
+      }
     } catch {
-      setSubmitError('Network error - please check your connection and try again.');
+      setSubmitError('Network error — please check your connection and try again.');
     } finally {
       setSubmitting(false);
     }
@@ -130,9 +145,26 @@ export function CreateEventWizard() {
     exit: (dir: number) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
   };
 
+  const isLastStep = step === 3;
+
+  // Submit button label
+  function submitLabel() {
+    if (submitting) return 'Saving…';
+    if (data.isTemplate) return 'Save Template';
+    return data.publishNow ? 'Create & Publish' : 'Create Draft';
+  }
+
   return (
     <div>
       <StepIndicator current={step} />
+
+      {/* Step 0 heading */}
+      {step === 0 && (
+        <div className="mb-8">
+          <p className="mb-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase">Step 0 of 3</p>
+          <h2 className="text-lg font-extralight tracking-wide text-white/70">Starting point</h2>
+        </div>
+      )}
 
       <div className="relative overflow-hidden">
         <AnimatePresence mode="wait" custom={direction}>
@@ -144,6 +176,7 @@ export function CreateEventWizard() {
             animate="centre"
             exit="exit"
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}>
+            {step === 0 && <StepTemplateSelect onSelect={patch} />}
             {step === 1 && <StepDetails data={data} errors={errors} onChange={patch} />}
             {step === 2 && <StepTime data={data} errors={errors} onChange={patch} />}
             {step === 3 && <StepPublish data={data} onChange={patch} />}
@@ -156,13 +189,13 @@ export function CreateEventWizard() {
         <button
           type="button"
           onClick={back}
-          disabled={step === 1}
+          disabled={step === 0}
           className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors hover:text-white/60 disabled:pointer-events-none disabled:opacity-0">
           <ArrowLeft className="h-3 w-3" strokeWidth={1.5} />
           Back
         </button>
 
-        {step < 3 ? (
+        {!isLastStep ? (
           <motion.button
             type="button"
             onClick={next}
@@ -182,10 +215,12 @@ export function CreateEventWizard() {
             whileTap={{ scale: 0.98 }}>
             {submitting ? (
               <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
+            ) : data.isTemplate ? (
+              <FileText className="h-3 w-3" strokeWidth={1.5} />
             ) : (
               <Check className="h-3 w-3" strokeWidth={2} />
             )}
-            {submitting ? 'Creating…' : data.publishNow ? 'Create & Publish' : 'Create Draft'}
+            {submitLabel()}
           </motion.button>
         )}
       </div>

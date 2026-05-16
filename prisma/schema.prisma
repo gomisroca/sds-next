@@ -238,7 +238,7 @@ model Event {
   description String?
   location    String? // "Estate Yard" or a zone name
   imageUrl    String? // banner image for the event card
-  startsAt    DateTime
+  startsAt    DateTime?
   endsAt      DateTime?
 
   status EventStatus @default(DRAFT)
@@ -250,6 +250,10 @@ model Event {
   // Discord integration
   discordChannelId String? // channel the message was posted in
   discordMessageId String? // message ID for edits
+
+  // Template
+  isTemplate   Boolean @default(false)
+  templateName String?
 
   attendances EventAttendance[]
 

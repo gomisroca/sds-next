@@ -19,7 +19,7 @@ export interface EventForEmbed {
   name: string;
   description: string | null;
   location: string | null;
-  startsAt: Date;
+  startsAt: Date | null;
   endsAt: Date | null;
   createdByName: string | null;
   attendance: AttendanceCounts;
@@ -82,7 +82,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
   const fields = [
     {
       name: '📅 Starts',
-      value: formatDate(event.startsAt),
+      value: formatDate(event.startsAt!),
       inline: true,
     },
     ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDate(event.endsAt), inline: true }] : []),

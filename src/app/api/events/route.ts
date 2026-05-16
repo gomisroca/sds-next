@@ -12,9 +12,11 @@ const CreateEventSchema = z.object({
   description: z.string().max(2000).optional(),
   location: z.string().max(200).optional(),
   imageUrl: z.url().optional(),
-  startsAt: z.iso.datetime(),
+  startsAt: z.iso.datetime().optional(), // optional when saving as template
   endsAt: z.iso.datetime().optional(),
   publishNow: z.boolean().default(false),
+  isTemplate: z.boolean().default(false),
+  templateName: z.string().min(1).max(100).optional(),
 });
 
 // ── POST /api/events ─────────────────────────────────────────────────────────
@@ -30,21 +32,52 @@ export async function POST(req: NextRequest): Promise<Response> {
   });
 
   if (!user || (user.role !== 'MEMBER' && user.role !== 'OFFICER' && user.role !== 'LEADER')) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    return NextResponse.json({ error: 'Forbidden: Only members can create events' }, { status: 403 });
   }
-
   const parsed = CreateEventSchema.safeParse(await req.json());
+  console.log(parsed);
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { name, description, location, imageUrl, startsAt, endsAt, publishNow } = parsed.data;
+  const { name, description, location, imageUrl, startsAt, endsAt, publishNow, isTemplate, templateName } = parsed.data;
 
-  const startDate = new Date(startsAt);
+  const startDate = startsAt ? new Date(startsAt) : undefined;
   const endDate = endsAt ? new Date(endsAt) : undefined;
 
-  if (endDate && endDate <= startDate) {
+  if (startDate && endDate && endDate <= startDate) {
     return NextResponse.json({ error: 'endsAt must be after startsAt' }, { status: 400 });
+  }
+
+  if (isTemplate && user.role !== 'OFFICER' && user.role !== 'LEADER') {
+    return NextResponse.json({ error: 'Forbidden: Only officers and leaders can create templates' }, { status: 403 });
+  }
+  if (isTemplate && !templateName) {
+    return NextResponse.json({ error: 'templateName is required when saving as template' }, { status: 400 });
+  }
+
+  // Non-template events must have a start date
+  if (!isTemplate && !startDate) {
+    return NextResponse.json({ error: 'startsAt is required for non-template events' }, { status: 400 });
+  }
+
+  // Templates are always saved as DRAFT and never published to Discord
+  if (isTemplate) {
+    const template = await db.event.create({
+      data: {
+        name,
+        description,
+        location,
+        imageUrl,
+        startsAt: startDate ?? new Date(0),
+        endsAt: endDate,
+        status: EventStatus.DRAFT,
+        isTemplate: true,
+        templateName,
+        createdById: user.id,
+      },
+    });
+    return NextResponse.json({ success: true, event: template });
   }
 
   const event = await db.event.create({
@@ -53,7 +86,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       description,
       location,
       imageUrl,
-      startsAt: startDate,
+      startsAt: startDate!,
       endsAt: endDate,
       status: EventStatus.DRAFT,
       createdById: user.id,
@@ -76,6 +109,8 @@ export async function POST(req: NextRequest): Promise<Response> {
 
     const botResult = await postEventToDiscord(eventForEmbed);
 
+    // Publish regardless of whether the bot call succeeded -
+    // the bot is optional infrastructure, not a gate on publishing.
     const published = await db.event.update({
       where: { id: event.id },
       data: {

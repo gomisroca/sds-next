@@ -3,6 +3,7 @@
 import { UploadButton } from '@uploadthing/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Check, MapPin, X } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
 
@@ -19,6 +20,7 @@ export function StepDetails({
   errors: Partial<Record<keyof FormData, string>>;
   onChange: (patch: Partial<FormData>) => void;
 }) {
+  const { data: session } = useSession();
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -82,6 +84,44 @@ export function StepDetails({
         )}
         <p className="mt-1.5 text-xs font-light text-white/20">Optional — shown on the event card and detail page.</p>
       </div>
+
+      {/* Template toggle */}
+      {session?.user && session.user.role in ['OFFICER', 'LEADER'] && (
+        <div className="border border-red-900/20 bg-white/[0.02] p-4">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                onChange({ isTemplate: !data.isTemplate, templateName: data.isTemplate ? '' : data.templateName })
+              }
+              className={`flex h-5 w-5 shrink-0 items-center justify-center border transition-all duration-200 ${
+                data.isTemplate
+                  ? 'border-red-700/60 bg-red-950/40 text-red-400'
+                  : 'border-red-900/25 bg-white/[0.02] text-transparent'
+              }`}>
+              <Check className="h-3 w-3" strokeWidth={2} />
+            </button>
+            <div>
+              <Label>Save as reusable template</Label>
+              <p className="text-xs font-light text-white/20">
+                Templates can be used as a starting point for future events. No date or Discord post required.
+              </p>
+            </div>
+          </div>
+
+          {data.isTemplate && (
+            <div className="mt-4">
+              <Label>Template Name *</Label>
+              <Input
+                value={data.templateName}
+                onChange={(v) => onChange({ templateName: v })}
+                placeholder="e.g. Monthly Social Night"
+              />
+              <FieldError message={errors.templateName} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -97,6 +137,18 @@ export function StepTime({
   errors: Partial<Record<keyof FormData, string>>;
   onChange: (patch: Partial<FormData>) => void;
 }) {
+  if (data.isTemplate) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
+        <Calendar className="h-8 w-8 text-red-900/30" strokeWidth={1} />
+        <p className="text-sm font-light text-white/40">Templates don’t need a date.</p>
+        <p className="text-xs font-light text-white/20">
+          When you create an event from this template, you’ll set the date then.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -202,39 +254,41 @@ export function StepPublish({ data, onChange }: { data: FormData; onChange: (pat
         )}
       </div>
 
-      <div className="flex flex-col gap-3">
-        <p className="text-xs font-light tracking-[0.25em] text-white/30 uppercase">Discord</p>
-        {([true, false] as const).map((isPublish) => {
-          const selected = data.publishNow === isPublish;
-          return (
-            <button
-              key={String(isPublish)}
-              type="button"
-              onClick={() => onChange({ publishNow: isPublish })}
-              className={`flex items-start gap-4 border p-4 text-left transition-all duration-200 ${
-                selected
-                  ? 'border-red-700/50 bg-red-950/25'
-                  : 'border-red-900/20 bg-white/[0.02] hover:border-red-900/40'
-              }`}>
-              <div
-                className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border transition-colors ${selected ? 'border-red-600/70 bg-red-900/40' : 'border-red-900/30'}`}>
-                {selected && <div className="h-1.5 w-1.5 bg-red-500" />}
-              </div>
-              <div>
-                <p
-                  className={`text-sm font-light tracking-wide transition-colors ${selected ? 'text-white/80' : 'text-white/40'}`}>
-                  {isPublish ? 'Publish now' : 'Save as draft'}
-                </p>
-                <p className="mt-0.5 text-xs font-light text-white/25">
-                  {isPublish
-                    ? 'Posts to the Discord channel immediately and opens RSVPs.'
-                    : 'Saves the event privately. You can publish it later.'}
-                </p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+      {!data.isTemplate && (
+        <div className="flex flex-col gap-3">
+          <p className="text-xs font-light tracking-[0.25em] text-white/30 uppercase">Discord</p>
+          {([true, false] as const).map((isPublish) => {
+            const selected = data.publishNow === isPublish;
+            return (
+              <button
+                key={String(isPublish)}
+                type="button"
+                onClick={() => onChange({ publishNow: isPublish })}
+                className={`flex items-start gap-4 border p-4 text-left transition-all duration-200 ${
+                  selected
+                    ? 'border-red-700/50 bg-red-950/25'
+                    : 'border-red-900/20 bg-white/[0.02] hover:border-red-900/40'
+                }`}>
+                <div
+                  className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border transition-colors ${selected ? 'border-red-600/70 bg-red-900/40' : 'border-red-900/30'}`}>
+                  {selected && <div className="h-1.5 w-1.5 bg-red-500" />}
+                </div>
+                <div>
+                  <p
+                    className={`text-sm font-light tracking-wide transition-colors ${selected ? 'text-white/80' : 'text-white/40'}`}>
+                    {isPublish ? 'Publish now' : 'Save as draft'}
+                  </p>
+                  <p className="mt-0.5 text-xs font-light text-white/25">
+                    {isPublish
+                      ? 'Posts to the Discord channel immediately and opens RSVPs.'
+                      : 'Saves the event privately. You can publish it later.'}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
