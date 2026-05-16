@@ -1,16 +1,17 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META, ROLE_META } from '@/utils/profile';
 
-export const revalidate = 120;
+export const dynamic = 'force-dynamic';
 
 async function getMember(id: string) {
   return db.user.findUnique({
-    where: { id, role: { in: ['LEADER', 'OFFICER', 'MEMBER'] } },
+    where: { id },
     select: {
       id: true,
       name: true,
@@ -19,6 +20,7 @@ async function getMember(id: string) {
       createdAt: true,
       profile: {
         select: {
+          id: true,
           name: true,
           bio: true,
           portrait: true,
@@ -34,13 +36,19 @@ async function getMember(id: string) {
 
 export default async function MemberDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const member = await getMember(id);
+  const [session, member] = await Promise.all([auth(), getMember(id)]);
   if (!member) notFound();
 
   const profile = member.profile;
   const displayName = profile?.name ?? member.name ?? 'Unknown';
   const portrait = profile?.portrait ?? member.image;
   const roleMeta = ROLE_META[member.role];
+
+  // Show edit button to profile owner or leaders
+  const currentUser = session?.user?.id
+    ? await db.user.findUnique({ where: { id: session.user.id }, select: { role: true } })
+    : null;
+  const canEdit = profile && (session?.user?.id === member.id || currentUser?.role === 'LEADER');
 
   return (
     <main
@@ -70,15 +78,26 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-12">
         {/* Back */}
-        <Link
-          href="/members"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors duration-200 hover:text-white/60">
-          <ArrowLeft
-            className="h-3 w-3 transition-transform duration-200 group-hover:-translate-x-0.5"
-            strokeWidth={1.5}
-          />
-          All Members
-        </Link>
+        <div className="mb-10 flex items-center justify-between">
+          <Link
+            href="/members"
+            className="group inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors duration-200 hover:text-white/60">
+            <ArrowLeft
+              className="h-3 w-3 transition-transform duration-200 group-hover:-translate-x-0.5"
+              strokeWidth={1.5}
+            />
+            All Members
+          </Link>
+
+          {canEdit && profile && (
+            <Link
+              href={`/members/${profile.id}/edit`}
+              className="flex items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/35 uppercase transition-all hover:border-red-800/40 hover:text-white/60">
+              <Pencil className="h-3 w-3" strokeWidth={1.5} />
+              Edit Profile
+            </Link>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Portrait + identity */}
