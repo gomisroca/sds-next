@@ -3,7 +3,6 @@
 import { UploadButton } from '@uploadthing/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Check, MapPin, X } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
 
@@ -15,12 +14,13 @@ export function StepDetails({
   data,
   errors,
   onChange,
+  isEdit = false,
 }: {
   data: FormData;
   errors: Partial<Record<keyof FormData, string>>;
   onChange: (patch: Partial<FormData>) => void;
+  isEdit?: boolean;
 }) {
-  const { data: session } = useSession();
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -85,8 +85,8 @@ export function StepDetails({
         <p className="mt-1.5 text-xs font-light text-white/20">Optional — shown on the event card and detail page.</p>
       </div>
 
-      {/* Template toggle */}
-      {session?.user && session.user.role in ['OFFICER', 'LEADER'] && (
+      {/* Template toggle — hidden in edit mode */}
+      {!isEdit && (
         <div className="border border-red-900/20 bg-white/[0.02] p-4">
           <div className="flex items-center gap-3">
             <button
@@ -127,7 +127,6 @@ export function StepDetails({
 }
 
 // ── Step 2: Time ──────────────────────────────────────────────────────────────
-
 export function StepTime({
   data,
   errors,
@@ -224,7 +223,6 @@ export function StepTime({
 }
 
 // ── Step 3: Publish ───────────────────────────────────────────────────────────
-
 export function StepPublish({ data, onChange }: { data: FormData; onChange: (patch: Partial<FormData>) => void }) {
   return (
     <div className="flex flex-col gap-6">

@@ -58,11 +58,20 @@ function StepIndicator({ current }: { current: number }) {
 }
 
 // ── Wizard ────────────────────────────────────────────────────────────────────
-export function CreateEventWizard() {
+type CreateEventWizardProps =
+  | { mode?: 'create' }
+  | {
+      mode: 'edit';
+      eventId: string;
+      initialData: FormData;
+    };
+
+export function CreateEventWizard(props: CreateEventWizardProps = {}) {
+  const isEdit = props.mode === 'edit';
   const router = useRouter();
-  const [step, setStep] = useState(0); // start at step 0
+  const [step, setStep] = useState(isEdit ? 1 : 0); // skip step 0 in edit mode
   const [direction, setDirection] = useState(1);
-  const [data, setData] = useState<FormData>(INITIAL_FORM_DATA);
+  const [data, setData] = useState<FormData>(isEdit ? props.initialData : INITIAL_FORM_DATA);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -85,7 +94,7 @@ export function CreateEventWizard() {
   function back() {
     setErrors({});
     setDirection(-1);
-    setStep((s) => s - 1);
+    setStep((s) => (isEdit ? Math.max(1, s - 1) : s - 1));
   }
 
   async function submit() {
@@ -102,32 +111,48 @@ export function CreateEventWizard() {
           ? new Date(`${data.endsAtDate}T${data.endsAtTime}`).toISOString()
           : undefined;
 
-      const res = await fetch('/api/events', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: data.name.trim(),
-          description: data.description.trim() || undefined,
-          location: data.location.trim() || undefined,
-          imageUrl: data.imageUrl.trim() || undefined,
-          startsAt,
-          endsAt,
-          publishNow: data.isTemplate ? false : data.publishNow,
-          isTemplate: data.isTemplate,
-          templateName: data.isTemplate ? data.templateName.trim() : undefined,
-        }),
-      });
+      type EventResponse = { success: true; event: { id: string } } | { success: false; error: string };
 
-      type CreateEventResponse = { success: true; event: { id: string } } | { success: false; error: string };
+      const res = await fetch(
+        isEdit ? `/api/events/${(props as { eventId: string }).eventId}/details` : '/api/events',
+        {
+          method: isEdit ? 'PATCH' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+            isEdit
+              ? {
+                  name: data.name.trim(),
+                  description: data.description.trim() || undefined,
+                  location: data.location.trim() || undefined,
+                  imageUrl: data.imageUrl.trim() || undefined,
+                  startsAt,
+                  endsAt,
+                }
+              : {
+                  name: data.name.trim(),
+                  description: data.description.trim() || undefined,
+                  location: data.location.trim() || undefined,
+                  imageUrl: data.imageUrl.trim() || undefined,
+                  startsAt,
+                  endsAt,
+                  publishNow: data.isTemplate ? false : data.publishNow,
+                  isTemplate: data.isTemplate,
+                  templateName: data.isTemplate ? data.templateName.trim() : undefined,
+                }
+          ),
+        }
+      );
 
-      const json = (await res.json()) as CreateEventResponse;
+      const json = (await res.json()) as EventResponse;
       if (!res.ok || !json.success) {
         setSubmitError(!json.success ? json.error : 'Something went wrong.');
         return;
       }
 
-      // Templates redirect to the events page; real events go to their detail page
-      if (data.isTemplate) {
+      if (isEdit) {
+        router.push(`/admin/events/${(props as { eventId: string }).eventId}/edit`);
+        router.refresh();
+      } else if (data.isTemplate) {
         router.push('/events');
       } else {
         router.push(`/events/${json.event.id}`);
@@ -150,6 +175,7 @@ export function CreateEventWizard() {
   // Submit button label
   function submitLabel() {
     if (submitting) return 'Saving…';
+    if (isEdit) return 'Save Changes';
     if (data.isTemplate) return 'Save Template';
     return data.publishNow ? 'Create & Publish' : 'Create Draft';
   }
@@ -177,7 +203,7 @@ export function CreateEventWizard() {
             exit="exit"
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}>
             {step === 0 && <StepTemplateSelect onSelect={patch} />}
-            {step === 1 && <StepDetails data={data} errors={errors} onChange={patch} />}
+            {step === 1 && <StepDetails data={data} errors={errors} onChange={patch} isEdit={isEdit} />}
             {step === 2 && <StepTime data={data} errors={errors} onChange={patch} />}
             {step === 3 && <StepPublish data={data} onChange={patch} />}
           </motion.div>
