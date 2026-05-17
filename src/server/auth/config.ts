@@ -1,5 +1,4 @@
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { type Role } from 'generated/prisma';
 import { type DefaultSession, type NextAuthConfig } from 'next-auth';
 import { type Adapter } from 'next-auth/adapters';
 import DiscordProvider from 'next-auth/providers/discord';
@@ -7,31 +6,19 @@ import DiscordProvider from 'next-auth/providers/discord';
 import { env } from '@/env';
 import { db } from '@/server/db';
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      role: Role;
+      role: string;
     } & DefaultSession['user'];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    role?: string;
+  }
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
 export const authConfig = {
   providers: [
     DiscordProvider({
@@ -41,7 +28,9 @@ export const authConfig = {
   ],
   adapter: PrismaAdapter(db) as Adapter,
   callbacks: {
-    async session({ session }) {
+    session({ session, user }) {
+      session.user.id = user.id;
+      session.user.role = (user as { role?: string }).role ?? 'MEMBER';
       return session;
     },
   },
