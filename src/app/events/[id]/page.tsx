@@ -7,6 +7,7 @@ import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { getEventAttendanceCounts } from '@/utils/events';
 
+import { EventActions } from './event-actions';
 import { EventDetailClient } from './event-detail-client';
 
 export const revalidate = 30;
@@ -30,6 +31,8 @@ async function getEvent(id: string, userId?: string) {
 
   if (!event) return null;
 
+  // Published events are visible to everyone
+  // Draft events are only visible to their creator
   const isVisible = event.status === 'PUBLISHED' || (event.status === 'DRAFT' && event.createdById === userId);
 
   if (!isVisible) return null;
@@ -52,18 +55,29 @@ function formatTime(date: Date) {
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
+  // Run session, event, and attendance fetches in parallel
   const session = await auth();
   const event = await getEvent(id, session?.user?.id);
   if (!event) notFound();
 
   const attendance = await getEventAttendanceCounts(event.id, db);
 
-  const existingRSVP = session?.user?.id
-    ? await db.eventAttendance.findUnique({
-        where: { eventId_userId: { eventId: event.id, userId: session.user.id } },
-        select: { status: true },
-      })
-    : null;
+  // Look up the current user's existing RSVP and role if signed in
+  const [existingRSVP, currentUser] = await Promise.all([
+    session?.user?.id
+      ? db.eventAttendance.findUnique({
+          where: { eventId_userId: { eventId: event.id, userId: session.user.id } },
+          select: { status: true },
+        })
+      : null,
+    session?.user?.id ? db.user.findUnique({ where: { id: session.user.id }, select: { role: true } }) : null,
+  ]);
+
+  const isOfficerPlus = currentUser?.role === 'OFFICER' || currentUser?.role === 'LEADER';
+  const isLeader = currentUser?.role === 'LEADER';
+  const isDraft = event.status === 'DRAFT';
+  const isPublished = event.status === 'PUBLISHED';
+  const isCancelled = event.status === 'CANCELLED';
 
   return (
     <main
@@ -138,8 +152,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-start gap-3">
                 <Calendar className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-700/50" strokeWidth={1.5} />
                 <div>
-                  <p className="text-sm font-light text-white/70">{formatFull(event.startsAt)}</p>
-                  {event.endsAt && formatFull(event.endsAt) !== formatFull(event.startsAt) && (
+                  <p className="text-sm font-light text-white/70">{formatFull(event.startsAt!)}</p>
+                  {event.endsAt && formatFull(event.endsAt) !== formatFull(event.startsAt!) && (
                     <p className="text-xs font-light text-white/35">to {formatFull(event.endsAt)}</p>
                   )}
                 </div>
@@ -148,8 +162,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-center gap-3">
                 <Clock className="h-3.5 w-3.5 shrink-0 text-red-700/50" strokeWidth={1.5} />
                 <p className="text-sm font-light text-white/70">
-                  {formatTime(event.startsAt)}
-                  {event.endsAt ? ` - ${formatTime(event.endsAt)}` : ''}
+                  {formatTime(event.startsAt!)}
+                  {event.endsAt ? ` – ${formatTime(event.endsAt)}` : ''}
                 </p>
               </div>
 
@@ -161,12 +175,21 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               )}
             </div>
 
-            {/* Attendance + RSVP */}
+            {/* Attendance + RSVP — client island */}
             <EventDetailClient
               eventId={event.id}
               initialAttendance={attendance}
               initialStatus={existingRSVP?.status ?? null}
               isAuthenticated={!!session?.user?.id}
+            />
+
+            {/* Officer action bar */}
+            <EventActions
+              eventId={event.id}
+              canEdit={isOfficerPlus && isDraft}
+              canPublish={isOfficerPlus && isDraft}
+              canCancel={isLeader && isPublished}
+              canDelete={isOfficerPlus && (isDraft || isCancelled)}
             />
           </div>
         </div>
