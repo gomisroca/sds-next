@@ -153,13 +153,11 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
         animate={open ? { rotate: 45, y: 0 } : { rotate: 0, y: -6 }}
         transition={{ duration: 0.22 }}
       />
-
       <motion.span
         className="absolute h-px w-5 bg-white/50"
         animate={open ? { opacity: 0 } : { opacity: 1 }}
         transition={{ duration: 0.18 }}
       />
-
       <motion.span
         className="absolute h-px w-5 bg-white/50"
         animate={open ? { rotate: -45, y: 0 } : { rotate: 0, y: 6 }}
@@ -174,6 +172,9 @@ export default function NavBar() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const isOfficerPlus = session?.user?.role === 'OFFICER' || session?.user?.role === 'LEADER';
+  const isGuestOrSignedOut = !session?.user || session.user.role === 'GUEST';
 
   useEffect(() => {
     setMenuOpen(false);
@@ -242,24 +243,45 @@ export default function NavBar() {
                 </Link>
               );
             })}
-            {!session?.user ||
-              (session.user.role === 'GUEST' && (
-                <>
-                  <div className="mx-3 h-3.5 w-px bg-red-900/40" />
 
-                  <Link href="/apply">
-                    <motion.span
-                      className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}>
-                      Join
-                    </motion.span>
-                  </Link>
-                </>
-              ))}
+            {/* Join — guests and signed-out users only */}
+            {isGuestOrSignedOut && (
+              <>
+                <div className="mx-3 h-3.5 w-px bg-red-900/40" />
+                <Link href="/apply">
+                  <motion.span
+                    className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}>
+                    Join
+                  </motion.span>
+                </Link>
+              </>
+            )}
+
+            {/* Admin — officers and leaders only */}
+            {isOfficerPlus && (
+              <>
+                <div className="mx-3 h-3.5 w-px bg-red-900/40" />
+                <Link href="/admin" className="group relative px-4 py-1.5">
+                  {pathname.startsWith('/admin') && (
+                    <motion.div
+                      layoutId="nav-underline"
+                      className="absolute right-4 bottom-0 left-4 h-px bg-red-700"
+                      transition={{ type: 'spring', stiffness: 380, damping: 36 }}
+                    />
+                  )}
+                  <span
+                    className={`text-xs font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
+                      pathname.startsWith('/admin') ? 'text-white/85' : 'text-white/35 group-hover:text-white/65'
+                    }`}>
+                    Admin
+                  </span>
+                </Link>
+              </>
+            )}
 
             <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-
             <AuthButton />
           </div>
 
@@ -310,7 +332,9 @@ export default function NavBar() {
                           active ? 'text-white/85' : 'text-white/35 hover:text-white/65'
                         }`}>
                         <span
-                          className={`h-px w-4 transition-colors duration-200 ${active ? 'bg-red-700' : 'bg-red-900/40'}`}
+                          className={`h-px w-4 transition-colors duration-200 ${
+                            active ? 'bg-red-700' : 'bg-red-900/40'
+                          }`}
                         />
                         {link.label}
                       </Link>
@@ -320,18 +344,42 @@ export default function NavBar() {
 
                 <div className="my-3 h-px bg-red-900/20" />
 
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
-                  <Link
-                    href="/apply"
-                    className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
-                    Join Us
-                  </Link>
-                </motion.div>
+                {/* Join Us — guests and signed-out only */}
+                {isGuestOrSignedOut && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
+                    <Link
+                      href="/apply"
+                      className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
+                      Join Us
+                    </Link>
+                  </motion.div>
+                )}
 
-                {/* Auth at the bottom of the drawer */}
+                {/* Admin — officers and leaders only */}
+                {isOfficerPlus && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: (LINKS.length + 0.5) * 0.06, duration: 0.2 }}>
+                    <Link
+                      href="/admin"
+                      className={`flex items-center gap-4 py-3 text-sm font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
+                        pathname.startsWith('/admin') ? 'text-white/85' : 'text-white/35 hover:text-white/65'
+                      }`}>
+                      <span
+                        className={`h-px w-4 transition-colors duration-200 ${
+                          pathname.startsWith('/admin') ? 'bg-red-700' : 'bg-red-900/40'
+                        }`}
+                      />
+                      Admin
+                    </Link>
+                  </motion.div>
+                )}
+
+                {/* Auth */}
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
