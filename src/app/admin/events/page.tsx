@@ -14,7 +14,6 @@ async function getEvents() {
     select: {
       id: true,
       name: true,
-      templateName: true,
       description: true,
       location: true,
       imageUrl: true,
@@ -24,7 +23,7 @@ async function getEvents() {
   });
 }
 
-export default async function AdminTemplatesPage() {
+export default async function AdminEventsPage() {
   const events = await getEvents();
 
   return (
@@ -32,7 +31,7 @@ export default async function AdminTemplatesPage() {
       <div className="mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Event Templates</h1>
+          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Events</h1>
           <OrnamentalRule className="max-w-xs" />
           <p className="mt-6 text-sm font-light text-white/35">
             {events.length} event{events.length !== 1 ? 's' : ''}.

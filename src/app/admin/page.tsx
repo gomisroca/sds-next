@@ -5,6 +5,13 @@ import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 
 const CARDS = [
   {
+    href: '/admin/events',
+    icon: Calendar,
+    title: 'Events',
+    description: 'View and manage all events, including drafts.',
+    available: true,
+  },
+  {
     href: '/admin/templates',
     icon: FileText,
     title: 'Event Templates',
@@ -17,13 +24,6 @@ const CARDS = [
     title: 'Members',
     description: 'Manage member roles, profiles, and access.',
     available: false,
-  },
-  {
-    href: '/admin/events',
-    icon: Calendar,
-    title: 'Events',
-    description: 'View and manage all events, including drafts.',
-    available: true,
   },
   {
     href: '/admin/settings',
