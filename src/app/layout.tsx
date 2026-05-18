@@ -13,7 +13,7 @@ import { UploadThingRouter } from '@/app/api/uploadthing/core';
 import { auth } from '@/server/auth';
 
 import Footer from './components/ui/footer';
-import NavBar from './components/ui/nav-bar';
+import NavBarServer from './components/ui/nav-bar-server';
 
 export const metadata: Metadata = {
   title: 'SleepingDragons',
@@ -74,7 +74,7 @@ export default async function RootLayout({
             <UploadThingSSRPlugin routerConfig={extractRouterConfig(UploadThingRouter)} />
             <div id="modal-root" />
             {modal}
-            <NavBar />
+            <NavBarServer />
             {children}
             <Footer />
           </JotaiProvider>
