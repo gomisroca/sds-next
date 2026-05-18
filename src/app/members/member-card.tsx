@@ -85,14 +85,17 @@ export default function MemberCard({ member, index }: MemberCardProps) {
                 {/* Job + playstyle */}
                 <div className="flex flex-wrap items-center gap-2">
                   {/* Job badge */}
-                  <span
-                    className={`border px-2 py-0.5 text-[10px] font-light tracking-[0.2em] uppercase ${JOB_META[profile.job].color} border-current/20 ${JOB_META[profile.job].bg}`}>
-                    {JOB_META[profile.job].label}
-                  </span>
-                  {/* Job role */}
-                  <span className="text-[10px] font-light tracking-widest text-white/25 uppercase">
-                    {JOB_META[profile.job].role}
-                  </span>
+                  <div
+                    className={`flex items-center gap-2 border px-2 py-0.5 ${JOB_META[profile.job].bg} border-current/10`}>
+                    <span
+                      className={`text-[10px] font-light tracking-[0.2em] uppercase ${JOB_META[profile.job].color}`}>
+                      {JOB_META[profile.job].label}
+                    </span>
+                    {/* Job role */}
+                    <span className="text-[10px] font-light tracking-widest text-white/25 uppercase">
+                      {JOB_META[profile.job].role}
+                    </span>
+                  </div>
                   {/* Separator */}
                   <span className="text-white/15">·</span>
                   {/* Playstyle */}
