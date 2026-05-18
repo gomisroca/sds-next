@@ -28,7 +28,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   });
 
   if (!creator || (creator.role !== 'OFFICER' && creator.role !== 'LEADER')) {
-    return NextResponse.json({ error: 'Forbidden — officers and above only' }, { status: 403 });
+    return NextResponse.json({ error: 'Forbidden - officers and above only' }, { status: 403 });
   }
 
   const parsed = CreateProfileSchema.safeParse(await req.json());

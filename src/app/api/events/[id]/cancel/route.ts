@@ -18,7 +18,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
   });
 
   if (!user || user.role !== 'LEADER') {
-    return NextResponse.json({ error: 'Forbidden — only leaders can cancel published events' }, { status: 403 });
+    return NextResponse.json({ error: 'Forbidden - only leaders can cancel published events' }, { status: 403 });
   }
 
   const { id } = await params;

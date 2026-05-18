@@ -43,7 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Use PATCH /api/events/[id] for templates' }, { status: 400 });
   }
   if (event.status !== EventStatus.DRAFT) {
-    return NextResponse.json({ error: 'Only draft events can be edited — cancel the event first' }, { status: 409 });
+    return NextResponse.json({ error: 'Only draft events can be edited - cancel the event first' }, { status: 409 });
   }
 
   const parsed = UpdateEventDetailsSchema.safeParse(await req.json());

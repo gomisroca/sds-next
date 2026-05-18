@@ -41,7 +41,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const isLeader = editor?.role === 'LEADER';
 
   if (!isOwner && !isLeader) {
-    return NextResponse.json({ error: 'Forbidden — profile owner or leader only' }, { status: 403 });
+    return NextResponse.json({ error: 'Forbidden - profile owner or leader only' }, { status: 403 });
   }
 
   const parsed = UpdateProfileSchema.safeParse(await req.json());
