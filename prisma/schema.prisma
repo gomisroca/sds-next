@@ -276,3 +276,23 @@ model EventAttendance {
   @@unique([eventId, userId])
   @@map("event_attendances")
 }
+
+model FCSettings {
+  id String @id @default("default")
+
+  // Identity
+  fcName   String @default("Sleeping Dragons")
+  subtitle String @default("EU · Light · Phoenix")
+
+  // Homepage
+  welcomeTitle String @default("Welcome, Warrior of Light")
+  welcomeText  String @default("Sleeping Dragons is a friendly home for adventurers of all kinds — whether you're here to clear savage tier, tend your garden, or simply share a glass of Ul'dahn wine by the hearth. Pull up a chair.")
+
+  // Discord
+  discordInvite  String? // public invite link shown on the Apply page
+  eventChannelId String? // channel ID for bot event posts
+
+  updatedAt DateTime @updatedAt
+
+  @@map("fc_settings")
+}
