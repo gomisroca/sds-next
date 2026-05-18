@@ -13,7 +13,7 @@ export const NAV_ITEMS = [
   { href: '/admin/events', label: 'Events', icon: 'calendar' },
   { href: '/admin/templates', label: 'Event Templates', icon: 'fileText' },
   { href: '/admin/members', label: 'Members', icon: 'users' },
-  { href: '/admin/settings', label: 'Settings', icon: 'settings', soon: true },
+  { href: '/admin/settings', label: 'Settings', icon: 'settings' },
 ] as const;
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {

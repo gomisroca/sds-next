@@ -30,7 +30,7 @@ const CARDS = [
     icon: Settings,
     title: 'Settings',
     description: 'FC settings, Discord integration, and configuration.',
-    available: false,
+    available: true,
   },
 ];
 
