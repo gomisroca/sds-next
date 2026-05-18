@@ -168,7 +168,13 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
 }
 
 // ── Nav bar ───────────────────────────────────────────────────────────────────
-export default function NavBar() {
+
+interface NavBarProps {
+  fcName?: string;
+  subtitle?: string;
+}
+
+export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · Light · Phoenix' }: NavBarProps) {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -213,11 +219,9 @@ export default function NavBar() {
             <NavSigil />
             <div className="flex flex-col leading-none">
               <span className="text-sm font-extralight tracking-[0.18em] text-white/80 uppercase transition-colors duration-300 group-hover:text-white/95">
-                Sleeping Dragons
+                {fcName}
               </span>
-              <span className="text-[10px] font-light tracking-[0.25em] text-red-800/70 uppercase">
-                EU · Light · Phoenix
-              </span>
+              <span className="text-[10px] font-light tracking-[0.25em] text-red-800/70 uppercase">{subtitle}</span>
             </div>
           </Link>
 

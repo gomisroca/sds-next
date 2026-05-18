@@ -1,6 +1,7 @@
 import { EventStatus } from 'generated/prisma';
 
 import { db } from '@/server/db';
+import { getSettings } from '@/utils/settings';
 
 import { FeaturedEventCard } from './featured-card-event';
 import HomeHero from './home-hero';
@@ -27,7 +28,7 @@ async function getNextEvent() {
   });
 }
 
-// ── Info cards →PH ────────────────────────────────────────────────────────────────
+// ── Info cards ────────────────────────────────────────────────────────────────
 const INFO = [
   {
     icon: '⚔',
@@ -68,7 +69,7 @@ function InfoCards() {
 
 // ── Welcome section ───────────────────────────────────────────────────────────
 async function WelcomeSection() {
-  const event = await getNextEvent();
+  const [event, settings] = await Promise.all([getNextEvent(), getSettings()]);
 
   return (
     <section id="welcome" className="relative z-20 flex min-h-screen flex-col justify-center px-6 py-24">
@@ -76,16 +77,12 @@ async function WelcomeSection() {
         {/* Heading */}
         <div className="mb-10 text-center">
           <h2 className="mb-4 text-2xl font-light tracking-[0.15em] text-white/80 uppercase md:text-3xl">
-            Welcome, Warrior of Light
+            {settings.welcomeTitle}
           </h2>
-          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/45">
-            {/* →PH */}
-            Sleeping Dragons is a friendly home for adventurers of all kinds - whether you're here to clear savage tier,
-            tend your garden, or simply share a glass of Ul'dahn wine by the hearth. Pull up a chair.
-          </p>
+          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/45">{settings.welcomeText}</p>
         </div>
 
-        {/* Featured event */}
+        {/* Featured event - real data */}
         <FeaturedEventCard event={event} />
 
         {/* Info cards */}
