@@ -158,7 +158,7 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
         router.push(`/events/${json.event.id}`);
       }
     } catch {
-      setSubmitError('Network error — please check your connection and try again.');
+      setSubmitError('Network error - please check your connection and try again.');
     } finally {
       setSubmitting(false);
     }

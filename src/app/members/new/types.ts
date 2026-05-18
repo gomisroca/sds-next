@@ -1,14 +1,14 @@
 import type { Activity, Job, Playstyle } from 'generated/prisma';
 
 export interface ProfileFormData {
-  // Step 1 — identity
+  // Step 1 - identity
   name: string;
   bio: string;
-  // Step 2 — gameplay
+  // Step 2 - gameplay
   job: Job | '';
   playstyle: Playstyle | '';
   activities: Activity[];
-  // Step 3 — visuals
+  // Step 3 - visuals
   portrait: string;
   banner: string;
 }

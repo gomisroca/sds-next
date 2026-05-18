@@ -61,7 +61,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
             {/* Bottom fade */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#060404] via-[#060404]/30 to-transparent" />
 
-            {/* Role badge — overlaid on portrait */}
+            {/* Role badge - overlaid on portrait */}
             {member.role !== 'MEMBER' && (
               <div className="absolute top-3 right-3">
                 <span className={`text-[10px] font-light tracking-[0.2em] uppercase ${roleMeta.color}`}>

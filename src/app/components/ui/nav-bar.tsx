@@ -244,7 +244,7 @@ export default function NavBar() {
               );
             })}
 
-            {/* Join — guests and signed-out users only */}
+            {/* Join - guests and signed-out users only */}
             {isGuestOrSignedOut && (
               <>
                 <div className="mx-3 h-3.5 w-px bg-red-900/40" />
@@ -259,7 +259,7 @@ export default function NavBar() {
               </>
             )}
 
-            {/* Admin — officers and leaders only */}
+            {/* Admin - officers and leaders only */}
             {isOfficerPlus && (
               <>
                 <div className="mx-3 h-3.5 w-px bg-red-900/40" />
@@ -344,7 +344,7 @@ export default function NavBar() {
 
                 <div className="my-3 h-px bg-red-900/20" />
 
-                {/* Join Us — guests and signed-out only */}
+                {/* Join Us - guests and signed-out only */}
                 {isGuestOrSignedOut && (
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}
@@ -358,7 +358,7 @@ export default function NavBar() {
                   </motion.div>
                 )}
 
-                {/* Admin — officers and leaders only */}
+                {/* Admin - officers and leaders only */}
                 {isOfficerPlus && (
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}

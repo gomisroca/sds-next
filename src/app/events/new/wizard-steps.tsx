@@ -82,10 +82,10 @@ export function StepDetails({
             }}
           />
         )}
-        <p className="mt-1.5 text-xs font-light text-white/20">Optional — shown on the event card and detail page.</p>
+        <p className="mt-1.5 text-xs font-light text-white/20">Optional - shown on the event card and detail page.</p>
       </div>
 
-      {/* Template toggle — hidden in edit mode */}
+      {/* Template toggle - hidden in edit mode */}
       {!isEdit && (
         <div className="border border-red-900/20 bg-white/[0.02] p-4">
           <div className="flex items-center gap-3">

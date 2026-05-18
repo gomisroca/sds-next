@@ -334,7 +334,7 @@ export function StepVisuals({
 }) {
   return (
     <div className="flex flex-col gap-8">
-      <p className="text-sm font-light text-white/40">Both images are optional — you can always add them later.</p>
+      <p className="text-sm font-light text-white/40">Both images are optional - you can always add them later.</p>
 
       <ImageUploadField
         label="Portrait"

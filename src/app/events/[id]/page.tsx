@@ -175,7 +175,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               )}
             </div>
 
-            {/* Attendance + RSVP — client island */}
+            {/* Attendance + RSVP - client island */}
             <EventDetailClient
               eventId={event.id}
               initialAttendance={attendance}

@@ -111,7 +111,7 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
       router.push('/admin/templates');
       router.refresh();
     } catch {
-      setError('Network error — please check your connection.');
+      setError('Network error - please check your connection.');
     } finally {
       setSubmitting(false);
     }

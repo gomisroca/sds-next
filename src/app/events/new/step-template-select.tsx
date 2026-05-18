@@ -50,7 +50,7 @@ export function StepTemplateSelect({ onSelect }: StepTemplateSelectProps) {
       description: t.description ?? '',
       location: t.location ?? '',
       imageUrl: t.imageUrl ?? '',
-      // Dates are intentionally left blank — officer sets them
+      // Dates are intentionally left blank - officer sets them
       startsAtDate: '',
       endsAtDate: '',
       isTemplate: false,

@@ -139,7 +139,7 @@ export function ProfileWizard(props: ProfileWizardProps) {
       // Redirect to the member detail page for the profile's owner
       router.push(`/members/${json.profile.userId}`);
     } catch {
-      setSubmitError('Network error — please check your connection and try again.');
+      setSubmitError('Network error - please check your connection and try again.');
     } finally {
       setSubmitting(false);
     }

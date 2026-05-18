@@ -76,7 +76,7 @@ export default async function NewProfilePage({ searchParams }: { searchParams: P
     );
   }
 
-  // userId provided — load that user and show the wizard
+  // userId provided - load that user and show the wizard
   const targetUser = await db.user.findUnique({
     where: { id: userId },
     select: { id: true, name: true, role: true, profile: { select: { id: true } } },
