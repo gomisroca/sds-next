@@ -12,7 +12,7 @@ export interface FeaturedEvent {
   description: string | null;
   location: string | null;
   imageUrl: string | null;
-  startsAt: Date;
+  startsAt: Date | null;
   endsAt: Date | null;
   _count: { attendances: number };
 }
@@ -49,8 +49,8 @@ function NoEventCard() {
 export function FeaturedEventCard({ event }: { event: FeaturedEvent | null }) {
   if (!event) return <NoEventCard />;
 
-  const date = formatEventDate(event.startsAt);
-  const time = formatEventTime(event.startsAt);
+  const date = formatEventDate(event.startsAt!);
+  const time = formatEventTime(event.startsAt!);
   const endTime = event.endsAt ? formatEventTime(event.endsAt) : null;
 
   return (
