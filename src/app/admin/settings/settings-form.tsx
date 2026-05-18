@@ -187,7 +187,7 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
         <SectionDivider label="Discord" />
 
         <div>
-          <Label hint="Shown on the Apply page as a direct join link.">Discord Invite Link</Label>
+          <Label hint="Shown on the Join page as a direct join link.">Discord Invite Link</Label>
           <Input
             value={form.discordInvite ?? ''}
             onChange={(v) => patch({ discordInvite: v || null })}

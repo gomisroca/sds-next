@@ -256,7 +256,7 @@ export default function HomeHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 2.2 }}>
           <motion.a
-            href="/apply"
+            href="/join"
             className="border border-red-700/50 bg-red-950/20 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all duration-300 hover:border-red-600/70 hover:bg-red-900/30 hover:text-red-200"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}>

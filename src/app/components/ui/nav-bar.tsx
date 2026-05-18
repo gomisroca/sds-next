@@ -252,7 +252,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
             {isGuestOrSignedOut && (
               <>
                 <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-                <Link href="/apply">
+                <Link href="/join">
                   <motion.span
                     className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
                     whileHover={{ scale: 1.03 }}
@@ -355,7 +355,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
                     <Link
-                      href="/apply"
+                      href="/join"
                       className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
                       Join Us
                     </Link>
