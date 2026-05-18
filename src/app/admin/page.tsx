@@ -23,7 +23,7 @@ const CARDS = [
     icon: Users,
     title: 'Members',
     description: 'Manage member roles, profiles, and access.',
-    available: false,
+    available: true,
   },
   {
     href: '/admin/settings',
