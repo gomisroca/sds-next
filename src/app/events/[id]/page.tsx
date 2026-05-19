@@ -178,6 +178,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             {/* Attendance + RSVP - client island */}
             <EventDetailClient
               eventId={event.id}
+              startsAt={event.startsAt!}
               initialAttendance={attendance}
               initialStatus={existingRSVP?.status ?? null}
               isAuthenticated={!!session?.user?.id}

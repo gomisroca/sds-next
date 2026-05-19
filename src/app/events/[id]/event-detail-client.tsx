@@ -11,6 +11,7 @@ import { RSVPButtons } from './rsvp-buttons';
 
 interface EventDetailClientProps {
   eventId: string;
+  startsAt: Date;
   initialAttendance: AttendanceCounts;
   initialStatus: AttendanceStatus | null;
   isAuthenticated: boolean;
@@ -34,6 +35,7 @@ function deriveNextCounts(
 
 export function EventDetailClient({
   eventId,
+  startsAt,
   initialAttendance,
   initialStatus,
   isAuthenticated,
@@ -49,12 +51,12 @@ export function EventDetailClient({
   return (
     <div className="flex flex-col gap-4">
       <AttendanceCountsDisplay attendance={attendance} />
-
-      {isAuthenticated ? (
-        <RSVPButtons eventId={eventId} confirmedStatus={confirmedStatus} onSuccess={handleSuccess} />
-      ) : (
-        <SignInPrompt />
-      )}
+      {startsAt.getTime() > Date.now() &&
+        (isAuthenticated ? (
+          <RSVPButtons eventId={eventId} confirmedStatus={confirmedStatus} onSuccess={handleSuccess} />
+        ) : (
+          <SignInPrompt />
+        ))}
     </div>
   );
 }
