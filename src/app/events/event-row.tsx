@@ -10,7 +10,7 @@ interface EventRowProps {
     name: string;
     description: string | null;
     location: string | null;
-    startsAt: Date;
+    startsAt: Date | null;
     endsAt: Date | null;
     status: string;
     _count: { attendances: number };
@@ -27,8 +27,8 @@ function formatDay(date: Date) {
 }
 
 export default function EventRow({ event, index }: EventRowProps) {
-  const day = formatDay(event.startsAt);
-  const time = formatTime(event.startsAt);
+  const day = formatDay(event.startsAt!);
+  const time = formatTime(event.startsAt!);
   const endTime = event.endsAt ? formatTime(event.endsAt) : null;
 
   return (

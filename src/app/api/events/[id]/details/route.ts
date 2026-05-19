@@ -9,9 +9,9 @@ const UpdateEventDetailsSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(2000).optional(),
   location: z.string().max(200).optional(),
-  imageUrl: z.union([z.string().url(), z.literal(''), z.undefined()]),
-  startsAt: z.string().datetime(),
-  endsAt: z.union([z.string().datetime(), z.undefined()]),
+  imageUrl: z.union([z.url(), z.literal(''), z.undefined()]),
+  startsAt: z.iso.datetime(),
+  endsAt: z.union([z.iso.datetime(), z.undefined()]),
 });
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
