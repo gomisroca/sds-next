@@ -2,11 +2,12 @@ import { EventStatus } from 'generated/prisma';
 import { Calendar, Pencil } from 'lucide-react';
 import Link from 'next/link';
 
+import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 
-import OrnamentalRule from '../components/ui/ornamental-rule';
 import EventRow from './event-row';
+import PastEvents from './past-events';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,11 +15,7 @@ async function getEvents(userId?: string) {
   return db.event.findMany({
     where: {
       startsAt: { gte: new Date() },
-      OR: [
-        { status: EventStatus.PUBLISHED },
-        // Show the current user's own drafts so they can preview before publishing
-        ...(userId ? [{ status: EventStatus.DRAFT, createdById: userId }] : []),
-      ],
+      OR: [{ status: EventStatus.PUBLISHED }, ...(userId ? [{ status: EventStatus.DRAFT, createdById: userId }] : [])],
     },
     orderBy: { startsAt: 'asc' },
     select: {
@@ -67,7 +64,7 @@ export default async function EventsPage() {
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/70 uppercase">Sleeping Dragons</p>
           <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/85 uppercase md:text-5xl">Events</h1>
           <OrnamentalRule className="max-w-xs" />
-          <div className="flex gap-2">
+          <div className="flex justify-between">
             <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/40">
               Upcoming gatherings, raids, and social nights for the Free Company. All times shown in your local
               timezone.
@@ -85,16 +82,22 @@ export default async function EventsPage() {
 
         {/* Schedule */}
         {events.length === 0 ? <EmptyState /> : <EventSchedule events={events} />}
+
+        {/* Past events — client component, loads on mount */}
+        <PastEvents />
       </div>
     </main>
   );
 }
 
+// ── Schedule grouped by month ─────────────────────────────────────────────────
+
 type EventRow_Event = Awaited<ReturnType<typeof getEvents>>[number];
 
 function EventSchedule({ events }: { events: EventRow_Event[] }) {
+  // Group events by "Month Year"
   const groups = events.reduce<Record<string, EventRow_Event[]>>((acc, event) => {
-    const key = event.startsAt.toLocaleString('en-GB', {
+    const key = event.startsAt!.toLocaleString('en-GB', {
       month: 'long',
       year: 'numeric',
     });
@@ -125,12 +128,13 @@ function EventSchedule({ events }: { events: EventRow_Event[] }) {
 }
 
 // ── Empty state ───────────────────────────────────────────────────────────────
+
 function EmptyState() {
   return (
     <div className="flex flex-col items-center gap-4 py-24 text-center">
       <Calendar className="h-8 w-8 text-red-900/40" strokeWidth={1} />
       <p className="text-sm font-light tracking-widest text-white/25 uppercase">No upcoming events</p>
-      <p className="text-xs font-light text-white/20">Check back soon - we post new events regularly.</p>
+      <p className="text-xs font-light text-white/20">Check back soon — officers post new events regularly.</p>
     </div>
   );
 }

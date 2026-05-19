@@ -12,8 +12,8 @@ const CreateEventSchema = z.object({
   description: z.string().max(2000).optional(),
   location: z.string().max(200).optional(),
   imageUrl: z.url().optional(),
-  startsAt: z.iso.datetime().optional(), // optional when saving as template
-  endsAt: z.iso.datetime().optional(),
+  startsAt: z.union([z.iso.datetime(), z.undefined()]),
+  endsAt: z.union([z.iso.datetime(), z.undefined()]),
   publishNow: z.boolean().default(false),
   isTemplate: z.boolean().default(false),
   templateName: z.string().min(1).max(100).optional(),
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Forbidden: Only members can create events' }, { status: 403 });
   }
   const parsed = CreateEventSchema.safeParse(await req.json());
-  console.log(parsed);
+
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
@@ -132,10 +132,48 @@ export async function POST(req: NextRequest): Promise<Response> {
 }
 
 // ── GET /api/events ───────────────────────────────────────────────────────────
-export async function GET(): Promise<Response> {
+export async function GET(req: NextRequest): Promise<Response> {
+  const { searchParams } = new URL(req.url);
+  const past = searchParams.get('past') === 'true';
+  const cursor = searchParams.get('cursor') ?? undefined;
+  const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 50);
+
+  if (past) {
+    const events = await db.event.findMany({
+      where: {
+        status: EventStatus.PUBLISHED,
+        isTemplate: false,
+        startsAt: { lt: new Date() },
+      },
+      orderBy: { startsAt: 'desc' },
+      take: limit + 1,
+      ...(cursor && {
+        cursor: { id: cursor },
+        skip: 1,
+      }),
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        location: true,
+        imageUrl: true,
+        startsAt: true,
+        endsAt: true,
+        _count: { select: { attendances: true } },
+      },
+    });
+
+    const hasMore = events.length > limit;
+    const page = hasMore ? events.slice(0, limit) : events;
+    const nextCursor = hasMore ? page[page.length - 1]?.id : null;
+
+    return NextResponse.json({ events: page, nextCursor, hasMore });
+  }
+
   const events = await db.event.findMany({
     where: {
       status: EventStatus.PUBLISHED,
+      isTemplate: false,
       startsAt: { gte: new Date() },
     },
     orderBy: { startsAt: 'asc' },
