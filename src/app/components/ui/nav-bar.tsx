@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const LINKS = [
   { href: '/', label: 'Home' },
@@ -44,39 +44,154 @@ function NavSigil() {
   );
 }
 
-// ── Auth button ───────────────────────────────────────────────────────────────
-function AuthButton() {
-  const { data: session, status } = useSession();
+// ── Discord icon ─────────────────────────────────
+function DiscordIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3 w-3 fill-current" aria-hidden>
+      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.02.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+    </svg>
+  );
+}
 
-  if (status === 'loading') {
-    return <div className="h-6 w-20 animate-pulse rounded-sm bg-red-900/20" />;
+// ── User dropdown ─────────────────────────────────────────────────────────────
+interface ProfileInfo {
+  userId: string;
+  profileId: string | null;
+}
+
+type ProfileResponse = { userId: string; profileId: string | null } | { error: string };
+
+function UserDropdown({
+  session,
+  isOfficerPlus,
+}: {
+  session: NonNullable<ReturnType<typeof useSession>['data']>;
+  isOfficerPlus: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    fetch('/api/me/profile')
+      .then((r) => r.json())
+      .then((data: ProfileResponse) => {
+        if ('userId' in data) setProfileInfo(data);
+      })
+      .catch(() => null);
+  }, []);
+
+  function handleMouseEnter() {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setOpen(true);
   }
 
-  if (session?.user) {
-    return (
-      <motion.button
-        onClick={() => signOut()}
-        className="group flex cursor-pointer items-center gap-2 border border-transparent px-2 py-1 text-xs font-light tracking-[0.15em] text-white/40 uppercase transition-all duration-200 hover:border-red-900/30 hover:text-white/60"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}>
-        {session.user.image ? (
+  function handleMouseLeave() {
+    timerRef.current = setTimeout(() => setOpen(false), 120);
+  }
+
+  const user = session.user;
+
+  return (
+    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      {/* Trigger */}
+      <button
+        type="button"
+        className="flex cursor-pointer items-center gap-2 border border-transparent px-2 py-1 text-xs font-light tracking-[0.15em] text-white/40 uppercase transition-all duration-200 hover:border-red-900/30 hover:text-white/60">
+        {user.image ? (
           <Image
-            src={session.user.image}
-            alt={session.user.name ?? 'Avatar'}
+            src={user.image}
+            alt={user.name ?? 'Avatar'}
             width={22}
             height={22}
             className="rounded-full ring-1 ring-red-900/40"
           />
         ) : (
           <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400/80 ring-1 ring-red-900/40">
-            {session.user.name?.[0]?.toUpperCase() ?? '?'}
+            {user.name?.[0]?.toUpperCase() ?? '?'}
           </span>
         )}
-        <span className="hidden sm:inline">{session.user.name?.split(' ')[0]}</span>
-        <span className="text-red-900/50 transition-colors group-hover:text-red-700/70">·</span>
-        <span className="text-white/25 transition-colors group-hover:text-white/50">Sign out</span>
-      </motion.button>
-    );
+        <span className="hidden sm:inline">{user.name?.split(' ')[0]}</span>
+        <span className="text-white/20 transition-colors">▾</span>
+      </button>
+
+      {/* Dropdown panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="absolute top-full right-0 z-50 mt-1 w-48 border border-red-900/25 bg-[#080202]/95 py-1 shadow-lg"
+            style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+            initial={{ opacity: 0, y: -4, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.97 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}>
+            {/* User info header */}
+            <div className="border-b border-red-900/20 px-4 py-3">
+              <p className="truncate text-xs font-light text-white/60">{user.name}</p>
+              <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/20 uppercase">
+                {user.role ?? 'Member'}
+              </p>
+            </div>
+
+            {/* Links */}
+            <div className="py-1">
+              {profileInfo?.userId && <DropdownLink href={`/members/${profileInfo.userId}`}>View Profile</DropdownLink>}
+
+              {profileInfo?.profileId && (
+                <DropdownLink href={`/profile/${profileInfo.profileId}/edit`}>Edit Profile</DropdownLink>
+              )}
+
+              {!profileInfo?.profileId && profileInfo?.userId && (
+                <DropdownLink href={`/profile/new?userId=${profileInfo.userId}`} muted>
+                  Set up Profile
+                </DropdownLink>
+              )}
+
+              {isOfficerPlus && (
+                <>
+                  <div className="my-1 h-px bg-red-900/15" />
+                  <DropdownLink href="/admin">Admin Panel</DropdownLink>
+                </>
+              )}
+
+              <div className="my-1 h-px bg-red-900/15" />
+
+              <button
+                type="button"
+                onClick={() => signOut()}
+                className="flex w-full cursor-pointer items-center px-4 py-2 text-xs font-light tracking-[0.2em] text-white/30 uppercase transition-colors hover:bg-red-950/20 hover:text-white/55">
+                Sign Out
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function DropdownLink({ href, children, muted }: { href: string; children: React.ReactNode; muted?: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`flex items-center px-4 py-2 text-xs font-light tracking-[0.2em] uppercase transition-colors hover:bg-red-950/20 ${
+        muted ? 'text-white/20 hover:text-white/40' : 'text-white/40 hover:text-white/65'
+      }`}>
+      {children}
+    </Link>
+  );
+}
+
+// ── Auth button ───────────────────────────────────────────────────────────────
+function AuthButton({ isOfficerPlus }: { isOfficerPlus: boolean }) {
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return <div className="h-6 w-20 animate-pulse rounded-sm bg-red-900/20" />;
+  }
+
+  if (session) {
+    return <UserDropdown session={session} isOfficerPlus={isOfficerPlus} />;
   }
 
   return (
@@ -85,24 +200,36 @@ function AuthButton() {
       className="flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}>
-      <svg viewBox="0 0 24 24" className="h-3 w-3 fill-current" aria-hidden>
-        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.02.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
-      </svg>
+      <DiscordIcon />
       Sign in
     </motion.button>
   );
 }
 
 // ── Mobile auth row ───────────────────────────────────────────────────────────
-function MobileAuthRow() {
+function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
   const { data: session, status } = useSession();
+  const [profileInfo, setProfileInfo] = useState<{ userId: string; profileId: string | null } | null>(null);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    fetch('/api/me/profile')
+      .then((r) => r.json())
+      .then((data: { userId: string; profileId: string | null } | { error: string }) => {
+        if ('userId' in data) setProfileInfo(data);
+      })
+      .catch(() => null);
+  }, [session?.user?.id]);
 
   if (status === 'loading') return null;
 
   if (session?.user) {
     return (
-      <div className="mt-1 flex items-center justify-between border-t border-red-900/20 pt-4">
-        <div className="flex items-center gap-2.5">
+      <div className="mt-1 flex flex-col gap-1 border-t border-red-900/20 pt-4">
+        {/* User info */}
+        <div className="mb-2 flex items-center gap-2.5 px-1">
           {session.user.image ? (
             <Image
               src={session.user.image}
@@ -116,12 +243,57 @@ function MobileAuthRow() {
               {session.user.name?.[0]?.toUpperCase() ?? '?'}
             </span>
           )}
-          <span className="text-sm font-light tracking-wide text-white/50">{session.user.name}</span>
+          <span className="text-sm font-light text-white/50">{session.user.name}</span>
         </div>
+
+        {profileInfo?.userId && (
+          <Link
+            href={`/members/${profileInfo.userId}`}
+            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/35 uppercase transition-colors hover:text-white/65">
+            <span className="h-px w-4 bg-red-900/40" />
+            View Profile
+          </Link>
+        )}
+        {profileInfo?.profileId && (
+          <Link
+            href={`/profile/${profileInfo.profileId}/edit`}
+            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/35 uppercase transition-colors hover:text-white/65">
+            <span className="h-px w-4 bg-red-900/40" />
+            Edit Profile
+          </Link>
+        )}
+        {!profileInfo?.profileId && profileInfo?.userId && (
+          <Link
+            href={`/profile/new?userId=${profileInfo.userId}`}
+            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/20 uppercase transition-colors hover:text-white/45">
+            <span className="h-px w-4 bg-red-900/40" />
+            Set up Profile
+          </Link>
+        )}
+        {isOfficerPlus && (
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: (LINKS.length + 0.5) * 0.06, duration: 0.2 }}>
+            <Link
+              href="/admin"
+              className={`flex items-center gap-4 py-3 text-sm font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
+                pathname.startsWith('/admin') ? 'text-white/85' : 'text-white/35 hover:text-white/65'
+              }`}>
+              <span
+                className={`h-px w-4 transition-colors duration-200 ${
+                  pathname.startsWith('/admin') ? 'bg-red-700' : 'bg-red-900/40'
+                }`}
+              />
+              Admin
+            </Link>
+          </motion.div>
+        )}
         <button
           onClick={() => signOut()}
-          className="text-xs font-light tracking-[0.2em] text-white/25 uppercase transition-colors hover:text-white/50">
-          Sign out
+          className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/25 uppercase transition-colors hover:text-white/50">
+          <span className="h-px w-4 bg-red-900/40" />
+          Sign Out
         </button>
       </div>
     );
@@ -132,9 +304,7 @@ function MobileAuthRow() {
       <button
         onClick={() => signIn('discord')}
         className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-red-400/70 uppercase transition-colors hover:text-red-300">
-        <svg viewBox="0 0 24 24" className="h-3 w-3 fill-current" aria-hidden>
-          <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.02.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
-        </svg>
+        <DiscordIcon />
         Sign in with Discord
       </button>
     </div>
@@ -185,6 +355,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => {
@@ -248,11 +419,11 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
               );
             })}
 
-            {/* Join - guests and signed-out users only */}
+            {/* Join — guests and signed-out users only */}
             {isGuestOrSignedOut && (
               <>
                 <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-                <Link href="/join">
+                <Link href="/apply">
                   <motion.span
                     className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
                     whileHover={{ scale: 1.03 }}
@@ -263,35 +434,12 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
               </>
             )}
 
-            {/* Admin - officers and leaders only */}
-            {isOfficerPlus && (
-              <>
-                <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-                <Link href="/admin" className="group relative px-4 py-1.5">
-                  {pathname.startsWith('/admin') && (
-                    <motion.div
-                      layoutId="nav-underline"
-                      className="absolute right-4 bottom-0 left-4 h-px bg-red-700"
-                      transition={{ type: 'spring', stiffness: 380, damping: 36 }}
-                    />
-                  )}
-                  <span
-                    className={`text-xs font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                      pathname.startsWith('/admin') ? 'text-white/85' : 'text-white/35 group-hover:text-white/65'
-                    }`}>
-                    Admin
-                  </span>
-                </Link>
-              </>
-            )}
-
             <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-            <AuthButton />
+            <AuthButton isOfficerPlus={isOfficerPlus} />
           </div>
 
           {/* Mobile: auth + hamburger */}
           <div className="flex items-center gap-3 md:hidden">
-            <AuthButton />
             <Hamburger open={menuOpen} onClick={() => setMenuOpen((v) => !v)} />
           </div>
         </nav>
@@ -348,37 +496,16 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
 
                 <div className="my-3 h-px bg-red-900/20" />
 
-                {/* Join Us - guests and signed-out only */}
+                {/* Join Us — guests and signed-out only */}
                 {isGuestOrSignedOut && (
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
                     <Link
-                      href="/join"
+                      href="/apply"
                       className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
                       Join Us
-                    </Link>
-                  </motion.div>
-                )}
-
-                {/* Admin - officers and leaders only */}
-                {isOfficerPlus && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: (LINKS.length + 0.5) * 0.06, duration: 0.2 }}>
-                    <Link
-                      href="/admin"
-                      className={`flex items-center gap-4 py-3 text-sm font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                        pathname.startsWith('/admin') ? 'text-white/85' : 'text-white/35 hover:text-white/65'
-                      }`}>
-                      <span
-                        className={`h-px w-4 transition-colors duration-200 ${
-                          pathname.startsWith('/admin') ? 'bg-red-700' : 'bg-red-900/40'
-                        }`}
-                      />
-                      Admin
                     </Link>
                   </motion.div>
                 )}
@@ -388,7 +515,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: (LINKS.length + 1) * 0.06, duration: 0.2 }}>
-                  <MobileAuthRow />
+                  <MobileAuthRow isOfficerPlus={isOfficerPlus} />
                 </motion.div>
               </div>
             </motion.div>
