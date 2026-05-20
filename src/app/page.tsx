@@ -3,15 +3,16 @@ import { EventStatus } from 'generated/prisma';
 import { db } from '@/server/db';
 import { getSettings } from '@/utils/settings';
 
-import { FeaturedEventCard } from './featured-card-event';
+import EventCarousel from './event-carousel';
 import HomeHero from './home-hero';
 
 export const revalidate = 60;
 
-async function getNextEvent() {
-  return db.event.findFirst({
+async function getUpcomingEvents() {
+  return db.event.findMany({
     where: {
       status: EventStatus.PUBLISHED,
+      isTemplate: false,
       startsAt: { gte: new Date() },
     },
     orderBy: { startsAt: 'asc' },
@@ -33,12 +34,12 @@ const INFO = [
   {
     icon: '⚔',
     title: 'Adventure Together',
-    body: "From casual levelling runs to savage raids, we do it as a group. No elitism, no pressure - just a crew that has each other's backs in every corner of Eorzea.",
+    body: "From casual levelling dungeons to savage raids, we do it as a group. No elitism, no pressure - just a group that has each other's backs in every corner of Eorzea.",
   },
   {
     icon: '🏠',
     title: 'A Place to Call Home',
-    body: 'Our estate in the Goblet is always open. Pop in to use the workshop, hang out in the garden, or just have somewhere warm to log in to at the end of a long day.',
+    body: 'Our estate in Shirogane is always open. Pop in to use the workshop, hang out in the garden, or just have somewhere warm to log in to at the end of a long day.',
   },
   {
     icon: '🐉',
@@ -69,7 +70,7 @@ function InfoCards() {
 
 // ── Welcome section ───────────────────────────────────────────────────────────
 async function WelcomeSection() {
-  const [event, settings] = await Promise.all([getNextEvent(), getSettings()]);
+  const [events, settings] = await Promise.all([getUpcomingEvents(), getSettings()]);
 
   return (
     <section id="welcome" className="relative z-20 flex min-h-screen flex-col justify-center px-6 py-24">
@@ -82,8 +83,8 @@ async function WelcomeSection() {
           <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/45">{settings.welcomeText}</p>
         </div>
 
-        {/* Featured event - real data */}
-        <FeaturedEventCard event={event} />
+        {/* Featured events carousel */}
+        <EventCarousel events={events} />
 
         {/* Info cards */}
         <InfoCards />
