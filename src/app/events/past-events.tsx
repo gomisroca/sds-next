@@ -1,9 +1,10 @@
+// src/app/events/_components/past-events.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import { Calendar, Loader2, MapPin, Users } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface PastEvent {
   id: string;
@@ -11,7 +12,7 @@ interface PastEvent {
   description: string | null;
   location: string | null;
   imageUrl: string | null;
-  startsAt: string;
+  startsAt: string; // ISO string from JSON
   endsAt: string | null;
   _count: { attendances: number };
 }
@@ -83,12 +84,13 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
 }
 
 // ── Past events section ───────────────────────────────────────────────────────
-export default function PastEvents() {
+export default function PastEvents({ upcomingIds = [] }: { upcomingIds?: string[] }) {
   const [events, setEvents] = useState<PastEvent[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [initialLoaded, setInitialLoaded] = useState(false);
+  const fetchedRef = useRef(false);
 
   async function loadMore(currentCursor: string | null = null) {
     setLoading(true);
@@ -101,7 +103,8 @@ export default function PastEvents() {
       const res = await fetch(url.toString());
       const data = (await res.json()) as PastEventsResponse;
 
-      setEvents((prev) => [...prev, ...data.events]);
+      const filtered = data.events.filter((e) => !upcomingIds.includes(e.id));
+      setEvents((prev) => [...prev, ...filtered]);
       setCursor(data.nextCursor);
       setHasMore(data.hasMore);
     } catch (err) {
@@ -112,14 +115,14 @@ export default function PastEvents() {
     }
   }
 
-  // Load first batch on mount
   useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
     void loadMore();
   }, []);
 
   if (initialLoaded && events.length === 0) return null;
 
-  // Group by "Month Year"
   const groups = events.reduce<Record<string, PastEvent[]>>((acc, event) => {
     const key = new Date(event.startsAt).toLocaleString('en-GB', {
       month: 'long',

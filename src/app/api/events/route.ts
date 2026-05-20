@@ -139,11 +139,13 @@ export async function GET(req: NextRequest): Promise<Response> {
   const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 50);
 
   if (past) {
+    const cutoff = new Date(Date.now() - 5 * 60 * 1000);
+
     const events = await db.event.findMany({
       where: {
         status: EventStatus.PUBLISHED,
         isTemplate: false,
-        startsAt: { lt: new Date() },
+        startsAt: { lt: cutoff },
       },
       orderBy: { startsAt: 'desc' },
       take: limit + 1,
