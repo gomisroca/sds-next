@@ -3,6 +3,9 @@ import 'dotenv/config';
 import { Client, GatewayIntentBits } from 'discord.js';
 import express from 'express';
 
+import { registerInteractionHandler } from './discord.js';
+import { registerRoutes } from './routes.js';
+
 // ── Env validation ────────────────────────────────────────────────────────────
 const { DISCORD_BOT_TOKEN, BOT_SECRET, FRONTEND_URL, PORT = '3001' } = process.env;
 
@@ -20,9 +23,13 @@ client.once('ready', (c) => {
   console.log(`🤖 Logged in as ${c.user.tag}`);
 });
 
+registerInteractionHandler(client, FRONTEND_URL, BOT_SECRET);
+
 // ── Express app ───────────────────────────────────────────────────────────────
 const app = express();
 app.use(express.json());
+
+registerRoutes(app, client, BOT_SECRET);
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 app.listen(parseInt(PORT, 10), '0.0.0.0', () => {
