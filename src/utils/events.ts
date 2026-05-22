@@ -4,12 +4,10 @@ import type { PrismaClient } from 'generated/prisma';
 export const RATE_LIMIT_MS = 5_000;
 
 // ── Types ────────────────────────────────────────────────────────────────────
-
 export interface AttendanceCounts {
   attending: number;
   notAttending: number;
   maybe: number;
-  // Names for the embed fields (capped to avoid huge embeds)
   attendingNames: string[];
   maybeNames: string[];
 }
@@ -19,7 +17,7 @@ export interface EventForEmbed {
   name: string;
   description: string | null;
   location: string | null;
-  startsAt: Date | null;
+  startsAt: Date;
   endsAt: Date | null;
   createdByName: string | null;
   attendance: AttendanceCounts;
@@ -82,7 +80,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
   const fields = [
     {
       name: '📅 Starts',
-      value: formatDate(event.startsAt!),
+      value: formatDate(event.startsAt),
       inline: true,
     },
     ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDate(event.endsAt), inline: true }] : []),
@@ -108,7 +106,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
   return {
     title: event.name,
     description: event.description ?? undefined,
-    color: 0x8b1a00, // deep crimson
+    color: 0x8b1a00,
     fields,
     footer: {
       text: `Created by ${event.createdByName ?? 'Unknown'} · Sleeping Dragons FC`,
@@ -117,7 +115,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
   };
 }
 
-// ── Bot communication →PH ───────────────────────────
+// ── Bot communication ─────────────────────────────────────────────────────────
 export interface BotPostResult {
   channelId: string;
   messageId: string;
@@ -125,31 +123,51 @@ export interface BotPostResult {
 
 /**
  * Ask the bot to post a new event embed in the configured channel.
- * Returns the channelId + messageId to store on the Event row.
- * →PH
  */
-export async function postEventToDiscord(_event: EventForEmbed): Promise<BotPostResult | null> {
-  // TODO
-  // const { env } = await import("@/env");
-  // const res = await fetch(`${env.BOT_URL}/post-event`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "x-bot-secret": env.BOT_SECRET,
-  //   },
-  //   body: JSON.stringify({ embed: renderEventEmbed(_event), eventId: _event.id }),
-  // });
-  // if (!res.ok) return null;
-  // return res.json() as Promise<BotPostResult>;
+export async function postEventToDiscord(event: EventForEmbed): Promise<BotPostResult | null> {
+  const { env } = await import('@/env');
+  const { getSettings } = await import('@/utils/settings');
 
-  console.warn('[postEventToDiscord] Bot not configured - skipping Discord post');
-  return null;
+  const settings = await getSettings();
+  const channelId = settings.eventChannelId;
+
+  if (!channelId) {
+    // eslint-disable-next-line no-console
+    console.warn('[postEventToDiscord] No eventChannelId configured in settings - skipping');
+    return null;
+  }
+
+  try {
+    const res = await fetch(`${env.BOT_URL}/post-event`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-bot-secret': env.BOT_SECRET,
+      },
+      body: JSON.stringify({
+        channelId,
+        embed: renderEventEmbed(event),
+        eventId: event.id,
+        eventStartTime: event.startsAt.toISOString(),
+      }),
+    });
+
+    if (!res.ok) {
+      // eslint-disable-next-line no-console
+      console.error('[postEventToDiscord] Bot returned', res.status, await res.text());
+      return null;
+    }
+
+    return res.json() as Promise<BotPostResult>;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('[postEventToDiscord] Network error:', err);
+    return null;
+  }
 }
 
 /**
  * Ask the bot to update an existing embed after an RSVP change.
- *
- * →PH
  */
 export async function updateEventOnDiscord(args: {
   channelId: string;
@@ -158,16 +176,27 @@ export async function updateEventOnDiscord(args: {
   eventStartTime: Date;
   embed: object;
 }): Promise<void> {
-  // TODO
-  // const { env } = await import("@/env");
-  // await fetch(`${env.BOT_URL}/update-event`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "x-bot-secret": env.BOT_SECRET,
-  //   },
-  //   body: JSON.stringify(args),
-  // });
+  const { env } = await import('@/env');
 
-  console.warn('[updateEventOnDiscord] Bot not configured - skipping Discord update', args.eventId);
+  try {
+    const res = await fetch(`${env.BOT_URL}/update-event`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-bot-secret': env.BOT_SECRET,
+      },
+      body: JSON.stringify({
+        ...args,
+        eventStartTime: args.eventStartTime.toISOString(),
+      }),
+    });
+
+    if (!res.ok) {
+      // eslint-disable-next-line no-console
+      console.error('[updateEventOnDiscord] Bot returned', res.status, await res.text());
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('[updateEventOnDiscord] Network error:', err);
+  }
 }
