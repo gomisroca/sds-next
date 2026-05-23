@@ -9,6 +9,7 @@ export interface DiscordEmbed {
   title?: string;
   description?: string;
   color?: number;
+  image?: { url: string };
   fields?: EmbedField[];
   footer?: { text: string };
   timestamp?: string;

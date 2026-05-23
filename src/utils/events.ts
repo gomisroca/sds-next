@@ -17,6 +17,7 @@ export interface EventForEmbed {
   name: string;
   description: string | null;
   location: string | null;
+  imageUrl: string | null;
   startsAt: Date;
   endsAt: Date | null;
   createdByName: string | null;
@@ -107,9 +108,10 @@ export function renderEventEmbed(event: EventForEmbed): object {
     title: event.name,
     description: event.description ?? undefined,
     color: 0x8b1a00,
+    ...(event.imageUrl ? { image: { url: event.imageUrl } } : {}),
     fields,
     footer: {
-      text: `Created by ${event.createdByName ?? 'Unknown'} · Sleeping Dragons FC`,
+      text: `Created by ${event.createdByName ?? 'Unknown'} · Sleeping Dragons`,
     },
     timestamp: new Date().toISOString(),
   };

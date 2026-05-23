@@ -36,6 +36,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       name: true,
       description: true,
       location: true,
+      imageUrl: true,
       startsAt: true,
       endsAt: true,
       status: true,
@@ -94,7 +95,8 @@ export async function POST(req: NextRequest): Promise<Response> {
     name: event.name,
     description: event.description,
     location: event.location,
-    startsAt: event.startsAt,
+    imageUrl: event.imageUrl,
+    startsAt: event.startsAt!,
     endsAt: event.endsAt,
     createdByName: event.createdBy.name,
     attendance,
@@ -107,7 +109,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       channelId: event.discordChannelId,
       messageId: event.discordMessageId,
       eventId: event.id,
-      eventStartTime: event.startsAt,
+      eventStartTime: event.startsAt!,
       embed,
     });
   }
