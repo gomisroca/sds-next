@@ -1,0 +1,3 @@
+# The bot is deployed separately to Fly.io — exclude it from Vercel builds
+
+bot/
