@@ -56,3 +56,6 @@ storybook-static
 node_modules/
 /blob-report/
 /playwright/.cache/
+
+#bot
+bot/dist
