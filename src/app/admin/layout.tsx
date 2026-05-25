@@ -8,7 +8,7 @@ import { db } from '@/server/db';
 
 import AdminNavItem from './admin-nav-item';
 
-export const NAV_ITEMS = [
+const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: 'dashboard', exact: true },
   { href: '/admin/events', label: 'Events', icon: 'calendar' },
   { href: '/admin/templates', label: 'Event Templates', icon: 'fileText' },
