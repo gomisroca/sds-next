@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar, Clock, MapPin } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, MapPin, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -78,6 +78,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const isDraft = event.status === 'DRAFT';
   const isPublished = event.status === 'PUBLISHED';
   const isCancelled = event.status === 'CANCELLED';
+  const isPast = isPublished && event.startsAt !== null && new Date(event.startsAt) < new Date();
 
   return (
     <main
@@ -111,9 +112,21 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           All Events
         </Link>
 
+        {/* Cancelled banner */}
+        {isCancelled && (
+          <div className="mb-8 flex items-center gap-3 border border-yellow-900/40 bg-yellow-950/20 px-5 py-4">
+            <XCircle className="h-4 w-4 shrink-0 text-yellow-600/70" strokeWidth={1.5} />
+            <div>
+              <p className="text-sm font-light text-yellow-500/80">This event has been cancelled.</p>
+              <p className="text-xs font-light text-yellow-900/60">It will no longer take place as scheduled.</p>
+            </div>
+          </div>
+        )}
+
         {/* Banner */}
         {event.imageUrl && (
-          <div className="relative mb-10 h-56 w-full overflow-hidden rounded-sm border border-red-900/20 md:h-72">
+          <div
+            className={`relative mb-10 h-56 w-full overflow-hidden rounded-sm border border-red-900/20 md:h-72 ${isCancelled ? 'opacity-40 grayscale' : ''}`}>
             <img src={event.imageUrl} alt={event.name} className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#060404] via-transparent to-transparent" />
           </div>
@@ -121,7 +134,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
         {/* Heading */}
         <div className="mb-8">
-          <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Upcoming Event</p>
+          <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">
+            {isCancelled ? 'Cancelled Event' : isPast ? 'Past Event' : 'Upcoming Event'}
+          </p>
           <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 md:text-4xl lg:text-5xl">
             {event.name}
           </h1>
@@ -175,13 +190,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               )}
             </div>
 
-            {/* Attendance + RSVP - client island */}
+            {/* Attendance + RSVP — hidden for past and cancelled events */}
             <EventDetailClient
               eventId={event.id}
               startsAt={event.startsAt!}
               initialAttendance={attendance}
               initialStatus={existingRSVP?.status ?? null}
-              isAuthenticated={!!session?.user?.id}
+              isAuthenticated={!!session?.user?.id && !isCancelled && !isPast}
             />
 
             {/* Officer action bar */}
