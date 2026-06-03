@@ -1,85 +1,115 @@
-import { Calendar, FileText, Settings, Users } from 'lucide-react';
+import { CalendarDays, FileText, Users } from 'lucide-react';
 import Link from 'next/link';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { db } from '@/server/db';
 
-const CARDS = [
-  {
-    href: '/admin/events',
-    icon: Calendar,
-    title: 'Events',
-    description: 'View and manage all events, including drafts.',
-    available: true,
-  },
-  {
-    href: '/admin/templates',
-    icon: FileText,
-    title: 'Event Templates',
-    description: 'Create and manage reusable event templates for the FC.',
-    available: true,
-  },
-  {
-    href: '/admin/members',
-    icon: Users,
-    title: 'Members',
-    description: 'Manage member roles, profiles, and access.',
-    available: true,
-  },
-  {
-    href: '/admin/settings',
-    icon: Settings,
-    title: 'Settings',
-    description: 'FC settings, Discord integration, and configuration.',
-    available: true,
-  },
-];
+async function getStats() {
+  const [memberCount, templateCount, eventCount] = await Promise.all([
+    db.user.count({ where: { role: { not: 'GUEST' } } }),
+    db.event.count({ where: { isTemplate: true } }),
+    db.event.count({ where: { isTemplate: false, status: 'PUBLISHED', startsAt: { gte: new Date() } } }),
+  ]);
+  return { memberCount, templateCount, eventCount };
+}
 
-export default function AdminDashboard() {
+export default async function AdminPage() {
+  const stats = await getStats();
+
   return (
-    <div>
+    <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Sleeping Dragons</p>
-        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase md:text-4xl">Admin Panel</h1>
+        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Admin</h1>
         <OrnamentalRule className="max-w-xs" />
-        <p className="mt-6 text-sm font-light text-white/35">Officer tools for managing the Free Company.</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {CARDS.map((card) => {
-          const Icon = card.icon;
-          const inner = (
-            <div
-              className={`group relative flex flex-col gap-4 border p-6 transition-all duration-200 ${
-                card.available
-                  ? 'cursor-pointer border-red-900/25 bg-white/[0.02] hover:border-red-800/40 hover:bg-white/[0.04]'
-                  : 'cursor-not-allowed border-red-900/15 bg-white/[0.01] opacity-50'
-              }`}>
-              <div className="absolute top-0 left-0 h-5 w-5 border-t border-l border-red-700/30" />
-              <div className="flex items-center gap-3">
-                <Icon
-                  className={`h-4 w-4 shrink-0 ${card.available ? 'text-red-700/60' : 'text-white/20'}`}
-                  strokeWidth={1.5}
-                />
-                <h2 className="text-sm font-light tracking-[0.1em] text-white/70 uppercase">{card.title}</h2>
-                {!card.available && (
-                  <span className="ml-auto text-[9px] font-light tracking-widest text-white/20 uppercase">
-                    Coming soon
-                  </span>
-                )}
-              </div>
-              <p className="text-xs leading-relaxed font-light text-white/35">{card.description}</p>
-            </div>
-          );
+      {/* Stats row */}
+      <div className="mb-10 grid grid-cols-3 gap-4">
+        {[
+          { label: 'Members', value: stats.memberCount },
+          { label: 'Upcoming Events', value: stats.eventCount },
+          { label: 'Templates', value: stats.templateCount },
+        ].map((stat) => (
+          <div key={stat.label} className="border border-red-900/20 bg-white/[0.02] p-5 text-center">
+            <p className="text-3xl font-extralight text-white/70">{stat.value}</p>
+            <p className="mt-1 text-xs font-light tracking-widest text-white/25 uppercase">{stat.label}</p>
+          </div>
+        ))}
+      </div>
 
-          return card.available ? (
-            <Link key={card.href} href={card.href}>
-              {inner}
-            </Link>
-          ) : (
-            <div key={card.href}>{inner}</div>
-          );
-        })}
+      <OrnamentalRule />
+
+      {/* Quick links */}
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <AdminQuickLink
+          href="/admin/templates"
+          icon={FileText}
+          title="Event Templates"
+          description="Manage reusable event templates for quick event creation."
+        />
+        <AdminQuickLink
+          href="/admin/events"
+          icon={CalendarDays}
+          title="Manage Events"
+          description="View all events — drafts, published, and cancelled."
+        />
+        <AdminQuickLink
+          href="/events/new"
+          icon={FileText}
+          title="New Event"
+          description="Create a new event or use an existing template."
+        />
+        <AdminQuickLink
+          href="/profile/new"
+          icon={Users}
+          title="New Profile"
+          description="Create a profile for a member who doesn't have one yet."
+          disabled
+          soon
+        />
+        <AdminQuickLink
+          href="/admin/members"
+          icon={Users}
+          title="Manage Members"
+          description="View all users, set roles, and track profile and Discord link status."
+        />
+      </div>
+    </>
+  );
+}
+
+function AdminQuickLink({
+  href,
+  icon: Icon,
+  title,
+  description,
+  disabled,
+  soon,
+}: {
+  href: string;
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  disabled?: boolean;
+  soon?: boolean;
+}) {
+  const inner = (
+    <div
+      className={`group flex items-start gap-4 border border-red-900/20 bg-white/[0.02] p-5 transition-all duration-200 ${
+        disabled ? 'cursor-not-allowed opacity-40' : 'hover:border-red-800/40 hover:bg-white/[0.04]'
+      }`}>
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-red-700/50" strokeWidth={1.5} />
+      <div>
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-light text-white/70">{title}</p>
+          {soon && <span className="text-[10px] font-light tracking-widest text-white/20 uppercase">Soon</span>}
+        </div>
+        <p className="mt-0.5 text-xs leading-relaxed font-light text-white/30">{description}</p>
       </div>
     </div>
   );
+
+  if (disabled) return <div>{inner}</div>;
+  return <Link href={href}>{inner}</Link>;
 }
