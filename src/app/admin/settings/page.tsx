@@ -25,7 +25,7 @@ export default async function AdminSettingsPage() {
   const isLeader = session?.user?.role === 'LEADER';
 
   return (
-    <div className="max-w-2xl">
+    <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
         <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Settings</h1>
@@ -38,6 +38,6 @@ export default async function AdminSettingsPage() {
       </div>
 
       <SettingsForm initialSettings={settings} isLeader={isLeader} />
-    </div>
+    </>
   );
 }
