@@ -1,7 +1,6 @@
 import '@/styles/globals.css';
 
 import { NextSSRPlugin as UploadThingSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
-import { Provider as JotaiProvider } from 'jotai';
 import { type Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
@@ -70,14 +69,12 @@ export default async function RootLayout({
           }}
         />
         <SessionProvider session={session}>
-          <JotaiProvider>
-            <UploadThingSSRPlugin routerConfig={extractRouterConfig(UploadThingRouter)} />
-            <div id="modal-root" />
-            {modal}
-            <NavBarServer />
-            {children}
-            <Footer />
-          </JotaiProvider>
+          <UploadThingSSRPlugin routerConfig={extractRouterConfig(UploadThingRouter)} />
+          <div id="modal-root" />
+          {modal}
+          <NavBarServer />
+          {children}
+          <Footer />
         </SessionProvider>
       </body>
     </html>
