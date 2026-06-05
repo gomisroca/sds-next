@@ -26,6 +26,7 @@ model User {
   // FC-specific
   role        Role              @default(GUEST)
   events      Event[]           @relation("CreatedEvents")
+  posts       Post[]            @relation("AuthoredPosts")
   attendances EventAttendance[]
   profile     Profile?
 
@@ -277,6 +278,26 @@ model EventAttendance {
   @@map("event_attendances")
 }
 
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title      String
+  slug       String  @unique
+  excerpt    String? // short summary shown in listings and homepage card
+  content    Json // Tiptap JSON
+  coverImage String?
+
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+
+  authorId String
+  author   User   @relation("AuthoredPosts", fields: [authorId], references: [id])
+
+  @@map("posts")
+}
+
 model FCSettings {
   id String @id @default("default")
 
@@ -285,8 +306,9 @@ model FCSettings {
   subtitle String @default("EU · Light · Phoenix")
 
   // Homepage
-  welcomeTitle String @default("Welcome, Warrior of Light")
-  welcomeText  String @default("Sleeping Dragons is a friendly home for adventurers of all kinds — whether you're here to clear savage tier, tend your garden, or simply share a glass of Ul'dahn wine by the hearth. Pull up a chair.")
+  welcomeTitle   String  @default("Welcome, Warrior of Light")
+  welcomeText    String  @default("Sleeping Dragons is a friendly home for adventurers of all kinds — whether you're here to clear savage tier, tend your garden, or simply share a glass of Ul'dahn wine by the hearth. Pull up a chair.")
+  showLatestPost Boolean @default(false)
 
   // Discord
   discordInvite  String? // public invite link shown on the Apply page
