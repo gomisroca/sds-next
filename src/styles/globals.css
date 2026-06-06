@@ -1,3 +1,141 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Tiptap editor content ─────────────────────────────────────────────────── */
+.rich-text-editor .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  height: 0;
+}
+
+.rich-text-editor .tiptap > * + * {
+  margin-top: 0.75em;
+}
+
+.rich-text-editor .tiptap h2 {
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 1.5em;
+}
+
+.rich-text-editor .tiptap h3 {
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1.25em;
+}
+
+.rich-text-editor .tiptap strong {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.rich-text-editor .tiptap em {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.rich-text-editor .tiptap ul,
+.rich-text-editor .tiptap ol {
+  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.rich-text-editor .tiptap ul li {
+  list-style-type: disc;
+}
+
+.rich-text-editor .tiptap ol li {
+  list-style-type: decimal;
+}
+
+.rich-text-editor .tiptap blockquote {
+  border-left: 2px solid rgba(139, 26, 0, 0.5);
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+.rich-text-editor .tiptap hr {
+  border: none;
+  border-top: 1px solid rgba(139, 26, 0, 0.2);
+  margin: 1.5em 0;
+}
+
+.rich-text-editor .tiptap a {
+  color: rgba(204, 34, 0, 0.8);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rich-text-editor .tiptap a:hover {
+  color: rgba(221, 64, 48, 0.9);
+}
+
+/* ── Post content (public rendering) ──────────────────────────────────────── */
+.post-content > * + * {
+  margin-top: 0.85em;
+}
+.post-content h2 {
+  font-size: 1.35rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 1.75em;
+}
+.post-content h3 {
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 1.4em;
+}
+.post-content strong {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+.post-content em {
+  color: rgba(255, 255, 255, 0.6);
+}
+.post-content ul {
+  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.post-content ol {
+  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.post-content ul li {
+  list-style-type: disc;
+}
+.post-content ol li {
+  list-style-type: decimal;
+}
+.post-content blockquote {
+  border-left: 2px solid rgba(139, 26, 0, 0.5);
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+.post-content hr {
+  border: none;
+  border-top: 1px solid rgba(139, 26, 0, 0.2);
+  margin: 1.75em 0;
+}
+.post-content a {
+  color: rgba(204, 34, 0, 0.8);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.post-content a:hover {
+  color: rgba(221, 64, 48, 0.9);
+}
+.post-content p {
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.75;
+}
