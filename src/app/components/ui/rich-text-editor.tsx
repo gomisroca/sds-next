@@ -59,7 +59,7 @@ function ToolbarDivider() {
   return <div className="mx-1 h-5 w-px bg-red-900/20" />;
 }
 
-export function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
+export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
