@@ -10,6 +10,7 @@ const UpdateSettingsSchema = z.object({
   subtitle: z.string().min(1).max(100),
   welcomeTitle: z.string().min(1).max(100),
   welcomeText: z.string().min(1).max(1000),
+  showLatestPost: z.boolean(),
   discordInvite: z.union([z.url(), z.literal(''), z.undefined()]),
   eventChannelId: z.union([z.string().max(30), z.literal(''), z.undefined()]),
 });
@@ -56,7 +57,7 @@ export async function PATCH(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { fcName, subtitle, welcomeTitle, welcomeText, discordInvite, eventChannelId } = parsed.data;
+  const { fcName, subtitle, welcomeTitle, welcomeText, showLatestPost, discordInvite, eventChannelId } = parsed.data;
 
   const settings = await db.fCSettings.upsert({
     where: { id: 'default' },
@@ -66,6 +67,7 @@ export async function PATCH(req: NextRequest): Promise<Response> {
       subtitle,
       welcomeTitle,
       welcomeText,
+      showLatestPost,
       discordInvite: discordInvite ?? null,
       eventChannelId: eventChannelId ?? null,
     },
@@ -74,6 +76,7 @@ export async function PATCH(req: NextRequest): Promise<Response> {
       subtitle,
       welcomeTitle,
       welcomeText,
+      showLatestPost,
       discordInvite: discordInvite ?? null,
       eventChannelId: eventChannelId ?? null,
     },

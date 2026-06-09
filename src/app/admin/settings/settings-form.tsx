@@ -180,6 +180,16 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
             maxLength={1000}
           />
         </div>
+
+        <div>
+          <Label hint="When enabled, the latest blog post will be shown on the home page.">Show Latest Post</Label>
+          <input
+            type="checkbox"
+            checked={form.showLatestPost}
+            onChange={(e) => patch({ showLatestPost: e.target.checked })}
+            className="h-4 w-4 rounded border border-red-900/25 bg-white/[0.03] transition-colors checked:border-red-700/50 checked:bg-red-950/30"
+          />
+        </div>
       </section>
 
       {/* Discord */}
