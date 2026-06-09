@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 const LINKS = [
   { href: '/', label: 'Home' },
   { href: '/events', label: 'Events' },
+  { href: '/blog', label: 'News' },
   { href: '/members', label: 'Members' },
 ];
 
