@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, FileText, LayoutDashboard, Settings, Users } from 'lucide-react';
+import { Calendar, FileText, LayoutDashboard, Newspaper, Settings, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -10,6 +10,7 @@ const ICONS = {
   users: Users,
   calendar: Calendar,
   settings: Settings,
+  news: Newspaper,
 };
 
 interface NavItemDef {
