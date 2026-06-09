@@ -29,7 +29,7 @@ export default async function AdminBlogPage() {
   const drafts = posts.filter((p) => !p.published);
 
   return (
-    <div className="max-w-4xl">
+    <>
       <div className="mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
@@ -128,6 +128,6 @@ export default async function AdminBlogPage() {
             ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

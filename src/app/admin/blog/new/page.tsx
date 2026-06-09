@@ -20,7 +20,7 @@ export default async function NewPostPage() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin · Blog</p>
         <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">New Post</h1>
@@ -28,6 +28,6 @@ export default async function NewPostPage() {
       </div>
 
       <PostEditor mode="new" />
-    </div>
+    </>
   );
 }
