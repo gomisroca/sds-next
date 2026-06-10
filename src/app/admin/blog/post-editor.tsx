@@ -274,7 +274,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
           type="button"
           onClick={() => handleSave(false)}
           disabled={submitting}
-          className="flex items-center gap-2 border border-red-900/25 bg-white/[0.02] px-6 py-2.5 text-xs font-light tracking-[0.25em] text-white/40 uppercase transition-all hover:border-red-800/40 hover:text-white/60 disabled:opacity-50">
+          className="flex cursor-pointer items-center gap-2 border border-red-900/25 bg-white/[0.02] px-6 py-2.5 text-xs font-light tracking-[0.25em] text-white/40 uppercase transition-all hover:border-red-800/40 hover:text-white/60 disabled:opacity-50">
           {submitting && !form.published ? (
             <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
           ) : (
@@ -288,7 +288,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
           type="button"
           onClick={() => handleSave(true)}
           disabled={submitting}
-          className="flex items-center gap-2 border border-red-700/60 bg-red-950/30 px-6 py-2.5 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all hover:border-red-600/80 hover:bg-red-900/40 disabled:opacity-50">
+          className="flex cursor-pointer items-center gap-2 border border-red-700/60 bg-red-950/30 px-6 py-2.5 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all hover:border-red-600/80 hover:bg-red-900/40 disabled:opacity-50">
           {submitting && form.published ? (
             <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
           ) : (
@@ -303,7 +303,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
             type="button"
             onClick={handleDelete}
             disabled={deleting}
-            className="ml-auto flex items-center gap-2 border border-red-900/20 px-4 py-2.5 text-xs font-light tracking-[0.25em] text-red-700/50 uppercase transition-all hover:border-red-700/40 hover:text-red-500/70 disabled:opacity-50">
+            className="ml-auto flex cursor-pointer items-center gap-2 border border-red-900/20 px-4 py-2.5 text-xs font-light tracking-[0.25em] text-red-700/50 uppercase transition-all hover:border-red-700/40 hover:text-red-500/70 disabled:opacity-50">
             {deleting ? (
               <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
             ) : (
