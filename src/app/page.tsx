@@ -5,6 +5,7 @@ import { getSettings } from '@/utils/settings';
 
 import EventCarousel from './event-carousel';
 import HomeHero from './home-hero';
+import LatestBlogPost from './latest-post';
 
 export const revalidate = 60;
 
@@ -85,6 +86,9 @@ async function WelcomeSection() {
 
         {/* Featured events carousel */}
         <EventCarousel events={events} />
+
+        {/* Latest blog post if enabled */}
+        {settings.showLatestPost && <LatestBlogPost />}
 
         {/* Info cards */}
         <InfoCards />
