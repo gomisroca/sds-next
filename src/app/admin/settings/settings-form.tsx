@@ -124,11 +124,6 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
     }
   }
 
-  const fieldProps = (disabled: boolean) => ({
-    disabled,
-    className: disabled ? 'opacity-50 pointer-events-none' : '',
-  });
-
   return (
     <div className="flex flex-col gap-8">
       {/* Identity */}
@@ -181,13 +176,13 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
           />
         </div>
 
-        <div>
+        <div className="flex items-center gap-3">
           <Label hint="When enabled, the latest blog post will be shown on the home page.">Show Latest Post</Label>
           <input
             type="checkbox"
             checked={form.showLatestPost}
             onChange={(e) => patch({ showLatestPost: e.target.checked })}
-            className="h-4 w-4 rounded border border-red-900/25 bg-white/[0.03] transition-colors checked:border-red-700/50 checked:bg-red-950/30"
+            className="h-5 w-5 rounded border border-red-900/25 bg-white/[0.03] text-red-400 accent-red-500 shadow-sm transition-all duration-200 checked:border-red-500 checked:bg-red-950/60 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-red-950/20 focus-visible:outline-none"
           />
         </div>
       </section>
