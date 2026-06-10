@@ -1,4 +1,4 @@
-import { CalendarDays, FileText, Users } from 'lucide-react';
+import { CalendarDays, FileText, Newspaper, Users } from 'lucide-react';
 import Link from 'next/link';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
@@ -60,6 +60,13 @@ export default async function AdminPage() {
           title="New Event"
           description="Create a new event or use an existing template."
         />
+        <AdminQuickLink
+          href="/admin/blog"
+          icon={Newspaper}
+          title="Manage Blog Posts"
+          description="View all blog posts — drafts and published."
+        />
+        <AdminQuickLink href="/blog/new" icon={Newspaper} title="New Blog Post" description="Create a new blog post." />
         <AdminQuickLink
           href="/profile/new"
           icon={Users}
