@@ -9,7 +9,7 @@ import AdminNavItem from './admin-nav-item';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: 'dashboard', exact: true },
   { href: '/admin/events', label: 'Events', icon: 'calendar' },
-  { href: '/admin/templates', label: 'Event Templates', icon: 'fileText' },
+  { href: '/admin/templates', label: 'Templates', icon: 'fileText' },
   { href: '/admin/blog', label: 'Blog Posts', icon: 'news' },
   { href: '/admin/members', label: 'Members', icon: 'users' },
   { href: '/admin/settings', label: 'Settings', icon: 'settings' },

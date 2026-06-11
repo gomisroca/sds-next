@@ -45,7 +45,7 @@ export default async function AdminPage() {
         <AdminQuickLink
           href="/admin/templates"
           icon={FileText}
-          title="Event Templates"
+          title="Manage Templates"
           description="Manage reusable event templates for quick event creation."
         />
         <AdminQuickLink
