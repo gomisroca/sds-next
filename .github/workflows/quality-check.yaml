@@ -9,10 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
       DISCORD_ID: ${{ secrets.DISCORD_ID }}
       DISCORD_SECRET: ${{ secrets.DISCORD_SECRET }}
+      BOT_SECRET: ${{ secrets.BOT_SECRET }}
+      BOT_URL: ${{ secrets.BOT_URL }}
+      UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
+      NEXT_PUBLIC_UPLOADTHING_CDN: ${{ secrets.NEXT_PUBLIC_UPLOADTHING_CDN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
