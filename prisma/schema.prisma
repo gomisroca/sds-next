@@ -230,9 +230,10 @@ enum AttendanceStatus {
 }
 
 model Event {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String    @id @default(cuid())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  reminderSentAt DateTime?
 
   // Core info
   name        String
