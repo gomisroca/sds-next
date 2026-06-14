@@ -5,6 +5,7 @@ import express from 'express';
 
 import { registerInteractionHandler } from './discord.js';
 import { registerRoutes } from './routes.js';
+import { startReminderScheduler } from './scheduler.js';
 
 // ── Env validation ────────────────────────────────────────────────────────────
 const { DISCORD_BOT_TOKEN, BOT_SECRET, FRONTEND_URL, PORT = '3001' } = process.env;
@@ -21,6 +22,8 @@ const client = new Client({
 client.once('ready', (c) => {
   // eslint-disable-next-line no-console
   console.log(`🤖 Logged in as ${c.user.tag}`);
+
+  startReminderScheduler(client);
 });
 
 registerInteractionHandler(client, FRONTEND_URL, BOT_SECRET);
