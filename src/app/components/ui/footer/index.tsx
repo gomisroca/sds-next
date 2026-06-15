@@ -1,6 +1,6 @@
 'use client';
 
-import OrnamentalRule from './ornamental-rule';
+import OrnamentalRule from '../ornamental-rule';
 
 export default function Footer() {
   return (
