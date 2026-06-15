@@ -12,7 +12,7 @@ import { UploadThingRouter } from '@/app/api/uploadthing/core';
 import { auth } from '@/server/auth';
 
 import Footer from './components/ui/footer';
-import NavBarServer from './components/ui/nav-bar-server';
+import NavBarServer from './components/ui/nav-bar';
 
 export const metadata: Metadata = {
   title: 'SleepingDragons',
