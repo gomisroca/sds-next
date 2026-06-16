@@ -5,55 +5,34 @@ import HomeHero from '@/app/hero';
 
 // 1. Mock Framer Motion to bypass animation timelines and render pure snapshot DOM layouts
 vi.mock('framer-motion', async () => {
-  const actual = await vi.importActual<typeof import('framer-motion')>('framer-motion');
+  const React = await vi.importActual<typeof import('react')>('react');
+
+  const motion = new Proxy(
+    {},
+    {
+      get: (_, tag: string) => {
+        type Props = React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode };
+
+        const Component = React.forwardRef<HTMLElement, Props>(function MotionMock({ children, ...props }, ref) {
+          return React.createElement(tag, { ref, ...props }, children);
+        });
+
+        // Provide a displayName for clearer test output and to satisfy lint rules
+        Component.displayName = `motion.${tag}`;
+
+        return Component;
+      },
+    }
+  );
 
   return {
-    ...actual,
-    // Safely down-type the components to simple transparent functional wrapper tags
-    motion: {
-      div: ({
-        children,
-        style,
-        className,
-        animate,
-        transition,
-        ...props
-      }: React.ComponentProps<'div'> & { animate?: unknown; transition?: unknown }) => (
-        <div className={className} style={style} {...props}>
-          {children}
-        </div>
-      ),
-      h1: ({ children, style, className }: React.ComponentProps<'h1'>) => (
-        <h1 className={className} style={style}>
-          {children}
-        </h1>
-      ),
-      a: ({
-        children,
-        className,
-        whileHover,
-        whileTap,
-        ...props
-      }: React.ComponentProps<'a'> & { whileHover?: unknown; whileTap?: unknown }) => (
-        <a className={className} {...props}>
-          {children}
-        </a>
-      ),
-      svg: ({ children, className, ...props }: React.ComponentProps<'svg'>) => (
-        <svg className={className} {...props}>
-          {children}
-        </svg>
-      ),
-      circle: ({ ...props }: React.ComponentProps<'circle'> & { animate?: unknown; transition?: unknown }) => (
-        <circle {...props} />
-      ),
-    },
-    // Mock scroll hooks to return fixed structural values
+    motion,
     useScroll: () => ({
       scrollYProgress: {
         get: () => 0,
-        onChange: () => () => void 0,
-        destroy: () => void 0,
+        onChange: () => () => {
+          void 0;
+        },
       },
     }),
     useTransform: () => 0,
