@@ -1,11 +1,10 @@
 import { EventStatus } from 'generated/prisma';
 
+import EventCarousel from '@/app/event-carousel';
+import HomeHero from '@/app/hero';
+import LatestBlogPost from '@/app/latest-post';
 import { db } from '@/server/db';
 import { getSettings } from '@/utils/settings';
-
-import EventCarousel from './event-carousel';
-import HomeHero from './home-hero';
-import LatestBlogPost from './latest-post';
 
 export const revalidate = 60;
 

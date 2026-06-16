@@ -9,10 +9,9 @@ import { Toaster } from 'sileo';
 import { extractRouterConfig } from 'uploadthing/server';
 
 import { UploadThingRouter } from '@/app/api/uploadthing/core';
+import Footer from '@/app/components/ui/footer';
+import NavBarServer from '@/app/components/ui/nav-bar';
 import { auth } from '@/server/auth';
-
-import Footer from './components/ui/footer';
-import NavBarServer from './components/ui/nav-bar';
 
 export const metadata: Metadata = {
   title: 'SleepingDragons',

@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
-import OrnamentalRule from './components/ui/ornamental-rule';
+import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 
 // ── Ember particle ────────────────────────────────────────────────────────────
 interface Ember {
