@@ -1,4 +1,3 @@
-/// <reference types="vitest/config" />
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,20 +7,32 @@ import { defineConfig } from 'vitest/config';
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   test: {
-    exclude: ['e2e', 'node_modules'],
-    environment: 'jsdom',
-    globals: true,
-    setupFiles: './src/utils/test-setup.ts',
     projects: [
+      // Regular unit tests
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'jsdom',
+          globals: true,
+          setupFiles: './src/utils/test-setup.ts',
+          include: ['src/**/*.{test,spec}.{ts,tsx}'],
+          exclude: ['**/*.stories.*', 'e2e', 'node_modules'],
+        },
+      },
+
+      // Storybook interaction tests
       {
         extends: true,
         plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
           storybookTest({
             configDir: path.join(dirname, '.storybook'),
           }),
@@ -32,11 +43,7 @@ export default defineConfig({
             enabled: true,
             headless: true,
             provider: 'playwright',
-            instances: [
-              {
-                browser: 'chromium',
-              },
-            ],
+            instances: [{ browser: 'chromium' }],
           },
           setupFiles: ['.storybook/vitest.setup.ts'],
         },
