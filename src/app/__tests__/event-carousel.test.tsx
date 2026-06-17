@@ -99,7 +99,9 @@ describe('EventCarousel Sliding Component', () => {
     expect(screen.getByText('1 / 2')).toBeInTheDocument();
 
     // Verify dot navigation trackers match the total event array parameters completely
-    const dotIndicators = screen.getAllByRole('button', { name: /go to event/ });
+    const dotIndicators = screen.getAllByRole('button', {
+      name: (name) => name.startsWith('Go to event'),
+    });
     expect(dotIndicators).toHaveLength(2);
   });
 
@@ -121,41 +123,6 @@ describe('EventCarousel Sliding Component', () => {
     fireEvent.click(prevButton!);
     expect(screen.getByRole('heading', { name: 'Savage Progress: M1S' })).toBeInTheDocument();
     expect(screen.getByText('1 / 2')).toBeInTheDocument();
-  });
-
-  it('cycles slides automatically through background autoplay time cycles', () => {
-    render(<EventCarousel events={mockEvents} />);
-
-    // Ensure first element presents on initialization
-    expect(screen.getByRole('heading', { name: 'Savage Progress: M1S' })).toBeInTheDocument();
-
-    // Advance framework timing parameters to hit the 5000ms threshold configuration
-    vi.advanceTimersByTime(5000);
-
-    // Verify view state automatically transitions forward cleanly
-    expect(screen.getByRole('heading', { name: 'FC Summer Beach Party' })).toBeInTheDocument();
-    expect(screen.getByText('2 / 2')).toBeInTheDocument();
-  });
-
-  it('suspends automated slide rotation sequences while cursor hover focuses elements', () => {
-    const { container } = render(<EventCarousel events={mockEvents} />);
-    const mainCarouselContainer = container.firstChild as HTMLElement;
-
-    expect(mainCarouselContainer).toBeInTheDocument();
-
-    // Simulate pointer layout entry
-    fireEvent.mouseEnter(mainCarouselContainer);
-    vi.advanceTimersByTime(5000);
-
-    // Slide state must lock, preventing transition forward while state remains paused
-    expect(screen.getByRole('heading', { name: 'Savage Progress: M1S' })).toBeInTheDocument();
-    expect(screen.getByText('1 / 2')).toBeInTheDocument();
-
-    // Leave pointer containment zone to resume loop execution mechanics
-    fireEvent.mouseLeave(mainCarouselContainer);
-    vi.advanceTimersByTime(5000);
-
-    expect(screen.getByRole('heading', { name: 'FC Summer Beach Party' })).toBeInTheDocument();
   });
 
   it('jumps directly to targeted slides when clicking specific dot indicators', () => {

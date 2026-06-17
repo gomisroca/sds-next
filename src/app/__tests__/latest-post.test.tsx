@@ -3,10 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import LatestBlogPost from '@/app/latest-post';
 
-// 1. Establish independent lambda trackers to handle internal DB method monitoring
-const findFirstMock = vi.fn();
+const findFirstMock = vi.hoisted(() => vi.fn());
 
-// 2. Mock the central Prisma Database Layer
 vi.mock('@/server/db', () => ({
   db: {
     post: {
