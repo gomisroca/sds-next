@@ -151,20 +151,27 @@ export default function EventCarousel({ events }: { events: FeaturedEvent[] }) {
     setIndex(next);
   }, []);
 
-  const prev = useCallback(() => {
-    go((index - 1 + total) % total, -1);
-  }, [index, total, go]);
-
   const next = useCallback(() => {
-    go((index + 1) % total, 1);
-  }, [index, total, go]);
+    setIndex((i) => (i + 1) % total);
+    setDirection(1);
+  }, [total]);
+
+  const prev = useCallback(() => {
+    setIndex((i) => (i - 1 + total) % total);
+    setDirection(-1);
+  }, [total]);
 
   // Autoplay — only when multiple events and not paused
   useEffect(() => {
     if (total <= 1 || paused) return;
-    const id = setTimeout(() => next(), AUTOPLAY_MS);
-    return () => clearTimeout(id);
-  }, [index, total, paused, next]);
+
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % total);
+      setDirection(1);
+    }, AUTOPLAY_MS);
+
+    return () => clearInterval(id);
+  }, [total, paused]);
 
   if (total === 0) return <NoEventsCard />;
 
