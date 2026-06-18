@@ -4,10 +4,9 @@ import type { AttendanceStatus } from 'generated/prisma';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { AttendanceCounts as AttendanceCountsDisplay } from '@/app/events/[id]/attendance-counts';
+import { RSVPButtons } from '@/app/events/[id]/rsvp-buttons';
 import type { AttendanceCounts } from '@/utils/events';
-
-import { AttendanceCounts as AttendanceCountsDisplay } from './attendance-counts';
-import { RSVPButtons } from './rsvp-buttons';
 
 interface EventDetailClientProps {
   eventId: string;

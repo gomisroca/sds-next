@@ -1,4 +1,3 @@
-// src/app/events/_components/past-events.tsx
 'use client';
 
 import { motion } from 'framer-motion';

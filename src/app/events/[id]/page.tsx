@@ -3,12 +3,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { EventActions } from '@/app/events/[id]/event-actions';
+import { EventDetailClient } from '@/app/events/[id]/event-detail-client';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { getEventAttendanceCounts } from '@/utils/events';
-
-import { EventActions } from './event-actions';
-import { EventDetailClient } from './event-detail-client';
 
 export const revalidate = 30;
 

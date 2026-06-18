@@ -55,9 +55,11 @@ export function RSVPButtons({ eventId, confirmedStatus, onSuccess }: RSVPButtons
         if (res.ok) {
           onSuccess(status);
         } else {
+          // eslint-disable-next-line no-console
           console.error('RSVP failed', await res.json());
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('RSVP error', err);
       }
     });

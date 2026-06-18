@@ -3,11 +3,10 @@ import { Calendar, Pencil } from 'lucide-react';
 import Link from 'next/link';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import EventRow from '@/app/events/event-row';
+import PastEvents from '@/app/events/past-events';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-
-import EventRow from './event-row';
-import PastEvents from './past-events';
 
 export const dynamic = 'force-dynamic';
 
