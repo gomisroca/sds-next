@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FileText, Loader2, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import type { FormData } from './types';
+import type { FormData } from '@/app/events/event-wizard/types';
 
 interface Template {
   id: string;

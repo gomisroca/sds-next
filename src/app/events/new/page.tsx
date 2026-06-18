@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation';
 
+import { CreateEventWizard } from '@/app/events/event-wizard';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-
-import { CreateEventWizard } from './create-event-wizard';
 
 export default async function NewEventPage() {
   const session = await auth();

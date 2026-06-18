@@ -5,9 +5,9 @@ import { ArrowLeft, ArrowRight, Calendar, Check, FileText, Loader2, Send, Type }
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { StepTemplateSelect } from './step-template-select';
-import { type FormData, INITIAL_FORM_DATA, validateStep } from './types';
-import { StepDetails, StepPublish, StepTime } from './wizard-steps';
+import { StepTemplateSelect } from '@/app/events/event-wizard/step-template-select';
+import { type FormData, INITIAL_FORM_DATA, validateStep } from '@/app/events/event-wizard/types';
+import { StepDetails, StepPublish, StepTime } from '@/app/events/event-wizard/wizard-steps';
 
 // Steps 1–3 shown in the indicator (step 0 is a pre-screen)
 const STEPS = [

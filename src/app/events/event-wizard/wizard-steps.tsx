@@ -5,9 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Check, MapPin, X } from 'lucide-react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
-
-import { FieldError, Input, Label, Textarea } from './form-fields';
-import type { FormData } from './types';
+import type { FormData } from '@/app/events/event-wizard//types';
+import { FieldError, Input, Label, Textarea } from '@/app/events/event-wizard/form-fields';
 
 // ── Step 1: Details ───────────────────────────────────────────────────────────
 export function StepDetails({
