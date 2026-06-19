@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
-import { CreateEventWizard } from '@/app/events/new/create-event-wizard';
-import { type FormData } from '@/app/events/new/types';
+import { CreateEventWizard } from '@/app/events/event-wizard';
+import { type FormData } from '@/app/events/event-wizard/types';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 
