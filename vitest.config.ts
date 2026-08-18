@@ -12,6 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'generated/prisma': fileURLToPath(new URL('./generated/prisma', import.meta.url)),
     },
   },
   test: {
