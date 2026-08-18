@@ -27,9 +27,9 @@ function formatDay(date: Date) {
 }
 
 export default function EventRow({ event, index }: EventRowProps) {
-  const day = formatDay(event.startsAt!);
   const time = formatTime(event.startsAt!);
   const endTime = event.endsAt ? formatTime(event.endsAt) : null;
+  const [weekday, dayNumber] = formatDay(event.startsAt!).split(' ');
 
   return (
     <motion.div
@@ -43,10 +43,8 @@ export default function EventRow({ event, index }: EventRowProps) {
 
           {/* Date column */}
           <div className="relative z-10 flex w-24 shrink-0 flex-col items-center justify-center border-r border-red-900/15 py-5 text-center transition-colors duration-200 group-hover:border-red-800/30 md:w-32">
-            <span className="text-[10px] font-light tracking-[0.25em] text-red-700/50 uppercase">
-              {day.split(' ')[0]}
-            </span>
-            <span className="text-2xl font-extralight text-white/70 tabular-nums">{day.split(' ')[1]}</span>
+            <span className="text-[10px] font-light tracking-[0.25em] text-red-700/50 uppercase">{weekday}</span>
+            <span className="text-2xl font-extralight text-white/70 tabular-nums">{dayNumber}</span>
           </div>
 
           {/* Time column */}

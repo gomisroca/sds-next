@@ -45,7 +45,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
             <span className="text-[10px] font-light tracking-[0.2em] text-red-900/40 uppercase">
               {new Date(event.startsAt).toLocaleDateString('en-GB', { weekday: 'short' })}
             </span>
-            <span className="text-xl font-extralight text-white/30 tabular-nums">
+            <span className="text-xl font-extralight text-white/30 tabular-nums" data-testid="event-date">
               {new Date(event.startsAt).getDate()}
             </span>
             <span className="text-[10px] font-light text-white/20">
@@ -71,7 +71,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
 
           {/* Attendance */}
           <div className="relative z-10 flex shrink-0 items-center px-5 py-4">
-            <span className="flex items-center gap-1.5 text-xs font-light text-white/15">
+            <span className="flex items-center gap-1.5 text-xs font-light text-white/15" data-testid="event-attendance">
               <Users className="h-3 w-3" strokeWidth={1.5} />
               {event._count.attendances}
             </span>
@@ -151,7 +151,11 @@ export default function PastEvents({ upcomingIds = [] }: { upcomingIds?: string[
         {Object.entries(groups).map(([month, monthEvents]) => (
           <div key={month}>
             <div className="mb-4 flex items-center gap-4">
-              <span className="text-[10px] font-light tracking-[0.3em] text-white/15 uppercase">{month}</span>
+              <span
+                className="text-[10px] font-light tracking-[0.3em] text-white/15 uppercase"
+                data-testid="month-heading">
+                {month}
+              </span>
               <div className="h-px flex-1 bg-red-900/10" />
             </div>
             <div className="flex flex-col">
