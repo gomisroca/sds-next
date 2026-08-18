@@ -5,8 +5,12 @@ import { ArrowLeft, ArrowRight, Check, Gamepad2, Image, Loader2, User } from 'lu
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { StepGameplay, StepIdentity, StepVisuals } from './profile-wizard-steps';
-import { INITIAL_PROFILE_FORM_DATA, type ProfileFormData, validateProfileStep } from './types';
+import { StepGameplay, StepIdentity, StepVisuals } from '@/app/members/profile-wizard/profile-wizard-steps';
+import {
+  INITIAL_PROFILE_FORM_DATA,
+  type ProfileFormData,
+  validateProfileStep,
+} from '@/app/members/profile-wizard/types';
 
 const STEPS = [
   { number: 1, label: 'Identity', icon: User },
@@ -73,7 +77,7 @@ type ProfileWizardProps =
       initialData: ProfileFormData;
     };
 
-export function ProfileWizard(props: ProfileWizardProps) {
+export default function ProfileWizard(props: ProfileWizardProps) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);

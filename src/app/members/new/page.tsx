@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import ProfileWizard from '@/app/members/profile-wizard';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-
-import { ProfileWizard } from './profile-wizard';
 
 // Officers can create a profile for any member who doesn't have one yet.
 // The target user is passed as ?userId= in the query string.

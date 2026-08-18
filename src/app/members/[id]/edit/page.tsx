@@ -1,11 +1,10 @@
 import { redirect } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import ProfileWizard from '@/app/members/profile-wizard';
+import type { ProfileFormData } from '@/app/members/profile-wizard/types';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-
-import { ProfileWizard } from '../../new/profile-wizard';
-import type { ProfileFormData } from '../../new/types';
 
 export default async function EditProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();

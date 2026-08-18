@@ -1,7 +1,6 @@
+import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import MemberCard from '@/app/members/member-card';
 import { db } from '@/server/db';
-
-import OrnamentalRule from '../components/ui/ornamental-rule';
-import MemberCard from './member-card';
 
 export const revalidate = 120;
 
