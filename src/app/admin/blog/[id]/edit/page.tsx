@@ -23,7 +23,9 @@ async function getPost(id: string) {
 
 export default async function AdminBlogPostEditPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
-  if (!session?.user?.id) redirect('/api/auth/signin');
+  if (!session?.user?.id) {
+    redirect('/?toast=unauthorized');
+  }
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },

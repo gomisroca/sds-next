@@ -9,7 +9,9 @@ import { db } from '@/server/db';
 // The target user is passed as ?userId= in the query string.
 export default async function NewProfilePage({ searchParams }: { searchParams: Promise<{ userId?: string }> }) {
   const session = await auth();
-  if (!session?.user?.id) redirect('/api/auth/signin');
+  if (!session?.user?.id) {
+    redirect('/?toast=unauthorized');
+  }
 
   const creator = await db.user.findUnique({
     where: { id: session.user.id },

@@ -17,7 +17,9 @@ const NAV_ITEMS = [
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
-  if (!session?.user?.id) redirect('/api/auth/signin');
+  if (!session?.user?.id) {
+    redirect('/?toast=unauthorized');
+  }
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },

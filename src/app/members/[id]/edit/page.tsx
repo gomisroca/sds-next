@@ -8,7 +8,9 @@ import { db } from '@/server/db';
 
 export default async function EditProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
-  if (!session?.user?.id) redirect('/api/auth/signin');
+  if (!session?.user?.id) {
+    redirect('/?toast=unauthorized');
+  }
 
   const { id } = await params;
 

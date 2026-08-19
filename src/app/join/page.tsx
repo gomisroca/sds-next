@@ -5,6 +5,8 @@ import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { db } from '@/server/db';
 import { getSettings } from '@/utils/settings';
 
+import { DiscordAccessButton } from '../components/auth/discord-access-button';
+
 async function getMemberCount() {
   return db.user.count({ where: { role: { notIn: ['GUEST'] } } });
 }
@@ -118,11 +120,7 @@ export default async function JoinPage() {
 
           <p className="mt-6 text-xs font-light text-white/60">
             Already a member?{' '}
-            <Link
-              href="/api/auth/signin"
-              className="text-red-800/60 underline-offset-2 transition-colors hover:text-red-600/80 hover:underline">
-              Sign in with Discord
-            </Link>{' '}
+            <DiscordAccessButton className="mx-auto flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300" />
             to access your profile and RSVP to events.
           </p>
         </div>

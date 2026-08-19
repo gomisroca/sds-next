@@ -14,6 +14,8 @@ import Footer from '@/app/components/ui/footer';
 import NavBarServer from '@/app/components/ui/nav-bar';
 import { auth } from '@/server/auth';
 
+import ToastHandler from './components/ui/toast-handler';
+
 export const metadata: Metadata = {
   title: 'SleepingDragons',
   description: 'Free Company in Phoenix, Light',
@@ -63,11 +65,12 @@ export default async function RootLayout({
     <html lang="en" className={worksans.className} suppressHydrationWarning>
       <body className="text-zinc-800 dark:text-zinc-200">
         <Toaster
-          position="top-center"
+          position="bottom-center"
           options={{
-            styles: { description: 'font-medium flex justify-center' },
+            styles: { description: 'font-medium flex justify-center z-[999]' },
           }}
         />
+        <ToastHandler />
         <SessionProvider session={session}>
           <UploadThingSSRPlugin routerConfig={extractRouterConfig(UploadThingRouter)} />
           <div id="modal-root" />

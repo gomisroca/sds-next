@@ -6,9 +6,8 @@ import { db } from '@/server/db';
 
 export default async function NewEventPage() {
   const session = await auth();
-
   if (!session?.user?.id) {
-    redirect('/api/auth/signin');
+    redirect('/?toast=unauthorized');
   }
 
   const user = await db.user.findUnique({

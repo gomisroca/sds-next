@@ -8,7 +8,9 @@ import PostEditor from '../post-editor';
 
 export default async function NewPostPage() {
   const session = await auth();
-  if (!session?.user?.id) redirect('/api/auth/signin');
+  if (!session?.user?.id) {
+    redirect('/?toast=unauthorized');
+  }
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },
