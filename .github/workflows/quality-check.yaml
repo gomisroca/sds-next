@@ -14,6 +14,8 @@ jobs:
       NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
       DISCORD_ID: ${{ secrets.DISCORD_ID }}
       DISCORD_SECRET: ${{ secrets.DISCORD_SECRET }}
+      DISCORD_ACCESS_PASSWORD: ${{ secrets.DISCORD_ACCESS_PASSWORD }}
+      DISCORD_ACCESS_TOKEN_SECRET: ${{ secrets.DISCORD_ACCESS_TOKEN_SECRET }}
       BOT_SECRET: ${{ secrets.BOT_SECRET }}
       BOT_URL: ${{ secrets.BOT_URL }}
       UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}

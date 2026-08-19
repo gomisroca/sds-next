@@ -187,6 +187,11 @@ function DropdownLink({ href, children, muted }: { href: string; children: React
 function AuthButton({ isOfficerPlus }: { isOfficerPlus: boolean }) {
   const { data: session, status } = useSession();
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   if (status === 'loading') {
     return <div className="h-6 w-20 animate-pulse rounded-sm bg-red-900/20" />;
   }
@@ -195,15 +200,90 @@ function AuthButton({ isOfficerPlus }: { isOfficerPlus: boolean }) {
     return <UserDropdown session={session} isOfficerPlus={isOfficerPlus} />;
   }
 
+  async function handleAccess() {
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        setError('Incorrect password.');
+        return;
+      }
+
+      await signIn('discord');
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <motion.button
-      onClick={() => signIn('discord')}
-      className="flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}>
-      <DiscordIcon />
-      Sign in
-    </motion.button>
+    <>
+      <motion.button
+        onClick={() => setShowPassword(true)}
+        className="flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}>
+        <DiscordIcon />
+        Sign in
+      </motion.button>
+
+      {showPassword && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-sm border border-red-800/50 bg-black p-6">
+            <h2 className="mb-2 text-sm tracking-[0.25em] text-red-400 uppercase">Restricted Access</h2>
+
+            <p className="mb-4 text-sm text-gray-400">Enter the access password to continue.</p>
+
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  void handleAccess();
+                }
+              }}
+              autoFocus
+              placeholder="Access password"
+              className="mb-2 w-full border border-red-900/50 bg-red-950/20 px-3 py-2 text-sm text-red-300 outline-none focus:border-red-700"
+            />
+
+            {error && <p className="mb-3 text-xs text-red-500">{error}</p>}
+
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPassword(false);
+                  setPassword('');
+                  setError('');
+                }}
+                className="px-3 py-2 text-xs text-gray-500 hover:text-gray-300">
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={loading || !password}
+                onClick={() => void handleAccess()}
+                className="border border-red-800/50 bg-red-950/30 px-3 py-2 text-xs tracking-wider text-red-400 uppercase hover:bg-red-900/30 disabled:opacity-50">
+                {loading ? 'Checking...' : 'Continue'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
