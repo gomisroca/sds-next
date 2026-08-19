@@ -9,6 +9,7 @@ import { Toaster } from 'sileo';
 import { extractRouterConfig } from 'uploadthing/server';
 
 import { UploadThingRouter } from '@/app/api/uploadthing/core';
+import { CookieYesRoot } from '@/app/components/consent-manager';
 import Footer from '@/app/components/ui/footer';
 import NavBarServer from '@/app/components/ui/nav-bar';
 import { auth } from '@/server/auth';
@@ -73,6 +74,7 @@ export default async function RootLayout({
           {modal}
           <NavBarServer />
           {children}
+          <CookieYesRoot />
           <Footer />
         </SessionProvider>
       </body>

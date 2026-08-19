@@ -2,6 +2,29 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* CookieYes */
+.cy-banner,
+.cy-dialog {
+  background-color: black !important;
+}
+.cy-btn-outline {
+  color: white !important;
+  border-color: rgb(20, 20, 20) !important;
+}
+.cy-btn-primary {
+  background-color: rgb(20, 20, 20) !important;
+  border-color: rgb(20, 20, 20) !important;
+}
+
+.cy-banner-footer {
+  display: none !important;
+}
+.cy-branding {
+  display: none !important;
+}
+.cy-dialog-footer-shadow {
+  display: none !important;
+}
 /* ── Tiptap editor content ─────────────────────────────────────────────────── */
 .rich-text-editor .tiptap p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
