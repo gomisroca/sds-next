@@ -45,20 +45,20 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
             <span className="text-[10px] font-light tracking-[0.2em] text-red-900/40 uppercase">
               {new Date(event.startsAt).toLocaleDateString('en-GB', { weekday: 'short' })}
             </span>
-            <span className="text-xl font-extralight text-white/30 tabular-nums" data-testid="event-date">
+            <span className="text-xl font-extralight text-white/60 tabular-nums" data-testid="event-date">
               {new Date(event.startsAt).getDate()}
             </span>
-            <span className="text-[10px] font-light text-white/20">
+            <span className="text-[10px] font-light text-white/60">
               {new Date(event.startsAt).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
             </span>
           </div>
 
           {/* Content */}
           <div className="relative z-10 flex flex-1 flex-col justify-center gap-1 px-5 py-4">
-            <h3 className="text-sm font-light tracking-wide text-white/45 transition-colors group-hover:text-white/65">
+            <h3 className="text-sm font-light tracking-wide text-white/60 transition-colors group-hover:text-white/90">
               {event.name}
             </h3>
-            <div className="flex flex-wrap items-center gap-3 text-xs font-light text-white/20">
+            <div className="flex flex-wrap items-center gap-3 text-xs font-light text-white/60">
               <span>{formatTime(event.startsAt)}</span>
               {event.location && (
                 <span className="flex items-center gap-1">
@@ -71,7 +71,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
 
           {/* Attendance */}
           <div className="relative z-10 flex shrink-0 items-center px-5 py-4">
-            <span className="flex items-center gap-1.5 text-xs font-light text-white/15" data-testid="event-attendance">
+            <span className="flex items-center gap-1.5 text-xs font-light text-white/60" data-testid="event-attendance">
               <Users className="h-3 w-3" strokeWidth={1.5} />
               {event._count.attendances}
             </span>
@@ -135,7 +135,7 @@ export default function PastEvents({ upcomingIds = [] }: { upcomingIds?: string[
     <section className="mt-16">
       {/* Section header */}
       <div className="mb-6 flex items-center gap-4">
-        <span className="text-xs font-light tracking-[0.3em] text-white/20 uppercase">Past Events</span>
+        <span className="text-xs font-light tracking-[0.3em] text-white/60 uppercase">Past Events</span>
         <div className="h-px flex-1 bg-red-900/10" />
       </div>
 
@@ -152,7 +152,7 @@ export default function PastEvents({ upcomingIds = [] }: { upcomingIds?: string[
           <div key={month}>
             <div className="mb-4 flex items-center gap-4">
               <span
-                className="text-[10px] font-light tracking-[0.3em] text-white/15 uppercase"
+                className="text-[10px] font-light tracking-[0.3em] text-white/60 uppercase"
                 data-testid="month-heading">
                 {month}
               </span>
@@ -174,7 +174,7 @@ export default function PastEvents({ upcomingIds = [] }: { upcomingIds?: string[
             type="button"
             onClick={() => loadMore(cursor)}
             disabled={loading}
-            className="flex items-center gap-2 border border-red-900/20 bg-white/[0.02] px-8 py-2.5 text-xs font-light tracking-[0.25em] text-white/25 uppercase transition-all hover:border-red-900/35 hover:text-white/45 disabled:opacity-50">
+            className="flex items-center gap-2 border border-red-900/20 bg-white/[0.02] px-8 py-2.5 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-all hover:border-red-900/35 hover:text-white/45 disabled:opacity-50">
             {loading ? (
               <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
             ) : (
@@ -186,7 +186,7 @@ export default function PastEvents({ upcomingIds = [] }: { upcomingIds?: string[
       )}
 
       {initialLoaded && !hasMore && events.length > 0 && (
-        <p className="mt-8 text-center text-xs font-light text-white/15">That's all of them.</p>
+        <p className="mt-8 text-center text-xs font-light text-white/60">That's all of them.</p>
       )}
     </section>
   );

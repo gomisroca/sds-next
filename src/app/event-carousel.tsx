@@ -41,8 +41,8 @@ function NoEventsCard() {
       viewport={{ once: true }}>
       <div>
         <Calendar className="mx-auto mb-4 h-8 w-8 text-red-900/30" strokeWidth={1} />
-        <p className="text-sm font-light tracking-widest text-white/25 uppercase">No upcoming events</p>
-        <p className="mt-2 text-xs font-light text-white/15">Check back soon — we post new events regularly.</p>
+        <p className="text-sm font-light tracking-widest text-white/80 uppercase">No upcoming events</p>
+        <p className="mt-2 text-xs font-light text-white/60">Check back soon - we post new events regularly.</p>
       </div>
     </motion.div>
   );
@@ -97,7 +97,7 @@ function EventSlide({ event, direction }: { event: FeaturedEvent; direction: num
             <h3 className="mb-2 text-2xl font-light tracking-wide text-white/90 transition-colors group-hover:text-white md:text-3xl">
               {event.name}
             </h3>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-light text-white/30">
+            <div className="flex flex-wrap items-center gap-4 text-xs font-light text-white/60">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-3 w-3" strokeWidth={1.5} />
                 {date}
@@ -118,11 +118,11 @@ function EventSlide({ event, direction }: { event: FeaturedEvent; direction: num
           <OrnamentalRule className="max-w-xs" />
 
           {event.description && (
-            <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/50">{event.description}</p>
+            <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/80">{event.description}</p>
           )}
 
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-xs font-light text-white/25">
+            <span className="flex items-center gap-1.5 text-xs font-light text-white/60">
               <Users className="h-3 w-3" strokeWidth={1.5} />
               {event._count.attendances} attending
             </span>
@@ -207,13 +207,13 @@ export default function EventCarousel({ events }: { events: FeaturedEvent[] }) {
             <button
               type="button"
               onClick={prev}
-              className="flex h-7 w-7 items-center justify-center border border-red-900/20 text-white/25 transition-colors hover:border-red-800/40 hover:text-white/55">
+              className="flex h-7 w-7 items-center justify-center border border-red-900/20 text-white/60 transition-colors hover:border-red-800/40 hover:text-white/55">
               <ChevronLeft className="h-3.5 w-3.5" strokeWidth={1.5} />
             </button>
             <button
               type="button"
               onClick={next}
-              className="flex h-7 w-7 items-center justify-center border border-red-900/20 text-white/25 transition-colors hover:border-red-800/40 hover:text-white/55">
+              className="flex h-7 w-7 items-center justify-center border border-red-900/20 text-white/60 transition-colors hover:border-red-800/40 hover:text-white/55">
               <ChevronRight className="h-3.5 w-3.5" strokeWidth={1.5} />
             </button>
           </div>
@@ -237,7 +237,7 @@ export default function EventCarousel({ events }: { events: FeaturedEvent[] }) {
           </div>
 
           {/* Counter */}
-          <span className="text-[10px] font-light tracking-[0.2em] text-white/20 uppercase">
+          <span className="text-[10px] font-light tracking-[0.2em] text-white/60 uppercase">
             {index + 1} / {total}
           </span>
         </div>

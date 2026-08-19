@@ -240,7 +240,7 @@ export default function HomeHero() {
         </motion.div>
 
         <motion.p
-          className="mt-6 text-sm font-light tracking-[0.45em] text-white/50 uppercase md:text-base"
+          className="mt-6 text-sm font-light tracking-[0.45em] text-white/80 uppercase md:text-base"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.7, ease: 'easeOut' }}>
@@ -248,7 +248,7 @@ export default function HomeHero() {
         </motion.p>
 
         <motion.p
-          className="mt-4 text-base font-light text-white/35 italic md:text-lg"
+          className="mt-4 text-base font-light text-white/60 italic md:text-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.0 }}>
@@ -269,7 +269,7 @@ export default function HomeHero() {
           </motion.a>
           <motion.a
             href="#welcome"
-            className="px-10 py-3 text-xs font-light tracking-[0.25em] text-white/40 uppercase transition-colors duration-300 hover:text-white/65"
+            className="px-10 py-3 text-xs font-light tracking-[0.25em] text-white/80 uppercase transition-colors duration-300 hover:text-white/95"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}>
             Learn More ↓

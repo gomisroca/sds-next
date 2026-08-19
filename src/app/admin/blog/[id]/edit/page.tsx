@@ -42,10 +42,10 @@ export default async function AdminBlogPostEditPage({ params }: { params: Promis
     <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin · Blog</p>
-        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Edit Post</h1>
+        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Edit Post</h1>
         <OrnamentalRule className="max-w-xs" />
-        <p className="mt-6 text-sm font-light text-white/35">
-          Editing <span className="text-white/60">{post.title}</span>
+        <p className="mt-6 text-sm font-light text-white/60">
+          Editing <span className="text-white/80">{post.title}</span>
         </p>
       </div>
 

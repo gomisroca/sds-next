@@ -98,7 +98,7 @@ function UserDropdown({
       {/* Trigger */}
       <button
         type="button"
-        className="flex cursor-pointer items-center gap-2 border border-transparent px-2 py-1 text-xs font-light tracking-[0.15em] text-white/40 uppercase transition-all duration-200 hover:border-red-900/30 hover:text-white/60">
+        className="flex cursor-pointer items-center gap-2 border border-transparent px-2 py-1 text-xs font-light tracking-[0.15em] text-white/60 uppercase transition-all duration-200 hover:border-red-900/30 hover:text-white/60">
         {user.image ? (
           <Image
             src={user.image}
@@ -113,7 +113,7 @@ function UserDropdown({
           </span>
         )}
         <span className="hidden sm:inline">{user.name?.split(' ')[0]}</span>
-        <span className="text-white/20 transition-colors">▾</span>
+        <span className="text-white/60 transition-colors">▾</span>
       </button>
 
       {/* Dropdown panel */}
@@ -128,8 +128,8 @@ function UserDropdown({
             transition={{ duration: 0.15, ease: 'easeOut' }}>
             {/* User info header */}
             <div className="border-b border-red-900/20 px-4 py-3">
-              <p className="truncate text-xs font-light text-white/60">{user.name}</p>
-              <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/20 uppercase">
+              <p className="truncate text-xs font-light text-white/80">{user.name}</p>
+              <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/60 uppercase">
                 {user.role ?? 'Member'}
               </p>
             </div>
@@ -160,7 +160,7 @@ function UserDropdown({
               <button
                 type="button"
                 onClick={() => signOut()}
-                className="flex w-full cursor-pointer items-center px-4 py-2 text-xs font-light tracking-[0.2em] text-white/30 uppercase transition-colors hover:bg-red-950/20 hover:text-white/55">
+                className="flex w-full cursor-pointer items-center px-4 py-2 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-colors hover:bg-red-950/20 hover:text-white/90">
                 Sign Out
               </button>
             </div>
@@ -176,7 +176,7 @@ function DropdownLink({ href, children, muted }: { href: string; children: React
     <Link
       href={href}
       className={`flex items-center px-4 py-2 text-xs font-light tracking-[0.2em] uppercase transition-colors hover:bg-red-950/20 ${
-        muted ? 'text-white/20 hover:text-white/40' : 'text-white/40 hover:text-white/65'
+        muted ? 'text-white/60 hover:text-white/90' : 'text-white/80 hover:text-white/95'
       }`}>
       {children}
     </Link>
@@ -244,13 +244,13 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
               {session.user.name?.[0]?.toUpperCase() ?? '?'}
             </span>
           )}
-          <span className="text-sm font-light text-white/50">{session.user.name}</span>
+          <span className="text-sm font-light text-white/60">{session.user.name}</span>
         </div>
 
         {profileInfo?.userId && (
           <Link
             href={`/members/${profileInfo.userId}`}
-            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/35 uppercase transition-colors hover:text-white/65">
+            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
             <span className="h-px w-4 bg-red-900/40" />
             View Profile
           </Link>
@@ -258,7 +258,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
         {profileInfo?.profileId && (
           <Link
             href={`/profile/${profileInfo.profileId}/edit`}
-            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/35 uppercase transition-colors hover:text-white/65">
+            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
             <span className="h-px w-4 bg-red-900/40" />
             Edit Profile
           </Link>
@@ -266,7 +266,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
         {!profileInfo?.profileId && profileInfo?.userId && (
           <Link
             href={`/profile/new?userId=${profileInfo.userId}`}
-            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/20 uppercase transition-colors hover:text-white/45">
+            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
             <span className="h-px w-4 bg-red-900/40" />
             Set up Profile
           </Link>
@@ -279,7 +279,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
             <Link
               href="/admin"
               className={`flex items-center gap-4 py-3 text-sm font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                pathname.startsWith('/admin') ? 'text-white/85' : 'text-white/35 hover:text-white/65'
+                pathname.startsWith('/admin') ? 'text-white/90' : 'text-white/60 hover:text-white/90'
               }`}>
               <span
                 className={`h-px w-4 transition-colors duration-200 ${
@@ -292,7 +292,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
         )}
         <button
           onClick={() => signOut()}
-          className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/25 uppercase transition-colors hover:text-white/50">
+          className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
           <span className="h-px w-4 bg-red-900/40" />
           Sign Out
         </button>
@@ -412,7 +412,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                   )}
                   <span
                     className={`text-xs font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                      active ? 'text-white/85' : 'text-white/35 group-hover:text-white/65'
+                      active ? 'text-white/90' : 'text-white/60 group-hover:text-white/90'
                     }`}>
                     {link.label}
                   </span>
@@ -482,7 +482,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                       <Link
                         href={link.href}
                         className={`flex items-center gap-4 py-3 text-sm font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                          active ? 'text-white/85' : 'text-white/35 hover:text-white/65'
+                          active ? 'text-white/90' : 'text-white/60 hover:text-white/90'
                         }`}>
                         <span
                           className={`h-px w-4 transition-colors duration-200 ${

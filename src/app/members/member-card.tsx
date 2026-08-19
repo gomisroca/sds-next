@@ -75,7 +75,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
           <div className="flex flex-1 flex-col gap-3 p-5">
             {/* Name */}
             <div>
-              <h3 className="text-base font-light tracking-wide text-white/85 transition-colors duration-200 group-hover:text-white">
+              <h3 className="text-base font-light tracking-wide text-white/90 transition-colors duration-200 group-hover:text-white">
                 {displayName}
               </h3>
             </div>
@@ -92,7 +92,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
                       {JOB_META[profile.job].label}
                     </span>
                     {/* Job role */}
-                    <span className="text-[10px] font-light tracking-widest text-white/25 uppercase">
+                    <span className="text-[10px] font-light tracking-widest text-white/60 uppercase">
                       {JOB_META[profile.job].role}
                     </span>
                   </div>
@@ -107,7 +107,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
                 {/* Bio */}
                 {profile.bio && (
-                  <p className="line-clamp-2 text-xs leading-relaxed font-light text-white/40">{profile.bio}</p>
+                  <p className="line-clamp-2 text-xs leading-relaxed font-light text-white/60">{profile.bio}</p>
                 )}
 
                 {/* Activities */}
@@ -116,12 +116,12 @@ export default function MemberCard({ member, index }: MemberCardProps) {
                     {profile.activities.slice(0, MAX_ACTIVITIES).map((act) => (
                       <span
                         key={act}
-                        className="border border-red-900/25 bg-red-950/15 px-1.5 py-0.5 text-[10px] font-light tracking-wide text-white/30">
+                        className="border border-red-900/25 bg-red-950/15 px-1.5 py-0.5 text-[10px] font-light tracking-wide text-white/60">
                         {ACTIVITY_LABEL[act]}
                       </span>
                     ))}
                     {profile.activities.length > MAX_ACTIVITIES && (
-                      <span className="px-1.5 py-0.5 text-[10px] font-light text-white/20">
+                      <span className="px-1.5 py-0.5 text-[10px] font-light text-white/60">
                         +{profile.activities.length - MAX_ACTIVITIES}
                       </span>
                     )}
@@ -129,7 +129,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
                 )}
               </>
             ) : (
-              <p className="text-xs font-light text-white/20 italic">No profile yet.</p>
+              <p className="text-xs font-light text-white/60 italic">No profile yet.</p>
             )}
           </div>
         </div>

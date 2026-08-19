@@ -8,8 +8,8 @@ import type { SiteSettings } from '@/utils/settings';
 function Label({ children, hint }: { children: React.ReactNode; hint?: string }) {
   return (
     <div className="mb-2">
-      <label className="block text-xs font-light tracking-[0.25em] text-white/40 uppercase">{children}</label>
-      {hint && <p className="mt-0.5 text-xs font-light text-white/20">{hint}</p>}
+      <label className="block text-xs font-light tracking-[0.25em] text-white/80 uppercase">{children}</label>
+      {hint && <p className="mt-0.5 text-xs font-light text-white/60">{hint}</p>}
     </div>
   );
 }
@@ -61,7 +61,7 @@ function Textarea({
         className="w-full resize-none border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/80 placeholder-white/20 transition-colors outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
       />
       {maxLength && (
-        <span className="absolute right-3 bottom-2.5 text-[10px] font-light text-white/15">
+        <span className="absolute right-3 bottom-2.5 text-[10px] font-light text-white/60">
           {value.length}/{maxLength}
         </span>
       )}
@@ -214,7 +214,7 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
 
       {/* Actions */}
       {!isLeader && (
-        <p className="text-xs font-light text-white/25 italic">
+        <p className="text-xs font-light text-white/60 italic">
           Only leaders can save settings. You can view them but not edit.
         </p>
       )}

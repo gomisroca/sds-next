@@ -15,7 +15,7 @@ export function AttendanceCounts({ attendance }: { attendance: AttendanceCountsT
 
   return (
     <div className="flex flex-col gap-3 border border-red-900/20 bg-white/[0.02] p-5">
-      <p className="text-xs font-light tracking-[0.25em] text-white/30 uppercase">Attendance</p>
+      <p className="text-xs font-light tracking-[0.25em] text-white/60 uppercase">Attendance</p>
 
       {STATUSES.map(({ key, label, emoji, barClass }, _) => {
         const count = attendance[key];
@@ -24,11 +24,11 @@ export function AttendanceCounts({ attendance }: { attendance: AttendanceCountsT
         return (
           <div key={key} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-light text-white/40">
+              <span className="text-xs font-light text-white/60">
                 {emoji} {label}
               </span>
               <motion.span
-                className="text-xs font-light text-white/40 tabular-nums"
+                className="text-xs font-light text-white/60 tabular-nums"
                 key={count}
                 initial={{ opacity: 0.4, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ export function AttendanceCounts({ attendance }: { attendance: AttendanceCountsT
         );
       })}
 
-      {total === 0 && <p className="text-xs font-light text-white/20 italic">No responses yet.</p>}
+      {total === 0 && <p className="text-xs font-light text-white/60 italic">No responses yet.</p>}
     </div>
   );
 }

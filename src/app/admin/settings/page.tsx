@@ -29,9 +29,9 @@ export default async function AdminSettingsPage() {
     <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Settings</h1>
+        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Settings</h1>
         <OrnamentalRule className="max-w-xs" />
-        <p className="mt-6 text-sm font-light text-white/35">
+        <p className="mt-6 text-sm font-light text-white/60">
           {isLeader
             ? 'Changes take effect on the next page load.'
             : 'You can view settings but only leaders can make changes.'}

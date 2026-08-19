@@ -80,7 +80,7 @@ async function WelcomeSection() {
           <h2 className="mb-4 text-2xl font-light tracking-[0.15em] text-white/80 uppercase md:text-3xl">
             {settings.welcomeTitle}
           </h2>
-          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/45">{settings.welcomeText}</p>
+          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/60">{settings.welcomeText}</p>
         </div>
 
         {/* Featured events carousel */}

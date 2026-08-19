@@ -10,7 +10,7 @@ import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META } from '@/utils/profile';
 
 // ── Shared primitives ─────────────────────────────────────────────────────────
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/40 uppercase">{children}</label>;
+  return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/60 uppercase">{children}</label>;
 }
 
 function FieldError({ message }: { message?: string }) {
@@ -65,7 +65,7 @@ function Textarea({
         className="w-full resize-none border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/80 placeholder-white/20 transition-colors outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
       />
       {maxLength && (
-        <span className="absolute right-3 bottom-2.5 text-[10px] font-light text-white/15">
+        <span className="absolute right-3 bottom-2.5 text-[10px] font-light text-white/60">
           {value.length}/{maxLength}
         </span>
       )}
@@ -99,7 +99,7 @@ function ImageUploadField({
             type="button"
             onClick={() => onChange('')}
             aria-label={`Remove ${label}`}
-            className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/60">
+            className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80">
             <X className="h-3 w-3" />
           </button>
         </div>
@@ -113,7 +113,7 @@ function ImageUploadField({
           appearance={{
             container: 'flex flex-col items-start w-full',
             button:
-              'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light uppercase text-white/40 hover:text-white/60',
+              'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light uppercase text-white/60 hover:text-white/90',
           }}
           content={{
             button({ ready, isUploading }) {
@@ -195,7 +195,7 @@ export function StepGameplay({
               className={`border px-3 py-1.5 text-xs font-light transition-all ${
                 data.job === key
                   ? 'border-red-700 bg-red-950/20 text-white'
-                  : 'border-white/10 bg-white/[0.02] text-white/40 hover:border-white/20'
+                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/20'
               }`}>
               {meta.label}
             </button>
@@ -216,7 +216,7 @@ export function StepGameplay({
               className={`border px-3 py-1.5 text-xs font-light transition-all ${
                 data.playstyle === key
                   ? 'border-red-700 bg-red-950/20 text-white'
-                  : 'border-white/10 bg-white/[0.02] text-white/40 hover:border-white/20'
+                  : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/20'
               }`}>
               {meta.label}
             </button>
@@ -239,7 +239,7 @@ export function StepGameplay({
                 className={`border px-3 py-1.5 text-xs font-light transition-all ${
                   isSelected
                     ? 'border-yellow-700 bg-yellow-950/20 text-yellow-500'
-                    : 'border-white/10 bg-white/[0.02] text-white/40 hover:border-white/20'
+                    : 'border-white/10 bg-white/[0.02] text-white/60 hover:border-white/20'
                 }`}>
                 {label}
               </button>
@@ -260,7 +260,7 @@ export function StepVisuals({
 }) {
   return (
     <div data-testid="step-visuals" className="flex flex-col gap-8">
-      <p className="text-sm font-light text-white/40">Both images are optional - you can always add them later.</p>
+      <p className="text-sm font-light text-white/60">Both images are optional - you can always add them later.</p>
 
       <ImageUploadField
         label="Portrait"

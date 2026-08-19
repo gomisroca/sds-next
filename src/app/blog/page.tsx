@@ -51,15 +51,15 @@ export default async function BlogPage() {
       <div className="relative z-10 mx-auto max-w-3xl px-6 py-16">
         <div className="mb-12">
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/70 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/85 uppercase md:text-5xl">News</h1>
+          <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/90 uppercase md:text-5xl">News</h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/40">Updates, announcements, and stories from the Den.</p>
+          <p className="mt-6 text-sm font-light text-white/60">Updates, announcements, and stories from the Den.</p>
         </div>
 
         {posts.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-24 text-center">
             <Newspaper className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-            <p className="text-sm font-light tracking-widest text-white/20 uppercase">No posts yet</p>
+            <p className="text-sm font-light tracking-widest text-white/60 uppercase">No posts yet</p>
           </div>
         ) : (
           <div className="flex flex-col gap-8">
@@ -81,7 +81,7 @@ export default async function BlogPage() {
                   )}
 
                   <div className="p-7">
-                    <p className="mb-2 text-xs font-light tracking-[0.3em] text-white/20 uppercase">
+                    <p className="mb-2 text-xs font-light tracking-[0.3em] text-white/60 uppercase">
                       {formatDate(post.publishedAt)}
                       {post.author.name && ` · ${post.author.name}`}
                     </p>
@@ -89,7 +89,7 @@ export default async function BlogPage() {
                       {post.title}
                     </h2>
                     {post.excerpt && (
-                      <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/40">{post.excerpt}</p>
+                      <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/4700">{post.excerpt}</p>
                     )}
                     <p className="mt-4 text-xs font-light tracking-[0.2em] text-red-700/50 uppercase transition-colors group-hover:text-red-600/70">
                       Read more →

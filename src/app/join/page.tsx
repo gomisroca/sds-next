@@ -54,10 +54,10 @@ export default async function JoinPage() {
         {/* Header */}
         <div className="mb-14 text-center">
           <p className="mb-4 text-xs font-light tracking-[0.4em] text-red-800/60 uppercase">{settings.subtitle}</p>
-          <h1 className="mb-3 text-4xl font-extralight tracking-[0.1em] text-white/85 uppercase md:text-5xl">
+          <h1 className="mb-3 text-4xl font-extralight tracking-[0.1em] text-white/90 uppercase md:text-5xl">
             Join the Den
           </h1>
-          <p className="mb-8 text-base font-light text-white/35 italic">
+          <p className="mb-8 text-base font-light text-white/60 italic">
             A home for every kind of adventurer in Eorzea
           </p>
           <OrnamentalRule />
@@ -65,8 +65,8 @@ export default async function JoinPage() {
 
         {/* FC intro */}
         <div className="mb-14 text-center">
-          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/55">{settings.welcomeText}</p>
-          <p className="mt-6 text-sm font-light text-white/30">
+          <p className="mx-auto max-w-xl text-base leading-relaxed font-light text-white/60">{settings.welcomeText}</p>
+          <p className="mt-6 text-sm font-light text-white/60">
             {memberCount} member{memberCount !== 1 ? 's' : ''} and counting.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default async function JoinPage() {
               <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-700/30" />
               <item.icon className="mb-4 h-5 w-5 text-red-700/50" strokeWidth={1.5} />
               <h3 className="mb-2 text-xs font-light tracking-widest text-red-400/80 uppercase">{item.title}</h3>
-              <p className="text-sm leading-relaxed font-light text-white/45">{item.body}</p>
+              <p className="text-sm leading-relaxed font-light text-white/60">{item.body}</p>
             </div>
           ))}
         </div>
@@ -87,8 +87,8 @@ export default async function JoinPage() {
 
         {/* CTA */}
         <div className="text-center">
-          <h2 className="mb-3 text-2xl font-extralight tracking-wide text-white/75 uppercase">Ready to join?</h2>
-          <p className="mb-8 text-sm font-light text-white/40">
+          <h2 className="mb-3 text-2xl font-extralight tracking-wide text-white/80 uppercase">Ready to join?</h2>
+          <p className="mb-8 text-sm font-light text-white/60">
             {hasInvite
               ? 'Join our Discord server and introduce yourself. An officer will get you sorted.'
               : 'Our Discord invite link is coming soon. Check back shortly or ask a member in-game.'}
@@ -111,12 +111,12 @@ export default async function JoinPage() {
               />
             </a>
           ) : (
-            <div className="inline-flex items-center gap-3 border border-red-900/20 px-10 py-4 text-sm font-light tracking-[0.25em] text-white/20 uppercase">
+            <div className="inline-flex items-center gap-3 border border-red-900/20 px-10 py-4 text-sm font-light tracking-[0.25em] text-white/60 uppercase">
               Discord invite coming soon
             </div>
           )}
 
-          <p className="mt-6 text-xs font-light text-white/20">
+          <p className="mt-6 text-xs font-light text-white/60">
             Already a member?{' '}
             <Link
               href="/api/auth/signin"

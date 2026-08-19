@@ -105,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Back */}
         <Link
           href="/blog"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors hover:text-white/60">
+          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
           <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" strokeWidth={1.5} />
           All Posts
         </Link>
@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Header */}
         <div className="mb-10">
-          <p className="mb-3 text-xs font-light tracking-[0.35em] text-white/20 uppercase">
+          <p className="mb-3 text-xs font-light tracking-[0.35em] text-white/60 uppercase">
             {post.publishedAt?.toLocaleDateString('en-GB', {
               day: 'numeric',
               month: 'long',
@@ -130,7 +130,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 md:text-4xl">{post.title}</h1>
           <OrnamentalRule />
           {post.excerpt && (
-            <p className="mt-6 text-base leading-relaxed font-light text-white/45 italic">{post.excerpt}</p>
+            <p className="mt-6 text-base leading-relaxed font-light text-white/60 italic">{post.excerpt}</p>
           )}
         </div>
 

@@ -31,9 +31,9 @@ export default async function AdminTemplatesPage() {
       <div className="mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Event Templates</h1>
+          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Event Templates</h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/35">
+          <p className="mt-6 text-sm font-light text-white/60">
             {templates.length} template{templates.length !== 1 ? 's' : ''} saved. Templates are used as starting points
             when creating new events.
           </p>
@@ -50,8 +50,8 @@ export default async function AdminTemplatesPage() {
       {templates.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-24 text-center">
           <FileText className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-          <p className="text-sm font-light tracking-widest text-white/20 uppercase">No templates yet</p>
-          <p className="text-xs font-light text-white/15">Create an event and check "Save as reusable template".</p>
+          <p className="text-sm font-light tracking-widest text-white/60 uppercase">No templates yet</p>
+          <p className="text-xs font-light text-white/60">Create an event and check "Save as reusable template".</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -82,27 +82,27 @@ function TemplateRow({ template }: { template: Awaited<ReturnType<typeof getTemp
 
       {/* Info */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-light text-white/75">{template.templateName ?? template.name}</p>
-        <p className="mt-0.5 truncate text-xs font-light text-white/30">{template.name}</p>
+        <p className="truncate text-sm font-light text-white/90">{template.templateName ?? template.name}</p>
+        <p className="mt-0.5 truncate text-xs font-light text-white/60">{template.name}</p>
         {template.location && (
-          <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/20 uppercase">{template.location}</p>
+          <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/60 uppercase">{template.location}</p>
         )}
       </div>
 
       {/* Meta */}
       <div className="shrink-0 text-right">
-        <p className="text-xs font-light text-white/20">
+        <p className="text-xs font-light text-white/60">
           {template.createdAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
         </p>
         {template.createdBy.name && (
-          <p className="mt-0.5 text-[10px] font-light text-white/15">{template.createdBy.name}</p>
+          <p className="mt-0.5 text-[10px] font-light text-white/60">{template.createdBy.name}</p>
         )}
       </div>
 
       {/* Edit button */}
       <Link
         href={`/admin/templates/${template.id}/edit`}
-        className="flex shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-xs font-light tracking-[0.2em] text-white/30 uppercase transition-all hover:border-red-800/40 hover:text-white/60">
+        className="flex shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">
         <Pencil className="h-3 w-3" strokeWidth={1.5} />
         Edit
       </Link>

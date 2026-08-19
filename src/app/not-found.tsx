@@ -46,10 +46,10 @@ export default function NotFound() {
           <div className="h-px flex-1 bg-gradient-to-l from-transparent via-red-900 to-red-700" />
         </div>
 
-        <h1 className="mb-3 text-xl font-extralight tracking-[0.15em] text-white/70 uppercase md:text-2xl">
+        <h1 className="mb-3 text-xl font-extralight tracking-[0.15em] text-white/80 uppercase md:text-2xl">
           Page Not Found
         </h1>
-        <p className="mb-10 text-sm font-light text-white/35">This page doesn't exist or has been moved.</p>
+        <p className="mb-10 text-sm font-light text-white/60">This page doesn't exist or has been moved.</p>
 
         <Link
           href="/"

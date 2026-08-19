@@ -69,9 +69,9 @@ export default async function EditProfilePage({ params }: { params: Promise<{ id
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
         <div className="mb-10">
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Edit Profile</h1>
+          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Edit Profile</h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/35">
+          <p className="mt-6 text-sm font-light text-white/60">
             Editing <span className="text-white/60">{profile.name}</span>
           </p>
         </div>

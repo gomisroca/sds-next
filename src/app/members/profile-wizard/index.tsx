@@ -36,13 +36,13 @@ function StepIndicator({ current }: { current: number }) {
                     ? 'border-red-700/60 bg-red-950/40 text-red-400'
                     : active
                       ? 'border-red-700/80 bg-red-950/60 text-red-300'
-                      : 'border-red-900/25 bg-white/[0.02] text-white/20'
+                      : 'border-red-900/25 bg-white/[0.02] text-white/60'
                 }`}>
                 {done ? <Check className="h-3 w-3" strokeWidth={2} /> : <Icon className="h-3 w-3" strokeWidth={1.5} />}
               </div>
               <span
                 className={`text-xs font-light tracking-[0.2em] uppercase transition-colors duration-300 ${
-                  active ? 'text-white/70' : done ? 'text-white/40' : 'text-white/20'
+                  active ? 'text-white/90' : done ? 'text-white/80' : 'text-white/60'
                 }`}>
                 {step.label}
               </span>
@@ -160,8 +160,8 @@ export default function ProfileWizard(props: ProfileWizardProps) {
   return (
     <div>
       {props.mode === 'create' && props.targetUserName && (
-        <p className="mb-6 text-sm font-light text-white/35">
-          Creating profile for <span className="text-white/60">{props.targetUserName}</span>
+        <p className="mb-6 text-sm font-light text-white/60">
+          Creating profile for <span className="text-white/80">{props.targetUserName}</span>
         </p>
       )}
 
@@ -190,7 +190,7 @@ export default function ProfileWizard(props: ProfileWizardProps) {
           type="button"
           onClick={back}
           disabled={step === 1}
-          className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors hover:text-white/60 disabled:pointer-events-none disabled:opacity-0">
+          className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90 disabled:pointer-events-none disabled:opacity-0">
           <ArrowLeft className="h-3 w-3" strokeWidth={1.5} />
           Back
         </button>

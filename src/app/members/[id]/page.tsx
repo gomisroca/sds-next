@@ -81,7 +81,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
         <div className="mb-10 flex items-center justify-between">
           <Link
             href="/members"
-            className="group inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors duration-200 hover:text-white/60">
+            className="group inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors duration-200 hover:text-white/90">
             <ArrowLeft
               className="h-3 w-3 transition-transform duration-200 group-hover:-translate-x-0.5"
               strokeWidth={1.5}
@@ -92,7 +92,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
           {canEdit && profile && (
             <Link
               href={`/members/${profile.id}/edit`}
-              className="flex items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/35 uppercase transition-all hover:border-red-800/40 hover:text-white/60">
+              className="flex items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">
               <Pencil className="h-3 w-3" strokeWidth={1.5} />
               Edit Profile
             </Link>
@@ -123,7 +123,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
             </div>
 
             {/* Member since */}
-            <p className="text-xs font-light text-white/20">
+            <p className="text-xs font-light text-white/60">
               Member since {member.createdAt.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
             </p>
           </div>
@@ -141,7 +141,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
                     <span className={`text-xs font-light tracking-[0.2em] uppercase ${JOB_META[profile.job].color}`}>
                       {JOB_META[profile.job].label}
                     </span>
-                    <span className="text-[10px] text-white/20">{JOB_META[profile.job].role}</span>
+                    <span className="text-[10px] text-white/60">{JOB_META[profile.job].role}</span>
                   </div>
                   <div
                     className={`flex items-center border px-3 py-1.5 ${PLAYSTYLE_META[profile.playstyle].bg} border-current/10`}>
@@ -155,20 +155,20 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
                 {/* Bio */}
                 {profile.bio && (
                   <div>
-                    <p className="mb-3 text-xs font-light tracking-[0.25em] text-white/25 uppercase">About</p>
-                    <p className="text-sm leading-relaxed font-light text-white/55">{profile.bio}</p>
+                    <p className="mb-3 text-xs font-light tracking-[0.25em] text-white/60 uppercase">About</p>
+                    <p className="text-sm leading-relaxed font-light text-white/60">{profile.bio}</p>
                   </div>
                 )}
 
                 {/* Activities */}
                 {profile.activities.length > 0 && (
                   <div>
-                    <p className="mb-3 text-xs font-light tracking-[0.25em] text-white/25 uppercase">Activities</p>
+                    <p className="mb-3 text-xs font-light tracking-[0.25em] text-white/60 uppercase">Activities</p>
                     <div className="flex flex-wrap gap-2">
                       {profile.activities.map((act) => (
                         <span
                           key={act}
-                          className="border border-red-900/25 bg-red-950/15 px-2.5 py-1 text-xs font-light tracking-wide text-white/40">
+                          className="border border-red-900/25 bg-red-950/15 px-2.5 py-1 text-xs font-light tracking-wide text-white/60">
                           {ACTIVITY_LABEL[act]}
                         </span>
                       ))}
@@ -178,7 +178,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
               </div>
             ) : (
               <div className="flex items-center justify-center py-16">
-                <p className="text-sm font-light text-white/20 italic">This member hasn't set up their profile yet.</p>
+                <p className="text-sm font-light text-white/60 italic">This member hasn't set up their profile yet.</p>
               </div>
             )}
           </div>

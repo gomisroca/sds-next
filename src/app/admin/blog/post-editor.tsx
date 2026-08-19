@@ -42,8 +42,8 @@ function slugify(title: string) {
 function Label({ children, hint }: { children: React.ReactNode; hint?: string }) {
   return (
     <div className="mb-2">
-      <label className="block text-xs font-light tracking-[0.25em] text-white/40 uppercase">{children}</label>
-      {hint && <p className="mt-0.5 text-xs font-light text-white/20">{hint}</p>}
+      <label className="block text-xs font-light tracking-[0.25em] text-white/80 uppercase">{children}</label>
+      {hint && <p className="mt-0.5 text-xs font-light text-white/60">{hint}</p>}
     </div>
   );
 }
@@ -227,7 +227,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
             <button
               type="button"
               onClick={() => patch({ coverImage: '' })}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/60 transition-colors hover:bg-black/80 hover:text-white">
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80 transition-colors hover:bg-black/80 hover:text-white">
               <X className="h-3 w-3" strokeWidth={2} />
             </button>
           </div>
@@ -242,8 +242,8 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
             appearance={{
               container: 'flex flex-col items-start w-full',
               button:
-                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/40 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/60 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
-              allowedContent: 'text-xs font-light text-white/20 mt-1.5',
+                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/80 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/90 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
+              allowedContent: 'text-xs font-light text-white/60 mt-1.5',
             }}
             content={{
               button({ ready, isUploading }) {
@@ -274,7 +274,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
           type="button"
           onClick={() => handleSave(false)}
           disabled={submitting}
-          className="flex cursor-pointer items-center gap-2 border border-red-900/25 bg-white/[0.02] px-6 py-2.5 text-xs font-light tracking-[0.25em] text-white/40 uppercase transition-all hover:border-red-800/40 hover:text-white/60 disabled:opacity-50">
+          className="flex cursor-pointer items-center gap-2 border border-red-900/25 bg-white/[0.02] px-6 py-2.5 text-xs font-light tracking-[0.25em] text-white/80 uppercase transition-all hover:border-red-800/40 hover:text-white/90 disabled:opacity-50">
           {submitting && !form.published ? (
             <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
           ) : (

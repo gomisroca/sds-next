@@ -52,7 +52,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <div className="sticky top-14 flex flex-col gap-1 p-4 pt-8">
             <div className="mb-4 px-3">
               <p className="text-[10px] font-light tracking-[0.3em] text-red-800/60 uppercase">Admin Panel</p>
-              <p className="mt-0.5 text-xs font-light text-white/25">{user.name ?? 'Officer'}</p>
+              <p className="mt-0.5 text-xs font-light text-white/60">{user.name ?? 'Officer'}</p>
             </div>
 
             <div className="mb-3 h-px bg-red-900/20" />
@@ -64,7 +64,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <div className="mt-8 border-t border-red-900/15 pt-8">
               <Link
                 href="/"
-                className="flex items-center gap-2 px-3 py-2 text-xs font-light tracking-[0.2em] text-white/20 uppercase transition-colors hover:text-white/40">
+                className="flex items-center gap-2 px-3 py-2 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-colors hover:text-white/90">
                 ← Back to site
               </Link>
             </div>
@@ -82,7 +82,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <Link
                 key={item.href}
                 href={item.href}
-                className="shrink-0 text-xs font-light tracking-[0.2em] text-white/40 uppercase transition-colors hover:text-white/70">
+                className="shrink-0 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-colors hover:text-white/90">
                 {item.label}
               </Link>
             ))}

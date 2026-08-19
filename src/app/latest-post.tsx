@@ -46,7 +46,7 @@ export default async function LatestBlogPost() {
         )}
 
         <div className="p-7">
-          <p className="mb-2 text-xs font-light tracking-[0.3em] text-white/20 uppercase">
+          <p className="mb-2 text-xs font-light tracking-[0.3em] text-white/60 uppercase">
             {formatDate(post.publishedAt)}
             {post.author.name && ` · ${post.author.name}`}
           </p>
@@ -54,7 +54,7 @@ export default async function LatestBlogPost() {
             {post.title}
           </h2>
           {post.excerpt && (
-            <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/40">{post.excerpt}</p>
+            <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/60">{post.excerpt}</p>
           )}
           <p className="mt-4 text-xs font-light tracking-[0.2em] text-red-700/50 uppercase transition-colors group-hover:text-red-600/70">
             Read more →

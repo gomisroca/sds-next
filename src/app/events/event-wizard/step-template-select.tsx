@@ -88,13 +88,13 @@ export function StepTemplateSelect({ onSelect }: StepTemplateSelectProps) {
         </div>
         <div>
           <div className="mb-0.5 flex items-center gap-2">
-            <Plus className="h-3.5 w-3.5 text-white/40" strokeWidth={1.5} />
+            <Plus className="h-3.5 w-3.5 text-white/60" strokeWidth={1.5} />
             <p
-              className={`text-sm font-light tracking-wide transition-colors ${selected === '' ? 'text-white/80' : 'text-white/40'}`}>
+              className={`text-sm font-light tracking-wide transition-colors ${selected === '' ? 'text-white/90' : 'text-white/60'}`}>
               Start fresh
             </p>
           </div>
-          <p className="text-xs font-light text-white/20">Create a new event from scratch.</p>
+          <p className="text-xs font-light text-white/60">Create a new event from scratch.</p>
         </div>
       </motion.button>
 
@@ -102,7 +102,7 @@ export function StepTemplateSelect({ onSelect }: StepTemplateSelectProps) {
       {templates.length > 0 && (
         <>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-light tracking-[0.25em] text-white/20 uppercase">Or use a template</span>
+            <span className="text-[10px] font-light tracking-[0.25em] text-white/60 uppercase">Or use a template</span>
             <div className="h-px flex-1 bg-red-900/15" />
           </div>
 
@@ -127,17 +127,17 @@ export function StepTemplateSelect({ onSelect }: StepTemplateSelectProps) {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="mb-0.5 flex items-center gap-2">
-                  <FileText className="h-3.5 w-3.5 shrink-0 text-white/30" strokeWidth={1.5} />
+                  <FileText className="h-3.5 w-3.5 shrink-0 text-white/60" strokeWidth={1.5} />
                   <p
                     className={`truncate text-sm font-light tracking-wide transition-colors ${
-                      selected === t.id ? 'text-white/80' : 'text-white/40'
+                      selected === t.id ? 'text-white/90' : 'text-white/60'
                     }`}>
                     {t.templateName ?? t.name}
                   </p>
                 </div>
-                {t.description && <p className="line-clamp-1 text-xs font-light text-white/20">{t.description}</p>}
+                {t.description && <p className="line-clamp-1 text-xs font-light text-white/60">{t.description}</p>}
                 {t.location && (
-                  <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/15 uppercase">{t.location}</p>
+                  <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/60 uppercase">{t.location}</p>
                 )}
               </div>
             </motion.button>
@@ -146,7 +146,7 @@ export function StepTemplateSelect({ onSelect }: StepTemplateSelectProps) {
       )}
 
       {templates.length === 0 && (
-        <p className="py-2 text-xs font-light text-white/20 italic">
+        <p className="py-2 text-xs font-light text-white/60 italic">
           No templates saved yet. Create an event and check "Save as reusable template" to add one.
         </p>
       )}

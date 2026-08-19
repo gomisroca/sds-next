@@ -45,13 +45,13 @@ export default async function NewProfilePage({ searchParams }: { searchParams: P
         <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
           <div className="mb-10">
             <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Sleeping Dragons</p>
-            <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">New Profile</h1>
+            <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">New Profile</h1>
             <OrnamentalRule className="max-w-xs" />
-            <p className="mt-6 text-sm font-light text-white/35">Select a member to create a profile for.</p>
+            <p className="mt-6 text-sm font-light text-white/60">Select a member to create a profile for.</p>
           </div>
 
           {membersWithoutProfile.length === 0 ? (
-            <p className="text-sm font-light text-white/25 italic">All members already have profiles.</p>
+            <p className="text-sm font-light text-white/60 italic">All members already have profiles.</p>
           ) : (
             <div className="flex flex-col gap-2">
               {membersWithoutProfile.map((user) => (
@@ -62,8 +62,8 @@ export default async function NewProfilePage({ searchParams }: { searchParams: P
                   {user.image && (
                     <img src={user.image} alt="" className="h-7 w-7 rounded-full ring-1 ring-red-900/30" />
                   )}
-                  <span className="text-sm font-light text-white/70">{user.name ?? 'Unknown'}</span>
-                  <span className="ml-auto text-xs font-light tracking-widest text-white/25 uppercase">
+                  <span className="text-sm font-light text-white/80">{user.name ?? 'Unknown'}</span>
+                  <span className="ml-auto text-xs font-light tracking-widest text-white/60 uppercase">
                     {user.role}
                   </span>
                 </a>
@@ -104,7 +104,7 @@ export default async function NewProfilePage({ searchParams }: { searchParams: P
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
         <div className="mb-10">
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">New Profile</h1>
+          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">New Profile</h1>
           <OrnamentalRule className="max-w-xs" />
         </div>
 

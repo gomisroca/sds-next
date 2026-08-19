@@ -19,7 +19,7 @@ interface TemplateEditFormProps {
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/40 uppercase">{children}</label>;
+  return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/60 uppercase">{children}</label>;
 }
 
 function Input({
@@ -37,7 +37,7 @@ function Input({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/80 placeholder-white/20 transition-colors outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
+      className="w-full border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/90 placeholder-white/20 transition-colors outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
     />
   );
 }
@@ -59,7 +59,7 @@ function Textarea({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       rows={rows}
-      className="w-full resize-none border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/80 placeholder-white/20 transition-colors outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
+      className="w-full resize-none border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/90 placeholder-white/20 transition-colors outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
     />
   );
 }
@@ -122,7 +122,7 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
       <div>
         <Label>Template Name *</Label>
         <Input value={templateName} onChange={setTemplateName} placeholder="e.g. Monthly Social Night" />
-        <p className="mt-1.5 text-xs font-light text-white/20">
+        <p className="mt-1.5 text-xs font-light text-white/60">
           Shown in the template picker when creating a new event.
         </p>
       </div>
@@ -130,7 +130,7 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
       <div>
         <Label>Event Name *</Label>
         <Input value={name} onChange={setName} placeholder="The Dragonsong Vigil" />
-        <p className="mt-1.5 text-xs font-light text-white/20">
+        <p className="mt-1.5 text-xs font-light text-white/60">
           Pre-filled as the event name when this template is used.
         </p>
       </div>
@@ -159,7 +159,7 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
             <button
               type="button"
               onClick={() => setImageUrl('')}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/60 transition-colors hover:bg-black/80 hover:text-white">
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80 transition-colors hover:bg-black/80 hover:text-white">
               <X className="h-3 w-3" strokeWidth={2} />
             </button>
           </div>
@@ -174,8 +174,8 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
             appearance={{
               container: 'flex flex-col items-start w-full',
               button:
-                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/40 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/60 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
-              allowedContent: 'text-xs font-light text-white/20 mt-1.5',
+                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/80 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/60 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
+              allowedContent: 'text-xs font-light text-white/60 mt-1.5',
             }}
             content={{
               button({ ready, isUploading }) {
@@ -193,7 +193,7 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
         <button
           type="button"
           onClick={() => router.push('/admin/templates')}
-          className="text-xs font-light tracking-[0.25em] text-white/25 uppercase transition-colors hover:text-white/50">
+          className="text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
           Cancel
         </button>
 

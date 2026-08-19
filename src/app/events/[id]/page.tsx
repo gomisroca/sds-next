@@ -103,7 +103,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         {/* Back */}
         <Link
           href="/events"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/30 uppercase transition-colors duration-200 hover:text-white/60">
+          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors duration-200 hover:text-white/90">
           <ArrowLeft
             className="h-3 w-3 transition-transform duration-200 group-hover:-translate-x-0.5"
             strokeWidth={1.5}
@@ -146,12 +146,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           {/* Description */}
           <div className="md:col-span-2">
             {event.description ? (
-              <p className="text-base leading-relaxed font-light text-white/55">{event.description}</p>
+              <p className="text-base leading-relaxed font-light text-white/60">{event.description}</p>
             ) : (
-              <p className="text-sm font-light text-white/25 italic">No description provided.</p>
+              <p className="text-sm font-light text-white/60 italic">No description provided.</p>
             )}
             {event.createdBy.name && (
-              <p className="mt-8 text-xs font-light tracking-widest text-white/20 uppercase">
+              <p className="mt-8 text-xs font-light tracking-widest text-white/60 uppercase">
                 Posted by {event.createdBy.name}
               </p>
             )}
@@ -166,16 +166,16 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-start gap-3">
                 <Calendar className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-700/50" strokeWidth={1.5} />
                 <div>
-                  <p className="text-sm font-light text-white/70">{formatFull(event.startsAt!)}</p>
+                  <p className="text-sm font-light text-white/90">{formatFull(event.startsAt!)}</p>
                   {event.endsAt && formatFull(event.endsAt) !== formatFull(event.startsAt!) && (
-                    <p className="text-xs font-light text-white/35">to {formatFull(event.endsAt)}</p>
+                    <p className="text-xs font-light text-white/60">to {formatFull(event.endsAt)}</p>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 <Clock className="h-3.5 w-3.5 shrink-0 text-red-700/50" strokeWidth={1.5} />
-                <p className="text-sm font-light text-white/70">
+                <p className="text-sm font-light text-white/90">
                   {formatTime(event.startsAt!)}
                   {event.endsAt ? ` – ${formatTime(event.endsAt)}` : ''}
                 </p>
@@ -184,7 +184,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               {event.location && (
                 <div className="flex items-center gap-3">
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-red-700/50" strokeWidth={1.5} />
-                  <p className="text-sm font-light text-white/70">{event.location}</p>
+                  <p className="text-sm font-light text-white/90">{event.location}</p>
                 </div>
               )}
             </div>

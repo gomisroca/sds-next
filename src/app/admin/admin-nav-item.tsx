@@ -31,9 +31,9 @@ export default function AdminNavItem({ item }: { item: NavItemDef }) {
   if (item.soon) {
     return (
       <div className="flex cursor-not-allowed items-center gap-2.5 px-3 py-2 opacity-40">
-        <Icon className="h-3.5 w-3.5 shrink-0 text-white/30" strokeWidth={1.5} />
-        <span className="flex-1 text-xs font-light tracking-[0.15em] text-white/30 uppercase">{item.label}</span>
-        <span className="text-[9px] font-light tracking-widest text-white/20 uppercase">Soon</span>
+        <Icon className="h-3.5 w-3.5 shrink-0 text-white/60" strokeWidth={1.5} />
+        <span className="flex-1 text-xs font-light tracking-[0.15em] text-white/60 uppercase">{item.label}</span>
+        <span className="text-[9px] font-light tracking-widest text-white/60 uppercase">Soon</span>
       </div>
     );
   }
@@ -42,10 +42,10 @@ export default function AdminNavItem({ item }: { item: NavItemDef }) {
     <Link
       href={item.href}
       className={`flex items-center gap-2.5 px-3 py-2 transition-colors duration-150 ${
-        active ? 'bg-red-950/40 text-white/80' : 'text-white/35 hover:bg-white/[0.03] hover:text-white/60'
+        active ? 'bg-red-950/40 text-white/80' : 'text-white/60 hover:bg-white/[0.03] hover:text-white/90'
       }`}>
       <Icon
-        className={`h-3.5 w-3.5 shrink-0 transition-colors ${active ? 'text-red-500/70' : 'text-white/25'}`}
+        className={`h-3.5 w-3.5 shrink-0 transition-colors ${active ? 'text-red-500/70' : 'text-white/60'}`}
         strokeWidth={1.5}
       />
 

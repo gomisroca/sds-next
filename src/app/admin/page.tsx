@@ -20,7 +20,7 @@ export default async function AdminPage() {
     <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Sleeping Dragons</p>
-        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Admin</h1>
+        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Admin</h1>
         <OrnamentalRule className="max-w-xs" />
       </div>
 
@@ -32,8 +32,8 @@ export default async function AdminPage() {
           { label: 'Templates', value: stats.templateCount },
         ].map((stat) => (
           <div key={stat.label} className="border border-red-900/20 bg-white/[0.02] p-5 text-center">
-            <p className="text-3xl font-extralight text-white/70">{stat.value}</p>
-            <p className="mt-1 text-xs font-light tracking-widest text-white/25 uppercase">{stat.label}</p>
+            <p className="text-3xl font-extralight text-white/80">{stat.value}</p>
+            <p className="mt-1 text-xs font-light tracking-widest text-white/60 uppercase">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -109,10 +109,10 @@ function AdminQuickLink({
       <Icon className="mt-0.5 h-4 w-4 shrink-0 text-red-700/50" strokeWidth={1.5} />
       <div>
         <div className="flex items-center gap-2">
-          <p className="text-sm font-light text-white/70">{title}</p>
-          {soon && <span className="text-[10px] font-light tracking-widest text-white/20 uppercase">Soon</span>}
+          <p className="text-sm font-light text-white/80">{title}</p>
+          {soon && <span className="text-[10px] font-light tracking-widest text-white/60 uppercase">Soon</span>}
         </div>
-        <p className="mt-0.5 text-xs leading-relaxed font-light text-white/30">{description}</p>
+        <p className="mt-0.5 text-xs leading-relaxed font-light text-white/60">{description}</p>
       </div>
     </div>
   );

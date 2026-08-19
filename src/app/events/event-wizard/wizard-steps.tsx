@@ -55,7 +55,7 @@ export function StepDetails({
             <button
               type="button"
               onClick={() => onChange({ imageUrl: '' })}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/60 transition-colors hover:bg-black/80 hover:text-white">
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80 transition-colors hover:bg-black/80 hover:text-white">
               <X className="h-3 w-3" strokeWidth={2} />
             </button>
           </div>
@@ -70,8 +70,8 @@ export function StepDetails({
             appearance={{
               container: 'flex flex-col items-start w-full',
               button:
-                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/40 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/60 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
-              allowedContent: 'text-xs font-light text-white/20 mt-1.5',
+                'w-full border border-red-900/30 bg-white/[0.03] px-4 py-2.5 text-xs font-light tracking-[0.2em] text-white/80 uppercase transition-colors hover:border-red-800/50 hover:bg-white/[0.05] hover:text-white/60 ut-uploading:opacity-50 ut-uploading:cursor-not-allowed',
+              allowedContent: 'text-xs font-light text-white/60 mt-1.5',
             }}
             content={{
               button({ ready, isUploading }) {
@@ -81,7 +81,7 @@ export function StepDetails({
             }}
           />
         )}
-        <p className="mt-1.5 text-xs font-light text-white/20">Optional - shown on the event card and detail page.</p>
+        <p className="mt-1.5 text-xs font-light text-white/60">Optional - shown on the event card and detail page.</p>
       </div>
 
       {/* Template toggle - hidden in edit mode */}
@@ -102,7 +102,7 @@ export function StepDetails({
             </button>
             <div>
               <Label>Save as reusable template</Label>
-              <p className="text-xs font-light text-white/20">
+              <p className="text-xs font-light text-white/60">
                 Templates can be used as a starting point for future events. No date or Discord post required.
               </p>
             </div>
@@ -139,8 +139,8 @@ export function StepTime({
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
         <Calendar className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-        <p className="text-sm font-light text-white/40">Templates don’t need a date.</p>
-        <p className="text-xs font-light text-white/20">
+        <p className="text-sm font-light text-white/60">Templates don’t need a date.</p>
+        <p className="text-xs font-light text-white/60">
           When you create an event from this template, you’ll set the date then.
         </p>
       </div>
@@ -194,8 +194,8 @@ export function StepTime({
 
       {data.startsAtDate && (
         <div className="border border-red-900/20 bg-white/[0.02] p-4">
-          <p className="mb-1 text-xs font-light tracking-[0.2em] text-white/25 uppercase">Preview</p>
-          <p className="text-sm font-light text-white/60">
+          <p className="mb-1 text-xs font-light tracking-[0.2em] text-white/60 uppercase">Preview</p>
+          <p className="text-sm font-light text-white/80">
             {new Date(`${data.startsAtDate}T${data.startsAtTime}`).toLocaleString('en-GB', {
               weekday: 'long',
               day: 'numeric',
@@ -205,7 +205,7 @@ export function StepTime({
               minute: '2-digit',
             })}
             {data.hasEndTime && data.endsAtDate && (
-              <span className="text-white/30">
+              <span className="text-white/60">
                 {' '}
                 →{' '}
                 {new Date(`${data.endsAtDate}T${data.endsAtTime}`).toLocaleTimeString('en-GB', {
@@ -226,15 +226,15 @@ export function StepPublish({ data, onChange }: { data: FormData; onChange: (pat
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3 border border-red-900/20 bg-white/[0.02] p-5">
-        <p className="text-xs font-light tracking-[0.25em] text-white/25 uppercase">Summary</p>
-        <h3 className="text-xl font-light text-white/80">{data.name}</h3>
+        <p className="text-xs font-light tracking-[0.25em] text-white/60 uppercase">Summary</p>
+        <h3 className="text-xl font-light text-white/90">{data.name}</h3>
         {data.location && (
-          <p className="flex items-center gap-2 text-sm font-light text-white/40">
+          <p className="flex items-center gap-2 text-sm font-light text-white/60">
             <MapPin className="h-3 w-3" strokeWidth={1.5} /> {data.location}
           </p>
         )}
         {data.startsAtDate && (
-          <p className="flex items-center gap-2 text-sm font-light text-white/40">
+          <p className="flex items-center gap-2 text-sm font-light text-white/60">
             <Calendar className="h-3 w-3" strokeWidth={1.5} />
             {new Date(`${data.startsAtDate}T${data.startsAtTime}`).toLocaleString('en-GB', {
               weekday: 'short',
@@ -247,13 +247,13 @@ export function StepPublish({ data, onChange }: { data: FormData; onChange: (pat
           </p>
         )}
         {data.description && (
-          <p className="line-clamp-3 text-sm leading-relaxed font-light text-white/40">{data.description}</p>
+          <p className="line-clamp-3 text-sm leading-relaxed font-light text-white/60">{data.description}</p>
         )}
       </div>
 
       {!data.isTemplate && (
         <div className="flex flex-col gap-3">
-          <p className="text-xs font-light tracking-[0.25em] text-white/30 uppercase">Discord</p>
+          <p className="text-xs font-light tracking-[0.25em] text-white/60 uppercase">Discord</p>
           {([true, false] as const).map((isPublish) => {
             const selected = data.publishNow === isPublish;
             return (
@@ -272,10 +272,10 @@ export function StepPublish({ data, onChange }: { data: FormData; onChange: (pat
                 </div>
                 <div>
                   <p
-                    className={`text-sm font-light tracking-wide transition-colors ${selected ? 'text-white/80' : 'text-white/40'}`}>
+                    className={`text-sm font-light tracking-wide transition-colors ${selected ? 'text-white/90' : 'text-white/60'}`}>
                     {isPublish ? 'Publish now' : 'Save as draft'}
                   </p>
-                  <p className="mt-0.5 text-xs font-light text-white/25">
+                  <p className="mt-0.5 text-xs font-light text-white/60">
                     {isPublish
                       ? 'Posts to the Discord channel immediately and opens RSVPs.'
                       : 'Saves the event privately. You can publish it later.'}

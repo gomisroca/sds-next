@@ -48,9 +48,9 @@ export default async function AdminMembersPage() {
     <>
       <div className="mb-10">
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Members</h1>
+        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Members</h1>
         <OrnamentalRule className="max-w-xs" />
-        <p className="mt-6 text-sm font-light text-white/35">
+        <p className="mt-6 text-sm font-light text-white/60">
           {members.length} user{members.length !== 1 ? 's' : ''} total.
           {isLeader ? ' Use the role selector to promote or demote members.' : ' Only leaders can change roles.'}
         </p>
@@ -103,13 +103,13 @@ export default async function AdminMembersPage() {
                     {/* Identity */}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="truncate text-sm font-light text-white/75">{member.name ?? 'Unknown'}</p>
+                        <p className="truncate text-sm font-light text-white/80">{member.name ?? 'Unknown'}</p>
                         {isSelf && (
-                          <span className="text-[10px] font-light tracking-widest text-white/20 uppercase">You</span>
+                          <span className="text-[10px] font-light tracking-widest text-white/60 uppercase">You</span>
                         )}
                       </div>
-                      {member.email && <p className="truncate text-xs font-light text-white/25">{member.email}</p>}
-                      <p className="mt-0.5 text-[10px] font-light text-white/15">
+                      {member.email && <p className="truncate text-xs font-light text-white/60">{member.email}</p>}
+                      <p className="mt-0.5 text-[10px] font-light text-white/60">
                         Joined{' '}
                         {member.createdAt.toLocaleDateString('en-GB', {
                           day: 'numeric',
@@ -139,7 +139,7 @@ export default async function AdminMembersPage() {
                     {!hasProfile && member.role !== 'GUEST' && (
                       <Link
                         href={`/profile/new?userId=${member.id}`}
-                        className="hidden shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/25 uppercase transition-all hover:border-red-800/35 hover:text-white/50 sm:flex">
+                        className="hidden shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90 sm:flex">
                         <UserPlus className="h-3 w-3" strokeWidth={1.5} />
                         Profile
                       </Link>
@@ -147,7 +147,7 @@ export default async function AdminMembersPage() {
                     {hasProfile && (
                       <Link
                         href={`/members/${member.id}`}
-                        className="hidden shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/25 uppercase transition-all hover:border-red-800/35 hover:text-white/50 sm:flex">
+                        className="hidden shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90 sm:flex">
                         View
                       </Link>
                     )}

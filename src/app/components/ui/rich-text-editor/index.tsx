@@ -48,7 +48,7 @@ function ToolbarButton({
       className={`flex h-7 w-7 items-center justify-center border transition-all duration-150 ${
         active
           ? 'border-red-700/60 bg-red-950/40 text-red-400'
-          : 'border-transparent text-white/30 hover:border-red-900/30 hover:text-white/60'
+          : 'border-transparent text-white/60 hover:border-red-900/30 hover:text-white/90'
       } disabled:opacity-30`}>
       {children}
     </button>
@@ -167,7 +167,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
       </div>
 
       {/* Editor area */}
-      <EditorContent editor={editor} className="rich-text-editor px-5 py-4 text-sm font-light text-white/75" />
+      <EditorContent editor={editor} className="rich-text-editor px-5 py-4 text-sm font-light text-white/80" />
     </div>
   );
 }

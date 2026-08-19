@@ -51,7 +51,7 @@ export function EventActions({ eventId, canEdit, canPublish, canCancel, canDelet
         {canEdit && (
           <a
             href={`/admin/events/${eventId}/edit`}
-            className="flex cursor-pointer items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-2 text-xs font-light tracking-[0.2em] text-white/40 uppercase transition-all hover:border-red-800/40 hover:text-white/65">
+            className="flex cursor-pointer items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-2 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">
             <Pencil className="h-3 w-3" strokeWidth={1.5} />
             Edit Details
           </a>
@@ -130,7 +130,7 @@ function ConfirmButton({
         <button
           type="button"
           onClick={() => setConfirming(false)}
-          className="border border-red-900/20 px-3 py-2 text-xs font-light text-white/25 uppercase transition-colors hover:text-white/50">
+          className="border border-red-900/20 px-3 py-2 text-xs font-light text-white/60 uppercase transition-colors hover:text-white/90">
           Cancel
         </button>
       </div>

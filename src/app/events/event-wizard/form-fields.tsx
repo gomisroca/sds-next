@@ -1,7 +1,7 @@
 'use client';
 
 export function Label({ children }: { children: React.ReactNode }) {
-  return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/40 uppercase">{children}</label>;
+  return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/60 uppercase">{children}</label>;
 }
 
 export function Input({
@@ -24,7 +24,7 @@ export function Input({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required={required}
-      className="w-full border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/80 placeholder-white/20 transition-colors duration-200 outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
+      className="w-full border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/90 placeholder-white/20 transition-colors duration-200 outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
       style={{ colorScheme: 'dark' }}
     />
   );
@@ -47,7 +47,7 @@ export function Textarea({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       rows={rows}
-      className="w-full resize-none border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/80 placeholder-white/20 transition-colors duration-200 outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
+      className="w-full resize-none border border-red-900/25 bg-white/[0.03] px-4 py-2.5 text-sm font-light text-white/90 placeholder-white/20 transition-colors duration-200 outline-none focus:border-red-700/50 focus:bg-white/[0.05]"
     />
   );
 }

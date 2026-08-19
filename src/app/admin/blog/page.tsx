@@ -33,9 +33,9 @@ export default async function AdminBlogPage() {
       <div className="mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Blog Posts</h1>
+          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Blog Posts</h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/35">
+          <p className="mt-6 text-sm font-light text-white/60">
             {posts.length} post{posts.length !== 1 ? 's' : ''} total — {published.length} published, {drafts.length}{' '}
             draft{drafts.length !== 1 ? 's' : ''}.
           </p>
@@ -52,7 +52,7 @@ export default async function AdminBlogPage() {
       {posts.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-24 text-center">
           <FileText className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-          <p className="text-sm font-light tracking-widest text-white/20 uppercase">No posts yet</p>
+          <p className="text-sm font-light tracking-widest text-white/60 uppercase">No posts yet</p>
         </div>
       ) : (
         <div className="flex flex-col gap-10">
@@ -93,8 +93,8 @@ export default async function AdminBlogPage() {
 
                       {/* Info */}
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-light text-white/75">{post.title}</p>
-                        <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs font-light text-white/25">
+                        <p className="truncate text-sm font-light text-white/80">{post.title}</p>
+                        <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs font-light text-white/60">
                           <span>/blog/{post.slug}</span>
                           {post.author.name && <span>by {post.author.name}</span>}
                           <span>
@@ -110,13 +110,13 @@ export default async function AdminBlogPage() {
                         {post.published && (
                           <Link
                             href={`/blog/${post.slug}`}
-                            className="border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/25 uppercase transition-all hover:border-red-800/35 hover:text-white/50">
+                            className="border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90">
                             View
                           </Link>
                         )}
                         <Link
                           href={`/admin/blog/${post.id}/edit`}
-                          className="flex items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/25 uppercase transition-all hover:border-red-800/35 hover:text-white/50">
+                          className="flex items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90">
                           <Pencil className="h-2.5 w-2.5" strokeWidth={1.5} />
                           Edit
                         </Link>

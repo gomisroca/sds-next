@@ -28,8 +28,8 @@ async function getEvents() {
 const STATUS_STYLES: Record<EventStatus, { label: string; color: string; bg: string }> = {
   DRAFT: { label: 'Draft', color: 'text-yellow-600/70', bg: 'bg-yellow-950/20 border-yellow-900/30' },
   PUBLISHED: { label: 'Published', color: 'text-emerald-500/70', bg: 'bg-emerald-950/20 border-emerald-900/30' },
-  CANCELLED: { label: 'Cancelled', color: 'text-white/25', bg: 'bg-white/[0.02] border-red-900/15' },
-  COMPLETED: { label: 'Completed', color: 'text-white/25', bg: 'bg-white/[0.02] border-red-900/15' },
+  CANCELLED: { label: 'Cancelled', color: 'text-white/60', bg: 'bg-white/[0.02] border-red-900/15' },
+  COMPLETED: { label: 'Completed', color: 'text-white/60', bg: 'bg-white/[0.02] border-red-900/15' },
 };
 
 const STATUS_ORDER: EventStatus[] = ['PUBLISHED', 'DRAFT', 'CANCELLED', 'COMPLETED'];
@@ -58,9 +58,9 @@ export default async function AdminEventsPage() {
       <div className="mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/85 uppercase">Events</h1>
+          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Events</h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/35">
+          <p className="mt-6 text-sm font-light text-white/60">
             {events.length} event{events.length !== 1 ? 's' : ''} total.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default async function AdminEventsPage() {
       {events.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-24 text-center">
           <Calendar className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-          <p className="text-sm font-light tracking-widest text-white/20 uppercase">No events yet</p>
+          <p className="text-sm font-light tracking-widest text-white/60 uppercase">No events yet</p>
         </div>
       ) : (
         <div className="flex flex-col gap-10">
@@ -106,8 +106,8 @@ export default async function AdminEventsPage() {
 
                       {/* Info */}
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-light text-white/75">{event.name}</p>
-                        <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs font-light text-white/25">
+                        <p className="truncate text-sm font-light text-white/90">{event.name}</p>
+                        <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs font-light text-white/60">
                           <span>{formatDate(event.startsAt)}</span>
                           {event.location && <span>{event.location}</span>}
                           {event.createdBy.name && <span>by {event.createdBy.name}</span>}
@@ -115,7 +115,7 @@ export default async function AdminEventsPage() {
                       </div>
 
                       {/* Attendance count */}
-                      <span className="shrink-0 text-xs font-light text-white/20">
+                      <span className="shrink-0 text-xs font-light text-white/60">
                         {event._count.attendances} RSVP{event._count.attendances !== 1 ? 's' : ''}
                       </span>
 
@@ -123,13 +123,13 @@ export default async function AdminEventsPage() {
                       <div className="flex shrink-0 items-center gap-2">
                         <Link
                           href={`/events/${event.id}`}
-                          className="border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/25 uppercase transition-all hover:border-red-800/35 hover:text-white/50">
+                          className="border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90">
                           View
                         </Link>
                         {event.status === EventStatus.DRAFT && (
                           <Link
                             href={`/admin/events/${event.id}/edit`}
-                            className="flex items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/25 uppercase transition-all hover:border-red-800/35 hover:text-white/50">
+                            className="flex items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90">
                             <Pencil className="h-2.5 w-2.5" strokeWidth={1.5} />
                             Edit
                           </Link>

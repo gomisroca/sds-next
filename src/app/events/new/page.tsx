@@ -43,8 +43,8 @@ export default async function NewEventPage() {
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
         <div className="mb-10">
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-2 text-3xl font-extralight tracking-wide text-white/85 uppercase md:text-4xl">New Event</h1>
-          <p className="text-sm font-light text-white/35">
+          <h1 className="mb-2 text-3xl font-extralight tracking-wide text-white/90 uppercase md:text-4xl">New Event</h1>
+          <p className="text-sm font-light text-white/60">
             Fill in the details, set the time, then choose whether to publish straight to Discord.
           </p>
         </div>

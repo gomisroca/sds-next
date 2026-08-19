@@ -69,15 +69,15 @@ export default function RoleSelector({ userId, currentRole, canEdit }: RoleSelec
           className={`appearance-none border border-red-900/25 bg-[#060404] px-3 py-1 pr-7 text-xs font-light tracking-[0.2em] uppercase transition-colors outline-none hover:border-red-800/50 disabled:opacity-50 ${meta.color}`}
           style={{ colorScheme: 'dark' }}>
           {ROLES.map((r) => (
-            <option key={r} value={r} className="text-white/60">
+            <option key={r} value={r} className="text-white/80">
               {ROLE_META[r].label}
             </option>
           ))}
         </select>
         {/* Custom chevron */}
-        <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-white/20">▾</span>
+        <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-white/60">▾</span>
       </div>
-      {saving && <span className="text-[10px] font-light text-white/25">Saving…</span>}
+      {saving && <span className="text-[10px] font-light text-white/60">Saving…</span>}
       {error && <span className="text-[10px] font-light text-red-400/70">{error}</span>}
     </div>
   );

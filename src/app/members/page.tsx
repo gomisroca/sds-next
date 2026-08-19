@@ -60,11 +60,11 @@ export default async function MembersPage() {
         {/* Header */}
         <div className="mb-12">
           <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/70 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/85 uppercase md:text-5xl">
+          <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/90 uppercase md:text-5xl">
             Members
           </h1>
           <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/40">
+          <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/60">
             {members.length} adventurer{members.length !== 1 ? 's' : ''} call the Den home.
           </p>
         </div>
@@ -95,7 +95,7 @@ export default async function MembersPage() {
 
         {members.length === 0 && (
           <div className="py-24 text-center">
-            <p className="text-sm font-light tracking-widest text-white/20 uppercase">No members yet.</p>
+            <p className="text-sm font-light tracking-widest text-white/60 uppercase">No members yet.</p>
           </div>
         )}
       </div>

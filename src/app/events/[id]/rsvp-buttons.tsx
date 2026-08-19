@@ -67,7 +67,7 @@ export function RSVPButtons({ eventId, confirmedStatus, onSuccess }: RSVPButtons
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-xs font-light tracking-[0.25em] text-white/30 uppercase">Your RSVP</p>
+      <p className="text-xs font-light tracking-[0.25em] text-white/60 uppercase">Your RSVP</p>
 
       <div className="flex flex-col gap-2">
         {BUTTONS.map(({ status, label, emoji, activeClass, hoverClass }, i) => {
@@ -79,7 +79,7 @@ export function RSVPButtons({ eventId, confirmedStatus, onSuccess }: RSVPButtons
               onClick={() => handleRSVP(status)}
               disabled={isPending}
               className={`flex items-center gap-3 border px-4 py-2.5 text-xs font-light tracking-[0.2em] uppercase transition-all duration-200 disabled:opacity-50 ${
-                isActive ? activeClass : `cursor-pointer border-red-900/20 bg-white/[0.02] text-white/30 ${hoverClass}`
+                isActive ? activeClass : `cursor-pointer border-red-900/20 bg-white/[0.02] text-white/60 ${hoverClass}`
               }`}
               initial={{ opacity: 0, x: 8 }}
               animate={{ opacity: 1, x: 0 }}
@@ -103,7 +103,7 @@ export function RSVPButtons({ eventId, confirmedStatus, onSuccess }: RSVPButtons
 
       {optimisticStatus && (
         <motion.p
-          className="text-[10px] font-light tracking-widest text-white/20 uppercase"
+          className="text-[10px] font-light tracking-widest text-white/60 uppercase"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}>
           You can change your mind any time.
