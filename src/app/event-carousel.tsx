@@ -126,7 +126,7 @@ function EventSlide({ event, direction }: { event: FeaturedEvent; direction: num
               <Users className="h-3 w-3" strokeWidth={1.5} />
               {event._count.attendances} attending
             </span>
-            <span className="text-xs font-light tracking-[0.2em] text-red-700/50 uppercase transition-colors group-hover:text-red-600/70">
+            <span className="text-xs font-light tracking-[0.2em] text-red-600/80 uppercase transition-colors group-hover:text-red-600/70">
               View event →
             </span>
           </div>

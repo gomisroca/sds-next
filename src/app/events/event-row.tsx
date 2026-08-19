@@ -43,7 +43,7 @@ export default function EventRow({ event, index }: EventRowProps) {
 
           {/* Date column */}
           <div className="relative z-10 flex w-24 shrink-0 flex-col items-center justify-center border-r border-red-900/15 py-5 text-center transition-colors duration-200 group-hover:border-red-800/30 md:w-32">
-            <span className="text-[10px] font-light tracking-[0.25em] text-red-700/50 uppercase">{weekday}</span>
+            <span className="text-[10px] font-light tracking-[0.25em] text-red-600/80 uppercase">{weekday}</span>
             <span className="text-2xl font-extralight text-white/80 tabular-nums">{dayNumber}</span>
           </div>
 
@@ -88,7 +88,7 @@ export default function EventRow({ event, index }: EventRowProps) {
           </div>
 
           {/* Right arrow hint */}
-          <div className="relative z-10 flex items-center pr-4 text-red-800/0 transition-colors duration-200 group-hover:text-red-700/50">
+          <div className="relative z-10 flex items-center pr-4 text-red-800/0 transition-colors duration-200 group-hover:text-red-600/80">
             <span className="text-sm">›</span>
           </div>
         </div>

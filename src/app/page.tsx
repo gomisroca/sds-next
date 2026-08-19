@@ -59,7 +59,7 @@ function InfoCards() {
           <div className="absolute right-0 bottom-0 h-5 w-5 border-r border-b border-red-700/40" />
           <div className="relative">
             <span className="mb-4 block text-2xl">{card.icon}</span>
-            <h3 className="mb-3 text-xs font-light tracking-widest text-red-400/90 uppercase">{card.title}</h3>
+            <h3 className="mb-3 text-xs font-light tracking-widest text-red-400 uppercase">{card.title}</h3>
             <p className="text-sm leading-relaxed font-light text-white/55">{card.body}</p>
           </div>
         </div>

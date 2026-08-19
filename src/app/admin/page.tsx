@@ -106,7 +106,7 @@ function AdminQuickLink({
       className={`group flex items-start gap-4 border border-red-900/20 bg-white/[0.02] p-5 transition-all duration-200 ${
         disabled ? 'cursor-not-allowed opacity-40' : 'hover:border-red-800/40 hover:bg-white/[0.04]'
       }`}>
-      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-red-700/50" strokeWidth={1.5} />
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-red-600/80" strokeWidth={1.5} />
       <div>
         <div className="flex items-center gap-2">
           <p className="text-sm font-light text-white/80">{title}</p>

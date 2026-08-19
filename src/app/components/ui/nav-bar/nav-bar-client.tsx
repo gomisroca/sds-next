@@ -108,7 +108,7 @@ function UserDropdown({
             className="rounded-full ring-1 ring-red-900/40"
           />
         ) : (
-          <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400/80 ring-1 ring-red-900/40">
+          <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400 ring-1 ring-red-900/40">
             {user.name?.[0]?.toUpperCase() ?? '?'}
           </span>
         )}
@@ -198,7 +198,7 @@ function AuthButton({ isOfficerPlus }: { isOfficerPlus: boolean }) {
   return (
     <motion.button
       onClick={() => signIn('discord')}
-      className="flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
+      className="flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}>
       <DiscordIcon />
@@ -240,7 +240,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
               className="rounded-full ring-1 ring-red-900/40"
             />
           ) : (
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400/80 ring-1 ring-red-900/40">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400 ring-1 ring-red-900/40">
               {session.user.name?.[0]?.toUpperCase() ?? '?'}
             </span>
           )}
@@ -304,7 +304,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
     <div className="mt-1 border-t border-red-900/20 pt-4">
       <button
         onClick={() => signIn('discord')}
-        className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-red-400/70 uppercase transition-colors hover:text-red-300">
+        className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-colors hover:text-red-300">
         <DiscordIcon />
         Sign in with Discord
       </button>
@@ -393,7 +393,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
               <span className="text-sm font-extralight tracking-[0.18em] text-white/80 uppercase transition-colors duration-300 group-hover:text-white/95">
                 {fcName}
               </span>
-              <span className="text-[10px] font-light tracking-[0.25em] text-red-800/70 uppercase">{subtitle}</span>
+              <span className="text-[10px] font-light tracking-[0.25em] text-red-600/80 uppercase">{subtitle}</span>
             </div>
           </Link>
 
@@ -412,7 +412,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                   )}
                   <span
                     className={`text-xs font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                      active ? 'text-white/90' : 'text-white/60 group-hover:text-white/90'
+                      active ? 'text-white/90' : 'text-white/80 group-hover:text-white/90'
                     }`}>
                     {link.label}
                   </span>
@@ -426,7 +426,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                 <div className="mx-3 h-3.5 w-px bg-red-900/40" />
                 <Link href="/apply">
                   <motion.span
-                    className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
+                    className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}>
                     Join
@@ -505,7 +505,7 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
                     transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
                     <Link
                       href="/apply"
-                      className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
+                      className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
                       Join Us
                     </Link>
                   </motion.div>

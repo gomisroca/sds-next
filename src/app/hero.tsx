@@ -151,7 +151,7 @@ function ScrollCue() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2.8, duration: 0.8 }}>
-      <span className="text-xs font-light tracking-[0.3em] text-red-700/50 uppercase">Scroll</span>
+      <span className="text-xs font-light tracking-[0.3em] text-red-600/80 uppercase">Scroll</span>
       <motion.div
         className="h-8 w-px bg-gradient-to-b from-red-700/50 to-transparent"
         animate={{ scaleY: [1, 0.4, 1], opacity: [0.5, 1, 0.5] }}
@@ -262,7 +262,7 @@ export default function HomeHero() {
           transition={{ duration: 0.8, delay: 2.2 }}>
           <motion.a
             href="/join"
-            className="border border-red-700/50 bg-red-950/20 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all duration-300 hover:border-red-600/70 hover:bg-red-900/30 hover:text-red-200"
+            className="border border-red-700/50 bg-red-950/20 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-600/70 hover:bg-red-900/30 hover:text-red-300"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}>
             Join Us

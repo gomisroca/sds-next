@@ -53,7 +53,7 @@ export default function NotFound() {
 
         <Link
           href="/"
-          className="border border-red-800/50 bg-red-950/20 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
+          className="border border-red-800/50 bg-red-950/20 px-10 py-3 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
           Return Home
         </Link>
       </div>

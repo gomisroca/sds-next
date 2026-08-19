@@ -118,6 +118,6 @@ describe('HomeHero Core Landing View Component', () => {
 
     const scrollCueLabel = screen.getByText(/scroll/i);
     expect(scrollCueLabel).toBeInTheDocument();
-    expect(scrollCueLabel).toHaveClass('tracking-[0.3em]', 'text-red-700/50', 'uppercase');
+    expect(scrollCueLabel).toHaveClass('tracking-[0.3em]', 'text-red-600/80', 'uppercase');
   });
 });

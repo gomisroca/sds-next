@@ -106,7 +106,7 @@ export default async function MembersPage() {
 function SectionLabel({ label }: { label: string }) {
   return (
     <div className="mb-6 flex items-center gap-4">
-      <span className="text-xs font-light tracking-[0.3em] text-red-700/60 uppercase">{label}</span>
+      <span className="text-xs font-light tracking-[0.3em] text-red-600/80 uppercase">{label}</span>
       <div className="h-px flex-1 bg-red-900/20" />
     </div>
   );

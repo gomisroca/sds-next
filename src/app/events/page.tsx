@@ -108,7 +108,7 @@ function EventSchedule({ events }: { events: EventRow_Event[] }) {
         <section key={month}>
           {/* Month label */}
           <div className="mb-5 flex items-center gap-4">
-            <span className="text-xs font-light tracking-[0.3em] text-red-700/60 uppercase">{month}</span>
+            <span className="text-xs font-light tracking-[0.3em] text-red-600/80 uppercase">{month}</span>
             <div className="h-px flex-1 bg-red-900/20" />
           </div>
 

@@ -303,7 +303,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
             type="button"
             onClick={handleDelete}
             disabled={deleting}
-            className="ml-auto flex cursor-pointer items-center gap-2 border border-red-900/20 px-4 py-2.5 text-xs font-light tracking-[0.25em] text-red-700/50 uppercase transition-all hover:border-red-700/40 hover:text-red-500/70 disabled:opacity-50">
+            className="ml-auto flex cursor-pointer items-center gap-2 border border-red-900/20 px-4 py-2.5 text-xs font-light tracking-[0.25em] text-red-600/80 uppercase transition-all hover:border-red-700/40 hover:text-red-500/70 disabled:opacity-50">
             {deleting ? (
               <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
             ) : (

@@ -56,7 +56,7 @@ export default async function LatestBlogPost() {
           {post.excerpt && (
             <p className="line-clamp-2 text-sm leading-relaxed font-light text-white/60">{post.excerpt}</p>
           )}
-          <p className="mt-4 text-xs font-light tracking-[0.2em] text-red-700/50 uppercase transition-colors group-hover:text-red-600/70">
+          <p className="mt-4 text-xs font-light tracking-[0.2em] text-red-600/80 uppercase transition-colors group-hover:text-red-600/70">
             Read more →
           </p>
         </div>
