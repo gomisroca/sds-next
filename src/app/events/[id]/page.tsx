@@ -7,7 +7,7 @@ import { EventActions } from '@/app/events/[id]/event-actions';
 import { EventDetailClient } from '@/app/events/[id]/event-detail-client';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-import { getEventAttendanceCounts } from '@/utils/events';
+import { formatEventDate, formatEventTime, getEventAttendanceCounts } from '@/utils/events';
 
 export const revalidate = 30;
 
@@ -36,19 +36,6 @@ async function getEvent(id: string, userId?: string) {
 
   if (!isVisible) return null;
   return event;
-}
-
-function formatFull(date: Date) {
-  return date.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
-function formatTime(date: Date) {
-  return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -166,9 +153,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-start gap-3">
                 <Calendar className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-600/80" strokeWidth={1.5} />
                 <div>
-                  <p className="text-sm font-light text-white/90">{formatFull(event.startsAt!)}</p>
-                  {event.endsAt && formatFull(event.endsAt) !== formatFull(event.startsAt!) && (
-                    <p className="text-xs font-light text-white/60">to {formatFull(event.endsAt)}</p>
+                  <p className="text-sm font-light text-white/90">{formatEventDate(event.startsAt!)}</p>
+                  {event.endsAt && formatEventDate(event.endsAt) !== formatEventDate(event.startsAt!) && (
+                    <p className="text-xs font-light text-white/60">to {formatEventDate(event.endsAt)}</p>
                   )}
                 </div>
               </div>
@@ -176,8 +163,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-center gap-3">
                 <Clock className="h-3.5 w-3.5 shrink-0 text-red-600/80" strokeWidth={1.5} />
                 <p className="text-sm font-light text-white/90">
-                  {formatTime(event.startsAt!)}
-                  {event.endsAt ? ` – ${formatTime(event.endsAt)}` : ''}
+                  {formatEventTime(event.startsAt!)}
+                  {event.endsAt ? ` - ${formatEventTime(event.endsAt)}` : ''}
                 </p>
               </div>
 

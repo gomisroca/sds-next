@@ -60,7 +60,7 @@ const STATUS_EMOJI = {
   notAttending: '❌',
 };
 
-function formatDate(date: Date): string {
+function formatDiscordTimestamp(date: Date): string {
   // Discord timestamp format - renders in the user's local timezone
   return `<t:${Math.floor(date.getTime() / 1000)}:F>`;
 }
@@ -81,10 +81,10 @@ export function renderEventEmbed(event: EventForEmbed): object {
   const fields = [
     {
       name: '📅 Starts',
-      value: formatDate(event.startsAt),
+      value: formatDiscordTimestamp(event.startsAt),
       inline: true,
     },
-    ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDate(event.endsAt), inline: true }] : []),
+    ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDiscordTimestamp(event.endsAt), inline: true }] : []),
     ...(event.location ? [{ name: '📍 Location', value: event.location, inline: true }] : []),
     { name: '\u200b', value: '\u200b', inline: false }, // spacer
     {
@@ -201,4 +201,16 @@ export async function updateEventOnDiscord(args: {
     // eslint-disable-next-line no-console
     console.error('[updateEventOnDiscord] Network error:', err);
   }
+}
+
+export function formatEventDate(date: Date) {
+  return date.toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+}
+
+export function formatEventTime(date: Date) {
+  return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }

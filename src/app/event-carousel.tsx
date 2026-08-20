@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { formatEventDate, formatEventTime } from '@/utils/events';
 
 export interface FeaturedEvent {
   id: string;
@@ -16,18 +17,6 @@ export interface FeaturedEvent {
   startsAt: Date | null;
   endsAt: Date | null;
   _count: { attendances: number };
-}
-
-function formatEventDate(date: Date) {
-  return date.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  });
-}
-
-function formatEventTime(date: Date) {
-  return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
 // ── Empty state ───────────────────────────────────────────────────────────────

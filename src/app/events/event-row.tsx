@@ -1,8 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MapPin, Users } from 'lucide-react';
+import { Clock, MapPin, Users } from 'lucide-react';
 import Link from 'next/link';
+
+import { formatEventDate, formatEventTime } from '@/utils/events';
 
 interface EventRowProps {
   event: {
@@ -18,18 +20,10 @@ interface EventRowProps {
   index: number;
 }
 
-function formatTime(date: Date) {
-  return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-}
-
-function formatDay(date: Date) {
-  return date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
-}
-
 export default function EventRow({ event, index }: EventRowProps) {
-  const time = formatTime(event.startsAt!);
-  const endTime = event.endsAt ? formatTime(event.endsAt) : null;
-  const [weekday, dayNumber] = formatDay(event.startsAt!).split(' ');
+  const time = formatEventTime(event.startsAt!);
+  const endTime = event.endsAt ? formatEventTime(event.endsAt) : null;
+  const [weekday, dayNumber] = formatEventDate(event.startsAt!).split(' ');
 
   return (
     <motion.div
@@ -48,9 +42,12 @@ export default function EventRow({ event, index }: EventRowProps) {
           </div>
 
           {/* Time column */}
-          <div className="relative z-10 hidden w-28 shrink-0 flex-col items-center justify-center border-r border-red-900/15 py-5 text-center transition-colors duration-200 group-hover:border-red-800/30 md:flex">
-            <span className="text-sm font-light text-white/60 tabular-nums">{time}</span>
-            {endTime && <span className="text-xs font-light text-white/60">→ {endTime}</span>}
+          <div className="relative z-10 hidden w-28 shrink-0 flex-col items-center justify-center gap-1 border-r border-red-900/15 py-5 text-center transition-colors duration-200 group-hover:border-red-800/30 md:flex">
+            <Clock className="h-3.5 w-3.5 shrink-0 text-red-600/80" strokeWidth={1.5} />
+            <p className="text-sm font-light text-white/90">
+              {formatEventTime(event.startsAt!)}
+              {event.endsAt ? ` - ${formatEventTime(event.endsAt)}` : ''}
+            </p>
           </div>
 
           {/* Main content */}

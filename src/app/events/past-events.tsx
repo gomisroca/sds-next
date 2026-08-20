@@ -5,6 +5,8 @@ import { Calendar, Loader2, MapPin, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
+import { formatEventTime } from '@/utils/events';
+
 interface PastEvent {
   id: string;
   name: string;
@@ -20,13 +22,6 @@ interface PastEventsResponse {
   events: PastEvent[];
   nextCursor: string | null;
   hasMore: boolean;
-}
-
-function formatTime(dateStr: string) {
-  return new Date(dateStr).toLocaleTimeString('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 }
 
 // ── Compact past event row ────────────────────────────────────────────────────
@@ -59,7 +54,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
               {event.name}
             </h3>
             <div className="flex flex-wrap items-center gap-3 text-xs font-light text-white/60">
-              <span>{formatTime(event.startsAt)}</span>
+              <span>{formatEventTime(new Date(event.startsAt))}</span>
               {event.location && (
                 <span className="flex items-center gap-1">
                   <MapPin className="h-2.5 w-2.5" strokeWidth={1.5} />
