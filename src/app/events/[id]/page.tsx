@@ -9,6 +9,8 @@ import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { formatEventDate, formatEventTime, getEventAttendanceCounts } from '@/utils/events';
 
+import { EventTime } from './event-time';
+
 export const revalidate = 30;
 
 async function getEvent(id: string, userId?: string) {
@@ -163,8 +165,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-center gap-3">
                 <Clock className="h-3.5 w-3.5 shrink-0 text-red-600/80" strokeWidth={1.5} />
                 <p className="text-sm font-light text-white/90">
-                  {formatEventTime(event.startsAt!)}
-                  {event.endsAt ? ` - ${formatEventTime(event.endsAt)}` : ''}
+                  <EventTime date={event.startsAt!} />
+                  {event.endsAt && (
+                    <>
+                      {' - '}
+                      <EventTime date={event.endsAt} />
+                    </>
+                  )}
                 </p>
               </div>
 
