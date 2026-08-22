@@ -2,7 +2,6 @@ import { ArrowLeft, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META, ROLE_META } from '@/utils/profile';
@@ -132,16 +131,12 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
           <div className="md:col-span-2">
             {profile ? (
               <div className="flex flex-col gap-8">
-                <OrnamentalRule />
-
                 {/* Job + playstyle */}
                 <div className="flex flex-wrap gap-3">
-                  <div
-                    className={`flex items-center gap-2 border px-3 py-1.5 ${JOB_META[profile.job].bg} border-current/10`}>
+                  <div className={`flex items-center border px-3 py-1.5 ${JOB_META[profile.job].bg} border-current/10`}>
                     <span className={`text-xs font-light tracking-[0.2em] uppercase ${JOB_META[profile.job].color}`}>
                       {JOB_META[profile.job].label}
                     </span>
-                    <span className="text-[10px] text-white/60">{JOB_META[profile.job].role}</span>
                   </div>
                   <div
                     className={`flex items-center border px-3 py-1.5 ${PLAYSTYLE_META[profile.playstyle].bg} border-current/10`}>
