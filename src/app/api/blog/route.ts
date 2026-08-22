@@ -6,12 +6,14 @@ import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 
 function slugify(title: string): string {
-  return title
+  const slug = title
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-')
     .slice(0, 80);
+
+  return slug || 'blog-post';
 }
 
 async function uniqueSlug(base: string): Promise<string> {
