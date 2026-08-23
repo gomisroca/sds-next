@@ -141,7 +141,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
     try {
       type PostResponse = { success: true; post: { id: string; slug: string } } | { success: false; error: string };
 
-      const res = await fetch(mode === 'new' ? '/api/blog' : `/api/blog/${postId}`, {
+      const res = await fetch(mode === 'new' ? '/api/blog' : `/api/admin/blog/${postId}`, {
         method: mode === 'new' ? 'POST' : 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -173,7 +173,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
     if (!postId) return;
     setDeleting(true);
     try {
-      await fetch(`/api/blog/${postId}`, { method: 'DELETE' });
+      await fetch(`/api/admin/blog/${postId}`, { method: 'DELETE' });
       router.push('/admin/blog');
       router.refresh();
     } catch {
