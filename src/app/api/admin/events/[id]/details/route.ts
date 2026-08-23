@@ -40,7 +40,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Event not found' }, { status: 404 });
   }
   if (event.isTemplate) {
-    return NextResponse.json({ error: 'Use PATCH /api/events/[id] for templates' }, { status: 400 });
+    return NextResponse.json({ error: 'Use PATCH /api/admin/events/[id] for templates' }, { status: 400 });
   }
   if (event.status !== EventStatus.DRAFT) {
     return NextResponse.json({ error: 'Only draft events can be edited - cancel the event first' }, { status: 409 });
