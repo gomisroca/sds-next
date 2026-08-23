@@ -10,6 +10,7 @@ interface EventRowProps {
   event: {
     id: string;
     name: string;
+    slug: string | null;
     description: string | null;
     location: string | null;
     startsAt: Date | null;
@@ -30,7 +31,7 @@ export default function EventRow({ event, index }: EventRowProps) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}>
-      <Link href={`/events/${event.id}`} className="group block">
+      <Link href={`/events/${event.slug}`} className="group block">
         <div className="relative flex items-stretch gap-0 border-b border-red-900/15 transition-colors duration-200 hover:border-red-800/30">
           {/* Hover background */}
           <div className="absolute inset-0 bg-red-950/0 transition-colors duration-300 group-hover:bg-red-950/15" />

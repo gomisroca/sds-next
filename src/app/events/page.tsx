@@ -20,6 +20,7 @@ async function getEvents(userId?: string) {
     select: {
       id: true,
       name: true,
+      slug: true,
       description: true,
       location: true,
       imageUrl: true,

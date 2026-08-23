@@ -4,12 +4,12 @@ import type { AttendanceStatus } from 'generated/prisma';
 import { useState } from 'react';
 
 import { DiscordAccessButton } from '@/app/components/auth/discord-access-button';
-import { AttendanceCounts as AttendanceCountsDisplay } from '@/app/events/[id]/attendance-counts';
-import { RSVPButtons } from '@/app/events/[id]/rsvp-buttons';
+import { AttendanceCounts as AttendanceCountsDisplay } from '@/app/events/[slug]/attendance-counts';
+import { RSVPButtons } from '@/app/events/[slug]/rsvp-buttons';
 import type { AttendanceCounts } from '@/utils/events';
 
 interface EventDetailClientProps {
-  eventId: string;
+  eventSlug: string;
   startsAt: Date;
   initialAttendance: AttendanceCounts;
   initialStatus: AttendanceStatus | null;
@@ -33,7 +33,7 @@ function deriveNextCounts(
 }
 
 export function EventDetailClient({
-  eventId,
+  eventSlug,
   startsAt,
   initialAttendance,
   initialStatus,
@@ -52,7 +52,7 @@ export function EventDetailClient({
       <AttendanceCountsDisplay attendance={attendance} />
       {startsAt.getTime() > Date.now() &&
         (isAuthenticated ? (
-          <RSVPButtons eventId={eventId} confirmedStatus={confirmedStatus} onSuccess={handleSuccess} />
+          <RSVPButtons eventSlug={eventSlug} confirmedStatus={confirmedStatus} onSuccess={handleSuccess} />
         ) : (
           <SignInPrompt />
         ))}

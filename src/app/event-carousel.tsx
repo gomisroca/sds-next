@@ -11,6 +11,7 @@ import { formatEventDate, formatEventTime } from '@/utils/events';
 export interface FeaturedEvent {
   id: string;
   name: string;
+  slug: string | null;
   description: string | null;
   location: string | null;
   imageUrl: string | null;
@@ -57,7 +58,7 @@ function EventSlide({ event, direction }: { event: FeaturedEvent; direction: num
       exit="exit"
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className="w-full">
-      <Link href={`/events/${event.id}`} className="group flex flex-col md:flex-row">
+      <Link href={`/events/${event.slug}`} className="group flex flex-col md:flex-row">
         {/* Image */}
         {event.imageUrl && (
           <div className="relative h-48 w-full shrink-0 overflow-hidden md:h-auto md:w-2/5">

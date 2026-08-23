@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { EventActions } from '@/app/events/[id]/event-actions';
+import { EventActions } from '@/app/events/[slug]/event-actions';
 
 // Mock Next.js router navigation
 const mockRefresh = vi.fn();
@@ -59,7 +59,7 @@ describe('EventActions Component', () => {
     await user.click(publishBtn);
 
     // Verifies endpoint details
-    expect(fetchMock).toHaveBeenCalledWith('/api/events/evt_123/publish', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/events/evt_123/publish', {
       method: 'POST',
     });
 
@@ -112,7 +112,7 @@ describe('EventActions Component', () => {
       await user.click(screen.getByRole('button', { name: /delete event/i }));
       await user.click(screen.getByRole('button', { name: /confirm delete/i }));
 
-      expect(fetchMock).toHaveBeenCalledWith('/api/events/evt_123/delete', {
+      expect(fetchMock).toHaveBeenCalledWith('/api/admin/events/evt_123/delete', {
         method: 'DELETE',
       });
 

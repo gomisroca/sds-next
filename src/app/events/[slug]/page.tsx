@@ -3,22 +3,23 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
-import { EventActions } from '@/app/events/[id]/event-actions';
-import { EventDetailClient } from '@/app/events/[id]/event-detail-client';
+import { EventActions } from '@/app/events/[slug]/event-actions';
+import { EventDetailClient } from '@/app/events/[slug]/event-detail-client';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-import { formatEventDate, formatEventTime, getEventAttendanceCounts } from '@/utils/events';
+import { formatEventDate, getEventAttendanceCounts } from '@/utils/events';
 
 import { EventTime } from './event-time';
 
 export const revalidate = 30;
 
-async function getEvent(id: string, userId?: string) {
+async function getEvent(slug: string, userId?: string) {
   const event = await db.event.findUnique({
-    where: { id },
+    where: { slug },
     select: {
       id: true,
       name: true,
+      slug: true,
       description: true,
       location: true,
       imageUrl: true,
@@ -40,12 +41,12 @@ async function getEvent(id: string, userId?: string) {
   return event;
 }
 
-export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
   // Run session, event, and attendance fetches in parallel
   const session = await auth();
-  const event = await getEvent(id, session?.user?.id);
+  const event = await getEvent(slug, session?.user?.id);
   if (!event) notFound();
 
   const attendance = await getEventAttendanceCounts(event.id, db);
@@ -185,7 +186,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
             {/* Attendance + RSVP — hidden for past and cancelled events */}
             <EventDetailClient
-              eventId={event.id}
+              eventSlug={event.slug!}
               startsAt={event.startsAt!}
               initialAttendance={attendance}
               initialStatus={existingRSVP?.status ?? null}

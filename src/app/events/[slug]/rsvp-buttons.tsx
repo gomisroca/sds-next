@@ -29,12 +29,12 @@ const BUTTONS = [
 ] as const;
 
 interface RSVPButtonsProps {
-  eventId: string;
+  eventSlug: string;
   confirmedStatus: AttendanceStatus | null;
   onSuccess: (next: AttendanceStatus) => void;
 }
 
-export function RSVPButtons({ eventId, confirmedStatus, onSuccess }: RSVPButtonsProps) {
+export function RSVPButtons({ eventSlug, confirmedStatus, onSuccess }: RSVPButtonsProps) {
   const [optimisticStatus, setOptimisticStatus] = useOptimistic(confirmedStatus);
   const [isPending, startTransition] = useTransition();
 
@@ -46,7 +46,7 @@ export function RSVPButtons({ eventId, confirmedStatus, onSuccess }: RSVPButtons
       setOptimisticStatus(status);
 
       try {
-        const res = await fetch(`/api/events/${eventId}/rsvp`, {
+        const res = await fetch(`/api/events/${eventSlug}/rsvp`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status }),

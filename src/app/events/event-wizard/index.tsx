@@ -111,10 +111,10 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
           ? new Date(`${data.endsAtDate}T${data.endsAtTime}`).toISOString()
           : undefined;
 
-      type EventResponse = { success: true; event: { id: string } } | { success: false; error: string };
+      type EventResponse = { success: true; event: { slug: string } } | { success: false; error: string };
 
       const res = await fetch(
-        isEdit ? `/api/events/${(props as { eventId: string }).eventId}/details` : '/api/events',
+        isEdit ? `/api/admin/events/${(props as { eventId: string }).eventId}/details` : '/api/events',
         {
           method: isEdit ? 'PATCH' : 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -155,7 +155,7 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
       } else if (data.isTemplate) {
         router.push('/events');
       } else {
-        router.push(`/events/${json.event.id}`);
+        router.push(`/events/${json.event.slug}`);
       }
     } catch {
       setSubmitError('Network error - please check your connection and try again.');

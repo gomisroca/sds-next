@@ -19,6 +19,7 @@ async function getUpcomingEvents() {
     select: {
       id: true,
       name: true,
+      slug: true,
       description: true,
       location: true,
       imageUrl: true,

@@ -14,6 +14,7 @@ async function getEvents() {
     select: {
       id: true,
       name: true,
+      slug: true,
       status: true,
       startsAt: true,
       endsAt: true,
@@ -122,7 +123,7 @@ export default async function AdminEventsPage() {
                       {/* Actions */}
                       <div className="flex shrink-0 items-center gap-2">
                         <Link
-                          href={`/events/${event.id}`}
+                          href={`/events/${event.slug}`}
                           className="border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90">
                           View
                         </Link>

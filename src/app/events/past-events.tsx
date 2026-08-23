@@ -10,6 +10,7 @@ import { formatEventTime } from '@/utils/events';
 interface PastEvent {
   id: string;
   name: string;
+  slug: string | null;
   description: string | null;
   location: string | null;
   imageUrl: string | null;
@@ -31,7 +32,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: (index % 20) * 0.04, ease: [0.16, 1, 0.3, 1] }}>
-      <Link href={`/events/${event.id}`} className="group block">
+      <Link href={`/events/${event.slug}`} className="group block">
         <div className="relative flex items-stretch gap-0 border-b border-red-900/10 transition-colors duration-200 hover:border-red-900/20">
           <div className="absolute inset-0 bg-red-950/0 transition-colors duration-300 group-hover:bg-red-950/10" />
 

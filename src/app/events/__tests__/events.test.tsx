@@ -23,7 +23,7 @@ type EventData = {
 type AuthResponse = {
   user: {
     id: string;
-    role: 'MEMBER' | 'GUEST';
+    role: 'DRAGON' | 'GUEST';
   };
 };
 
@@ -101,7 +101,7 @@ describe('EventsPage', () => {
     const authMock = getAuthMock();
     const findManyMock = getFindManyMock();
 
-    authMock.mockResolvedValue({ user: { id: 'u1', role: 'MEMBER' } });
+    authMock.mockResolvedValue({ user: { id: 'u1', role: 'DRAGON' } });
     findManyMock.mockResolvedValue([]);
 
     const page = await EventsPage();
@@ -114,7 +114,7 @@ describe('EventsPage', () => {
     const authMock = getAuthMock();
     const findManyMock = getFindManyMock();
 
-    authMock.mockResolvedValue({ user: { id: 'u1', role: 'MEMBER' } });
+    authMock.mockResolvedValue({ user: { id: 'u1', role: 'DRAGON' } });
     findManyMock.mockResolvedValue([mockEvent({ id: '1', name: 'Alpha' }), mockEvent({ id: '2', name: 'Beta' })]);
 
     const page = await EventsPage();
@@ -128,7 +128,7 @@ describe('EventsPage', () => {
     const authMock = getAuthMock();
     const findManyMock = getFindManyMock();
 
-    authMock.mockResolvedValue({ user: { id: 'u1', role: 'MEMBER' } });
+    authMock.mockResolvedValue({ user: { id: 'u1', role: 'DRAGON' } });
     findManyMock.mockResolvedValue([mockEvent()]);
 
     const page = await EventsPage();
@@ -154,7 +154,7 @@ describe('EventsPage', () => {
     const authMock = getAuthMock();
     const findManyMock = getFindManyMock();
 
-    authMock.mockResolvedValue({ user: { id: 'u1', role: 'MEMBER' } });
+    authMock.mockResolvedValue({ user: { id: 'u1', role: 'DRAGON' } });
     findManyMock.mockResolvedValue([mockEvent({ id: 'a' }), mockEvent({ id: 'b' })]);
 
     const page = await EventsPage();

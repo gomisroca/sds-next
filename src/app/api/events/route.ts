@@ -6,6 +6,28 @@ import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { getEventAttendanceCounts, postEventToDiscord } from '@/utils/events';
 
+function slugify(name: string): string {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 80);
+
+  return slug || 'event';
+}
+
+async function uniqueEventSlug(base: string): Promise<string> {
+  let slug = base;
+  let i = 1;
+
+  while (await db.event.findUnique({ where: { slug } })) {
+    slug = `${base}-${i++}`;
+  }
+
+  return slug;
+}
+
 // ── Validation ───────────────────────────────────────────────────────────────
 const CreateEventSchema = z.object({
   name: z.string().min(1).max(100),
@@ -41,6 +63,8 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   const { name, description, location, imageUrl, startsAt, endsAt, publishNow, isTemplate, templateName } = parsed.data;
+
+  const slug = await uniqueEventSlug(slugify(name));
 
   const startDate = startsAt ? new Date(startsAt) : undefined;
   const endDate = endsAt ? new Date(endsAt) : undefined;
@@ -83,6 +107,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const event = await db.event.create({
     data: {
       name,
+      slug,
       description,
       location,
       imageUrl,
@@ -157,6 +182,7 @@ export async function GET(req: NextRequest): Promise<Response> {
       select: {
         id: true,
         name: true,
+        slug: true,
         description: true,
         location: true,
         imageUrl: true,
@@ -183,6 +209,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     select: {
       id: true,
       name: true,
+      slug: true,
       description: true,
       location: true,
       imageUrl: true,

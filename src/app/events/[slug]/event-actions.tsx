@@ -25,7 +25,7 @@ export function EventActions({ eventId, canEdit, canPublish, canCancel, canDelet
     setError(null);
     try {
       type ActionResponse = { success: true } | { success: false; error: string };
-      const res = await fetch(`/api/events/${eventId}/${action}`, { method });
+      const res = await fetch(`/api/admin/events/${eventId}/${action}`, { method });
       const json = (await res.json()) as ActionResponse;
       if (!res.ok || !json.success) {
         setError(!json.success ? json.error : 'Something went wrong.');

@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { RSVPButtons } from '@/app/events/[id]/rsvp-buttons';
+import { RSVPButtons } from '@/app/events/[slug]/rsvp-buttons';
 
 // Mock global fetch
 const fetchMock = vi.fn();
@@ -10,7 +10,7 @@ global.fetch = fetchMock;
 
 describe('RSVPButtons Component', () => {
   const defaultProps = {
-    eventId: 'test-event-123',
+    eventSlug: 'test-event-123',
     confirmedStatus: null,
     onSuccess: vi.fn(),
   };
