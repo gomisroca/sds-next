@@ -82,7 +82,7 @@ describe('NavBar Component', () => {
 
   it('hides the Join action when a standard logged-in member is active', () => {
     vi.mocked(useSession).mockReturnValue({
-      data: { user: { name: 'Tataru Taru', role: 'MEMBER' } },
+      data: { user: { name: 'Tataru Taru', role: 'DRAGON' } },
       status: 'authenticated',
       update: vi.fn(),
     } as unknown as ReturnType<typeof useSession>);
@@ -96,7 +96,7 @@ describe('NavBar Component', () => {
 
   it('hides the Admin Panel routing option for regular authenticated members', () => {
     vi.mocked(useSession).mockReturnValue({
-      data: { user: { name: 'Tataru Taru', role: 'MEMBER' } },
+      data: { user: { name: 'Tataru Taru', role: 'DRAGON' } },
       status: 'authenticated',
       update: vi.fn(),
     } as unknown as ReturnType<typeof useSession>);

@@ -75,12 +75,12 @@ describe('Profile Utilities Metadata Configurations', () => {
   describe('ROLE_META hierarchical permissions mapping', () => {
     it('sets correct accessibility tags for guild authority settings', () => {
       expect(ROLE_META.MEMBER).toEqual({
-        label: 'Member',
+        label: 'Dragon',
         color: 'text-emerald-400/80',
       });
 
       expect(ROLE_META.LEADER).toEqual({
-        label: 'Leader',
+        label: 'Ancient',
         color: 'text-yellow-400/80',
       });
     });
@@ -88,9 +88,9 @@ describe('Profile Utilities Metadata Configurations', () => {
     it('checks dictionary exhaustive record lookups for all system Roles', () => {
       const keys = Object.keys(ROLE_META) as Role[];
       expect(keys).toContain('GUEST');
-      expect(keys).toContain('MEMBER');
-      expect(keys).toContain('OFFICER');
-      expect(keys).toContain('LEADER');
+      expect(keys).toContain('DRAGON');
+      expect(keys).toContain('WYRM');
+      expect(keys).toContain('ANCIENT');
     });
   });
 

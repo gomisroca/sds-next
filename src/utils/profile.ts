@@ -72,9 +72,9 @@ export const PLAYSTYLE_META: Record<Playstyle, PlaystyleMeta> = {
 // ── Role metadata ─────────────────────────────────────────────────────────────
 export const ROLE_META: Record<Role, { label: string; color: string }> = {
   GUEST: { label: 'Guest', color: 'text-white/60' },
-  MEMBER: { label: 'Member', color: 'text-emerald-400/80' },
-  OFFICER: { label: 'Officer', color: 'text-red-400/80' },
-  LEADER: { label: 'Leader', color: 'text-yellow-400/80' },
+  MEMBER: { label: 'Dragon', color: 'text-emerald-400/80' },
+  OFFICER: { label: 'Wyrm', color: 'text-red-400/80' },
+  LEADER: { label: 'Ancient', color: 'text-yellow-400/80' },
 };
 
 // ── Activity labels ───────────────────────────────────────────────────────────

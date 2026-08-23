@@ -123,7 +123,7 @@ function UserDropdown({
             <div className="border-b border-red-900/20 px-4 py-3">
               <p className="truncate text-xs font-light text-white/80">{user.name}</p>
               <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/60 uppercase">
-                {user.role ?? 'Member'}
+                {user.role ?? 'Dragon'}
               </p>
             </div>
 

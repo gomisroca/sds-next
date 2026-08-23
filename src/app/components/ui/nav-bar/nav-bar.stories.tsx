@@ -44,7 +44,7 @@ export const AuthenticatedMember: Story = {
         id: 'user-123',
         name: 'Alphinaud Leveilleur',
         image: 'https://via.placeholder.com/150',
-        role: 'MEMBER',
+        role: 'DRAGON',
       },
     }),
   ],
