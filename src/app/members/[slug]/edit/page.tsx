@@ -6,16 +6,16 @@ import type { ProfileFormData } from '@/app/members/profile-wizard/types';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 
-export default async function EditProfilePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const session = await auth();
   if (!session?.user?.id) {
     redirect('/?toast=unauthorized');
   }
 
-  const { id } = await params;
+  const { slug } = await params;
 
   const profile = await db.profile.findUnique({
-    where: { id },
+    where: { slug },
     select: {
       id: true,
       userId: true,

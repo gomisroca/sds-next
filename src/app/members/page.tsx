@@ -20,6 +20,7 @@ async function getMembers() {
       profile: {
         select: {
           name: true,
+          slug: true,
           bio: true,
           portrait: true,
           job: true,

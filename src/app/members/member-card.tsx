@@ -14,6 +14,7 @@ interface MemberCardProps {
     role: Role;
     profile: {
       name: string;
+      slug: string;
       bio: string | null;
       portrait: string | null;
       job: Job;
@@ -39,7 +40,9 @@ export default function MemberCard({ member, index }: MemberCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: (index % 6) * 0.07, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true }}>
-      <Link href={`/members/${member.id}`} className="group block h-full">
+      <Link
+        href={`/members/${member.profile?.slug}`}
+        className={`group block h-full ${!member.profile ? 'pointer-events-none' : ''}`}>
         <div className="relative flex h-full flex-col overflow-hidden border border-red-900/20 bg-white/[0.02] transition-all duration-300 hover:border-red-800/40 hover:bg-white/[0.04]">
           {/* Corner accents */}
           <div className="absolute top-0 left-0 z-10 h-5 w-5 border-t border-l border-red-700/35 transition-colors duration-300 group-hover:border-red-600/50" />
@@ -63,10 +66,8 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
             {/* Role badge - overlaid on portrait */}
             {member.role !== 'MEMBER' && (
-              <div className="absolute top-3 right-3">
-                <span className={`text-[10px] font-light tracking-[0.2em] uppercase ${roleMeta.color}`}>
-                  {roleMeta.label}
-                </span>
+              <div className="absolute top-3 right-3 border border-red-900/25 bg-red-950/90 px-1.5 py-0.5 text-[10px] font-light tracking-wide">
+                <span className={`uppercase ${roleMeta.color}`}>{roleMeta.label}</span>
               </div>
             )}
           </div>

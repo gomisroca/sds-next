@@ -15,16 +15,16 @@ const UpdateProfileSchema = z.object({
   playstyle: z.enum(Playstyle),
 });
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ slug: string }> }): Promise<Response> {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const { id } = await params;
+  const { slug } = await params;
 
   const profile = await db.profile.findUnique({
-    where: { id },
+    where: { slug },
     select: { userId: true },
   });
 
@@ -52,7 +52,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { name, bio, portrait, banner, job, activities, playstyle } = parsed.data;
 
   const updated = await db.profile.update({
-    where: { id },
+    where: { slug },
     data: { name, bio, portrait, banner, job, activities, playstyle },
   });
 

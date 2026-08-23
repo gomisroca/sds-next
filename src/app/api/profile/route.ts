@@ -5,6 +5,28 @@ import { z } from 'zod';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 
+function slugify(name: string): string {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 80);
+
+  return slug || 'profile';
+}
+
+async function uniqueProfileSlug(base: string): Promise<string> {
+  let slug = base;
+  let i = 1;
+
+  while (await db.profile.findUnique({ where: { slug } })) {
+    slug = `${base}-${i++}`;
+  }
+
+  return slug;
+}
+
 const CreateProfileSchema = z.object({
   userId: z.string(), // the user to create the profile for
   name: z.string().min(1).max(100),
@@ -38,6 +60,8 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const { userId, name, bio, portrait, banner, job, activities, playstyle } = parsed.data;
 
+  const slug = await uniqueProfileSlug(slugify(name));
+
   // Target user must exist and not be a guest
   const targetUser = await db.user.findUnique({
     where: { id: userId },
@@ -58,7 +82,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   const profile = await db.profile.create({
-    data: { userId, name, bio, portrait, banner, job, activities, playstyle },
+    data: { userId, name, slug, bio, portrait, banner, job, activities, playstyle },
   });
 
   return NextResponse.json({ success: true, profile });

@@ -36,6 +36,7 @@ const mockFullyPopulatedMember = {
   role: 'OFFICER' as const,
   profile: {
     name: 'Alphinaud (Academic)',
+    slug: 'alphinaud-academic',
     bio: 'Academic specialist focusing on Sharlayan field studies.',
     portrait: 'https://cdn.example.com/portrait-high-res.png',
     job: 'SGE' as const, // Sage
@@ -102,8 +103,8 @@ describe('MemberCard Profile Block Component', () => {
     expect(screen.getByRole('heading', { name: 'Tataru Taru' })).toBeInTheDocument();
     expect(screen.getByText(/no profile yet\./i)).toBeInTheDocument();
 
-    // Role tags with exact 'MEMBER' type matches must be omitted from screen entirely
-    expect(screen.queryByText('Member')).toBeNull();
+    // Role tags with exact 'DRAGON' type matches must be omitted from screen entirely
+    expect(screen.queryByText('DRAGON')).toBeNull();
 
     // Initial string letter capitalization badge should replace avatar images when sources are empty
     expect(screen.queryByRole('img')).toBeNull();

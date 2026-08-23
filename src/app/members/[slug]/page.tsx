@@ -8,46 +8,45 @@ import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META, ROLE_META } from '@/utils/pro
 
 export const dynamic = 'force-dynamic';
 
-async function getMember(id: string) {
-  return db.user.findUnique({
-    where: { id },
+async function getMember(slug: string) {
+  return db.profile.findUnique({
+    where: { slug },
     select: {
       id: true,
       name: true,
-      image: true,
-      role: true,
-      createdAt: true,
-      profile: {
+      bio: true,
+      portrait: true,
+      banner: true,
+      job: true,
+      activities: true,
+      playstyle: true,
+      user: {
         select: {
           id: true,
           name: true,
-          bio: true,
-          portrait: true,
-          banner: true,
-          job: true,
-          activities: true,
-          playstyle: true,
+          image: true,
+          role: true,
+          createdAt: true,
         },
       },
     },
   });
 }
 
-export default async function MemberDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const [session, member] = await Promise.all([auth(), getMember(id)]);
-  if (!member) notFound();
+export default async function MemberDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const [session, profile] = await Promise.all([auth(), getMember(slug)]);
+  if (!profile) notFound();
 
-  const profile = member.profile;
-  const displayName = profile?.name ?? member.name ?? 'Unknown';
-  const portrait = profile?.portrait ?? member.image;
-  const roleMeta = ROLE_META[member.role];
+  const displayName = profile.name ?? profile.user.name ?? 'Unknown';
+  const portrait = profile.portrait ?? profile.user.image;
+  const roleMeta = ROLE_META[profile.user.role];
 
   // Show edit button to profile owner or leaders
   const currentUser = session?.user?.id
     ? await db.user.findUnique({ where: { id: session.user.id }, select: { role: true } })
     : null;
-  const canEdit = profile && (session?.user?.id === member.id || currentUser?.role === 'LEADER');
+  const canEdit = profile && (session?.user?.id === profile.user.id || currentUser?.role === 'LEADER');
 
   return (
     <main
@@ -123,7 +122,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
 
             {/* Member since */}
             <p className="text-xs font-light text-white/60">
-              Member since {member.createdAt.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
+              Member since {profile.user.createdAt.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
             </p>
           </div>
 
