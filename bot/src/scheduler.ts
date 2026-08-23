@@ -55,7 +55,7 @@ export function startReminderScheduler(client: Client) {
         try {
           await sendReminder(client, event);
 
-          await fetch(`${process.env.API_URL}/api/events/${event.id}/reminder-sent`, {
+          await fetch(`${process.env.API_URL}/api/admin/events/${event.id}/reminder-sent`, {
             method: 'POST',
             headers: {
               'x-bot-secret': process.env.BOT_SECRET!,
