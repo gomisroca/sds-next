@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FileText, Loader2, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { SectionDivider } from '@/app/components/ui/section-divider';
 import type { FormData } from '@/app/events/event-wizard/types';
 
 interface Template {
@@ -103,7 +104,7 @@ export function StepTemplateSelect({ onSelect }: StepTemplateSelectProps) {
         <>
           <div className="flex items-center gap-3">
             <span className="text-[10px] font-light tracking-[0.25em] text-white/60 uppercase">Or use a template</span>
-            <div className="h-px flex-1 bg-red-900/15" />
+            <SectionDivider />
           </div>
 
           {templates.map((t, i) => (

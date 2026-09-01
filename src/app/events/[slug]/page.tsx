@@ -1,8 +1,9 @@
-import { ArrowLeft, Calendar, Clock, MapPin, XCircle } from 'lucide-react';
-import Link from 'next/link';
+import { Calendar, Clock, MapPin, XCircle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
+import { BackLink } from '@/app/components/ui/back-link';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { PageShell } from '@/app/components/ui/page-shell';
 import { EventActions } from '@/app/events/[slug]/event-actions';
 import { EventDetailClient } from '@/app/events/[slug]/event-detail-client';
 import { auth } from '@/server/auth';
@@ -70,36 +71,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const isPast = isPublished && event.startsAt !== null && new Date(event.startsAt) < new Date();
 
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)',
-        }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-16">
-        {/* Back */}
-        <Link
-          href="/events"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors duration-200 hover:text-white/90">
-          <ArrowLeft
-            className="h-3 w-3 transition-transform duration-200 group-hover:-translate-x-0.5"
-            strokeWidth={1.5}
-          />
-          All Events
-        </Link>
+        <BackLink href="/events">All Events</BackLink>
 
         {/* Cancelled banner */}
         {isCancelled && (
@@ -204,6 +178,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           </div>
         </div>
       </div>
-    </main>
+    </PageShell>
   );
 }

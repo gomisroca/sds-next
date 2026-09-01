@@ -1,24 +1,10 @@
 import Link from 'next/link';
 
+import { PageShell } from '@/app/components/ui/page-shell';
+
 export default function NotFound() {
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)' }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       <div className="relative z-10 flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-6 text-center">
         {/* Dragon sigil stub — just the ring for a minimal touch */}
         <svg viewBox="0 0 80 80" className="mb-8 h-16 w-16 opacity-20" aria-hidden>
@@ -57,6 +43,6 @@ export default function NotFound() {
           Return Home
         </Link>
       </div>
-    </main>
+    </PageShell>
   );
 }

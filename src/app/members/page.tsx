@@ -1,4 +1,5 @@
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { PageHeader } from '@/app/components/ui/page-header';
+import { PageShell } from '@/app/components/ui/page-shell';
 import MemberCard from '@/app/members/member-card';
 import { db } from '@/server/db';
 
@@ -40,35 +41,12 @@ export default async function MembersPage() {
   const regulars = members.filter((m) => m.role === 'MEMBER');
 
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)' }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-16">
-        {/* Header */}
-        <div className="mb-12">
-          <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/70 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/90 uppercase md:text-5xl">
-            Members
-          </h1>
-          <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/60">
-            {members.length} adventurer{members.length !== 1 ? 's' : ''} call the Den home.
-          </p>
-        </div>
+        <PageHeader
+          title="Members"
+          subtitle={`${members.length} adventurer${members.length !== 1 ? 's' : ''} call the Den home.`}
+        />
 
         {/* Leadership */}
         {leadership.length > 0 && (
@@ -100,7 +78,7 @@ export default async function MembersPage() {
           </div>
         )}
       </div>
-    </main>
+    </PageShell>
   );
 }
 

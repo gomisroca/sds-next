@@ -1,8 +1,8 @@
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { BackLink } from '@/app/components/ui/back-link';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { PageShell } from '@/app/components/ui/page-shell';
 import { db } from '@/server/db';
 
 export const revalidate = 60;
@@ -85,30 +85,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const html = tiptapToHtml(post.content);
 
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)' }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
-        {/* Back */}
-        <Link
-          href="/blog"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-          <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" strokeWidth={1.5} />
-          All Posts
-        </Link>
+        <BackLink href="/blog">All Posts</BackLink>
 
         {/* Cover image */}
         {post.coverImage && (
@@ -137,6 +116,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Content */}
         <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
       </div>
-    </main>
+    </PageShell>
   );
 }

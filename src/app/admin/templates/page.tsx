@@ -1,8 +1,10 @@
 import { FileText, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { db } from '@/server/db';
+
+import AdminActionButton from '../admin-action-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,24 +30,16 @@ export default async function AdminTemplatesPage() {
 
   return (
     <>
-      <div className="mb-10 flex items-start justify-between gap-4">
-        <div>
-          <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Event Templates</h1>
-          <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/60">
-            {templates.length} template{templates.length !== 1 ? 's' : ''} saved. Templates are used as starting points
-            when creating new events.
-          </p>
-        </div>
-
-        <Link
-          href="/events/new"
-          className="mt-1 flex shrink-0 items-center gap-2 border border-red-800/50 bg-red-950/20 px-5 py-2 text-xs font-light tracking-[0.2em] text-red-400/85 uppercase transition-all hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
-          <Plus className="h-3 w-3" strokeWidth={2} />
-          New Template
-        </Link>
-      </div>
+      <AdminPageHeader
+        title="Event Templates"
+        subtitle={`${templates.length} template${templates.length !== 1 ? 's' : ''} saved. Templates are used as starting points when creating new events.`}
+        action={
+          <AdminActionButton href="/events/new">
+            <Plus className="h-3 w-3" strokeWidth={2} />
+            New Template
+          </AdminActionButton>
+        }
+      />
 
       {templates.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-24 text-center">
