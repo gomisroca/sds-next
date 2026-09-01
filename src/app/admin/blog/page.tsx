@@ -1,7 +1,7 @@
 import { FileText, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { db } from '@/server/db';
 
 export const dynamic = 'force-dynamic';
@@ -30,24 +30,18 @@ export default async function AdminBlogPage() {
 
   return (
     <>
-      <div className="mb-10 flex items-start justify-between gap-4">
-        <div>
-          <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-          <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Blog Posts</h1>
-          <OrnamentalRule className="max-w-xs" />
-          <p className="mt-6 text-sm font-light text-white/60">
-            {posts.length} post{posts.length !== 1 ? 's' : ''} total — {published.length} published, {drafts.length}{' '}
-            draft{drafts.length !== 1 ? 's' : ''}.
-          </p>
-        </div>
-
-        <Link
-          href="/admin/blog/new"
-          className="mt-1 flex shrink-0 items-center gap-2 border border-red-800/50 bg-red-950/20 px-5 py-2 text-xs font-light tracking-[0.2em] text-red-400 uppercase transition-all hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
-          <Plus className="h-3 w-3" strokeWidth={2} />
-          New Post
-        </Link>
-      </div>
+      <AdminPageHeader
+        title="Blog Posts"
+        subtitle={`${posts.length} post${posts.length !== 1 ? 's' : ''} total — ${published.length} published, ${drafts.length} draft${drafts.length !== 1 ? 's' : ''}.`}
+        action={
+          <Link
+            href="/admin/blog/new"
+            className="mt-1 flex shrink-0 items-center gap-2 border border-red-800/50 bg-red-950/20 px-5 py-2 text-xs font-light tracking-[0.2em] text-red-400 uppercase transition-all hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
+            <Plus className="h-3 w-3" strokeWidth={2} />
+            New Post
+          </Link>
+        }
+      />
 
       {posts.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-24 text-center">

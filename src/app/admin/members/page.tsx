@@ -2,7 +2,7 @@ import { UserPlus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { ROLE_META } from '@/utils/profile';
@@ -46,15 +46,10 @@ export default async function AdminMembersPage() {
 
   return (
     <>
-      <div className="mb-10">
-        <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin</p>
-        <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Members</h1>
-        <OrnamentalRule className="max-w-xs" />
-        <p className="mt-6 text-sm font-light text-white/60">
-          {members.length} user{members.length !== 1 ? 's' : ''} total.
-          {isLeader ? ' Use the role selector to promote or demote members.' : ' Only leaders can change roles.'}
-        </p>
-      </div>
+      <AdminPageHeader
+        title="Members"
+        subtitle={`${members.length} user${members.length !== 1 ? 's' : ''} total. ${isLeader ? 'Use the role selector to promote or demote members.' : ' Only leaders can change roles.'}`}
+      />
 
       <div className="flex flex-col gap-10">
         {grouped.map(({ role, members: group }) => (
