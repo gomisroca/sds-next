@@ -3,6 +3,7 @@
 import { Check, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
+import { SectionDivider } from '@/app/components/ui/section-divider';
 import type { SiteSettings } from '@/utils/settings';
 
 function Label({ children, hint }: { children: React.ReactNode; hint?: string }) {
@@ -69,11 +70,11 @@ function Textarea({
   );
 }
 
-function SectionDivider({ label }: { label: string }) {
+function FormSectionDivider({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4 py-2">
       <span className="text-[10px] font-light tracking-[0.3em] text-red-800/50 uppercase">{label}</span>
-      <div className="h-px flex-1 bg-red-900/15" />
+      <SectionDivider />
     </div>
   );
 }
@@ -128,7 +129,7 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
     <div className="flex flex-col gap-8">
       {/* Identity */}
       <section className="flex flex-col gap-5">
-        <SectionDivider label="Identity" />
+        <FormSectionDivider label="Identity" />
 
         <div>
           <Label hint="Shown in the nav bar logo and page titles.">FC Name</Label>
@@ -153,7 +154,7 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
 
       {/* Homepage */}
       <section className="flex flex-col gap-5">
-        <SectionDivider label="Homepage" />
+        <FormSectionDivider label="Homepage" />
 
         <div>
           <Label hint="The heading in the welcome section.">Welcome Title</Label>
@@ -189,7 +190,7 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
 
       {/* Discord */}
       <section className="flex flex-col gap-5">
-        <SectionDivider label="Discord" />
+        <FormSectionDivider label="Discord" />
 
         <div>
           <Label hint="Shown on the Join page as a direct join link.">Discord Invite Link</Label>

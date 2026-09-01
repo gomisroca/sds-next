@@ -2,7 +2,9 @@ import { UserPlus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { CornerAccent } from '@/app/components/ui/corner-accent';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
+import { SectionDivider } from '@/app/components/ui/section-divider';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { ROLE_META } from '@/utils/profile';
@@ -58,7 +60,7 @@ export default async function AdminMembersPage() {
               <span className={`text-[10px] font-light tracking-[0.3em] uppercase ${ROLE_META[role].color}`}>
                 {ROLE_META[role].label}s ({group.length})
               </span>
-              <div className="h-px flex-1 bg-red-900/15" />
+              <SectionDivider />
             </div>
 
             {/* Member rows */}
@@ -75,7 +77,7 @@ export default async function AdminMembersPage() {
                     key={member.id}
                     className="relative flex items-center gap-4 border border-red-900/15 bg-white/[0.02] px-5 py-4 transition-colors hover:border-red-900/25">
                     {/* Corner accent */}
-                    <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-900/20" />
+                    <CornerAccent />
 
                     {/* Avatar */}
                     <div className="shrink-0">
