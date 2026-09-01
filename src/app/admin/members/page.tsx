@@ -17,7 +17,6 @@ async function getMembers() {
     select: {
       id: true,
       name: true,
-      email: true,
       image: true,
       role: true,
       createdAt: true,
@@ -103,7 +102,6 @@ export default async function AdminMembersPage() {
                           <span className="text-[10px] font-light tracking-widest text-white/60 uppercase">You</span>
                         )}
                       </div>
-                      {member.email && <p className="truncate text-xs font-light text-white/60">{member.email}</p>}
                       <p className="mt-0.5 text-[10px] font-light text-white/60">
                         Joined{' '}
                         {member.createdAt.toLocaleDateString('en-GB', {
