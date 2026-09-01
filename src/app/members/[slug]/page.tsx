@@ -2,6 +2,7 @@ import { ArrowLeft, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { PageShell } from '@/app/components/ui/page-shell';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META, ROLE_META } from '@/utils/profile';
@@ -49,23 +50,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
   const canEdit = profile && (session?.user?.id === profile.user.id || currentUser?.role === 'LEADER');
 
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)' }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       {/* Banner */}
       {profile?.banner && (
         <div className="relative h-48 w-full overflow-hidden md:h-64">
@@ -178,6 +163,6 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
           </div>
         </div>
       </div>
-    </main>
+    </PageShell>
   );
 }
