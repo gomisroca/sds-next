@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { db } from '@/server/db';
 
+import AdminActionButton from '../admin-action-button';
+
 export const dynamic = 'force-dynamic';
 
 async function getTemplates() {
@@ -32,12 +34,10 @@ export default async function AdminTemplatesPage() {
         title="Event Templates"
         subtitle={`${templates.length} template${templates.length !== 1 ? 's' : ''} saved. Templates are used as starting points when creating new events.`}
         action={
-          <Link
-            href="/events/new"
-            className="mt-1 flex shrink-0 items-center gap-2 border border-red-800/50 bg-red-950/20 px-5 py-2 text-xs font-light tracking-[0.2em] text-red-400/85 uppercase transition-all hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
+          <AdminActionButton href="/events/new">
             <Plus className="h-3 w-3" strokeWidth={2} />
             New Template
-          </Link>
+          </AdminActionButton>
         }
       />
 
