@@ -1,7 +1,6 @@
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { BackLink } from '@/app/components/ui/back-link';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { PageShell } from '@/app/components/ui/page-shell';
 import { db } from '@/server/db';
@@ -88,13 +87,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <PageShell>
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
-        {/* Back */}
-        <Link
-          href="/blog"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-          <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" strokeWidth={1.5} />
-          All Posts
-        </Link>
+        <BackLink href="/blog">All Posts</BackLink>
 
         {/* Cover image */}
         {post.coverImage && (

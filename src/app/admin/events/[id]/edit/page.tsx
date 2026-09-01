@@ -1,7 +1,6 @@
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
+import { BackLink } from '@/app/components/ui/back-link';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { CreateEventWizard } from '@/app/events/event-wizard';
 import { type FormData } from '@/app/events/event-wizard/types';
@@ -80,12 +79,7 @@ export default async function AdminEventEditPage({ params }: { params: Promise<{
   return (
     <div className="max-w-2xl">
       <div className="mb-10">
-        <Link
-          href={`/events/${id}`}
-          className="group mb-8 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-          <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" strokeWidth={1.5} />
-          Back to Event
-        </Link>
+        <BackLink href={`/events/${id}`}>Back to Event</BackLink>
 
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin · Events</p>
         <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Edit Event</h1>

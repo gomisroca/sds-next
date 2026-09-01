@@ -1,7 +1,7 @@
-import { ArrowLeft, Calendar, Clock, MapPin, XCircle } from 'lucide-react';
-import Link from 'next/link';
+import { Calendar, Clock, MapPin, XCircle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
+import { BackLink } from '@/app/components/ui/back-link';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { PageShell } from '@/app/components/ui/page-shell';
 import { EventActions } from '@/app/events/[slug]/event-actions';
@@ -73,16 +73,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   return (
     <PageShell>
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-16">
-        {/* Back */}
-        <Link
-          href="/events"
-          className="group mb-10 inline-flex items-center gap-2 text-xs font-light tracking-[0.25em] text-white/60 uppercase transition-colors duration-200 hover:text-white/90">
-          <ArrowLeft
-            className="h-3 w-3 transition-transform duration-200 group-hover:-translate-x-0.5"
-            strokeWidth={1.5}
-          />
-          All Events
-        </Link>
+        <BackLink href="/events">All Events</BackLink>
 
         {/* Cancelled banner */}
         {isCancelled && (
