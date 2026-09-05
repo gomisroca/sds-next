@@ -2,6 +2,7 @@ import { Calendar, Clock, MapPin, XCircle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 import { BackLink } from '@/app/components/ui/back-link';
+import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { PageShell } from '@/app/components/ui/page-shell';
 import { EventActions } from '@/app/events/[slug]/event-actions';
@@ -125,7 +126,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           <div className="flex flex-col gap-4">
             {/* Date / time / location */}
             <div className="relative flex flex-col gap-3 border border-red-900/20 bg-white/[0.02] p-5">
-              <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-700/30" />
+              <CornerAccentTL />
 
               <div className="flex items-start gap-3">
                 <Calendar className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-600/80" strokeWidth={1.5} />

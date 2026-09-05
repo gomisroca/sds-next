@@ -1,6 +1,7 @@
 import { ExternalLink, Shield, Swords, Users } from 'lucide-react';
 
 import { DiscordAccessButton } from '@/app/components/auth/discord-access-button';
+import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { PageShell } from '@/app/components/ui/page-shell';
 import { db } from '@/server/db';
@@ -60,7 +61,7 @@ export default async function JoinPage() {
         <div className="mb-14 grid grid-cols-1 gap-5 sm:grid-cols-3">
           {WHAT_WE_OFFER.map((item) => (
             <div key={item.title} className="relative border border-red-900/20 bg-white/[0.02] p-6">
-              <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-700/30" />
+              <CornerAccentTL />
               <item.icon className="mb-4 h-5 w-5 text-red-600/80" strokeWidth={1.5} />
               <h3 className="mb-2 text-xs font-light tracking-widest text-red-400/80 uppercase">{item.title}</h3>
               <p className="text-sm leading-relaxed font-light text-white/60">{item.body}</p>

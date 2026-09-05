@@ -8,6 +8,8 @@ import { useCallback, useEffect, useState } from 'react';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { formatEventDate, formatEventTime } from '@/utils/events';
 
+import { CornerAccents } from './components/ui/corner-accent';
+
 export interface FeaturedEvent {
   id: string;
   name: string;
@@ -177,10 +179,7 @@ export default function EventCarousel({ events }: { events: FeaturedEvent[] }) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}>
       {/* Corner accents */}
-      <div className="absolute top-0 left-0 z-10 h-6 w-6 border-t border-l border-red-600/50" />
-      <div className="absolute top-0 right-0 z-10 h-6 w-6 border-t border-r border-red-600/50" />
-      <div className="absolute bottom-0 left-0 z-10 h-6 w-6 border-b border-l border-red-600/50" />
-      <div className="absolute right-0 bottom-0 z-10 h-6 w-6 border-r border-b border-red-600/50" />
+      <CornerAccents size="md" />
 
       {/* Slide */}
       <div className="relative overflow-hidden">

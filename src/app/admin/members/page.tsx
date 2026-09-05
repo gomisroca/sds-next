@@ -2,7 +2,7 @@ import { UserPlus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { CornerAccent } from '@/app/components/ui/corner-accent';
+import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { SectionDivider } from '@/app/components/ui/section-divider';
 import { auth } from '@/server/auth';
@@ -77,7 +77,7 @@ export default async function AdminMembersPage() {
                     key={member.id}
                     className="relative flex items-center gap-4 border border-red-900/15 bg-white/[0.02] px-5 py-4 transition-colors hover:border-red-900/25">
                     {/* Corner accent */}
-                    <CornerAccent />
+                    <CornerAccentTL />
 
                     {/* Avatar */}
                     <div className="shrink-0">

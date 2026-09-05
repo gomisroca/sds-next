@@ -2,6 +2,7 @@ import { FileText, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 import { EmptyState } from '@/app/components/empty-state';
+import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { db } from '@/server/db';
 
@@ -62,7 +63,7 @@ export default async function AdminTemplatesPage() {
 function TemplateRow({ template }: { template: Awaited<ReturnType<typeof getTemplates>>[number]; index: number }) {
   return (
     <div className="group relative flex items-center gap-4 border border-red-900/20 bg-white/[0.02] p-5 transition-all duration-200 hover:border-red-800/30 hover:bg-white/[0.03]">
-      <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-700/30" />
+      <CornerAccentTL />
 
       {/* Banner thumbnail */}
       {template.imageUrl ? (

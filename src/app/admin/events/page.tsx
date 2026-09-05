@@ -3,7 +3,7 @@ import { Calendar, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 import { EmptyState } from '@/app/components/empty-state';
-import { CornerAccent } from '@/app/components/ui/corner-accent';
+import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { SectionDivider } from '@/app/components/ui/section-divider';
 import { db } from '@/server/db';
@@ -92,7 +92,7 @@ export default async function AdminEventsPage() {
                     <div
                       key={event.id}
                       className="group relative flex items-center gap-4 border border-red-900/15 bg-white/[0.02] px-5 py-4 transition-colors hover:border-red-900/25">
-                      <CornerAccent />
+                      <CornerAccentTL />
 
                       {/* Status pill */}
                       <span
