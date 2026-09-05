@@ -79,7 +79,7 @@ export default async function AdminEventEditPage({ params }: { params: Promise<{
   return (
     <div className="max-w-2xl">
       <div className="mb-10">
-        <BackLink href={`/events/${id}`}>Back to Event</BackLink>
+        <BackLink href={`/events/${id}`} label="Back to Event" />
 
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin · Events</p>
         <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Edit Event</h1>

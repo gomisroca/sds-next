@@ -28,7 +28,7 @@ export default async function EditTemplatePage({ params }: { params: Promise<{ i
   return (
     <div className="max-w-2xl">
       <div className="mb-10">
-        <BackLink href="/admin/templates/">All Templates</BackLink>
+        <BackLink href="/admin/templates/" label="All Templates" />
 
         <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/60 uppercase">Admin · Templates</p>
         <h1 className="mb-6 text-3xl font-extralight tracking-wide text-white/90 uppercase">Edit Template</h1>

@@ -73,7 +73,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   return (
     <PageShell>
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-16">
-        <BackLink href="/events">All Events</BackLink>
+        <BackLink href="/events" label="All Events" />
 
         {/* Cancelled banner */}
         {isCancelled && (

@@ -63,7 +63,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-12">
         {/* Back */}
         <div className="mb-10 flex items-center justify-between">
-          <BackLink href="/members">All Members</BackLink>
+          <BackLink href="/members" label="All Members" />
 
           {canEdit && profile && (
             <Link

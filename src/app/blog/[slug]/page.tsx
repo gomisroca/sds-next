@@ -87,7 +87,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <PageShell>
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16">
-        <BackLink href="/blog">All Posts</BackLink>
+        <BackLink href="/blog" label="All Blogs" />
 
         {/* Cover image */}
         {post.coverImage && (
