@@ -5,6 +5,8 @@ import { PageHeader } from '@/app/components/ui/page-header';
 import { PageShell } from '@/app/components/ui/page-shell';
 import { db } from '@/server/db';
 
+import { EmptyState } from '../components/empty-state';
+
 export const revalidate = 60;
 
 async function getPosts() {
@@ -37,10 +39,7 @@ export default async function BlogPage() {
         <PageHeader title="News" subtitle="Updates, announcements, and stories from the Den." />
 
         {posts.length === 0 ? (
-          <div className="flex flex-col items-center gap-4 py-24 text-center">
-            <Newspaper className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-            <p className="text-sm font-light tracking-widest text-white/60 uppercase">No posts yet</p>
-          </div>
+          <EmptyState icon={Newspaper} title="No posts yet" />
         ) : (
           <div className="flex flex-col gap-8">
             {posts.map((post) => (

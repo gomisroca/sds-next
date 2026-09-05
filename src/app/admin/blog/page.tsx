@@ -1,6 +1,7 @@
 import { FileText, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
+import { EmptyState } from '@/app/components/empty-state';
 import { CornerAccent } from '@/app/components/ui/corner-accent';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { SectionDivider } from '@/app/components/ui/section-divider';
@@ -46,10 +47,7 @@ export default async function AdminBlogPage() {
       />
 
       {posts.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 py-24 text-center">
-          <FileText className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-          <p className="text-sm font-light tracking-widest text-white/60 uppercase">No posts yet</p>
-        </div>
+        <EmptyState icon={FileText} title="No posts yet" />
       ) : (
         <div className="flex flex-col gap-10">
           {[

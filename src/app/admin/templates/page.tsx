@@ -1,6 +1,7 @@
 import { FileText, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
+import { EmptyState } from '@/app/components/empty-state';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { db } from '@/server/db';
 
@@ -42,11 +43,11 @@ export default async function AdminTemplatesPage() {
       />
 
       {templates.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 py-24 text-center">
-          <FileText className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-          <p className="text-sm font-light tracking-widest text-white/60 uppercase">No templates yet</p>
-          <p className="text-xs font-light text-white/60">Create an event and check "Save as reusable template".</p>
-        </div>
+        <EmptyState
+          icon={FileText}
+          title="No templates yet"
+          subtitle="Create an event and check 'Save as reusable template'."
+        />
       ) : (
         <div className="flex flex-col gap-3">
           {templates.map((t, i) => (

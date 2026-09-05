@@ -2,6 +2,7 @@ import { EventStatus } from 'generated/prisma';
 import { Calendar, Pencil } from 'lucide-react';
 import Link from 'next/link';
 
+import { EmptyState } from '@/app/components/empty-state';
 import { PageHeader } from '@/app/components/ui/page-header';
 import { PageShell } from '@/app/components/ui/page-shell';
 import EventRow from '@/app/events/event-row';
@@ -57,7 +58,15 @@ export default async function EventsPage() {
         </PageHeader>
 
         {/* Schedule */}
-        {events.length === 0 ? <EmptyState /> : <EventSchedule events={events} />}
+        {events.length === 0 ? (
+          <EmptyState
+            icon={Calendar}
+            title="No upcoming events"
+            subtitle="Check back soon - we post new events regularly."
+          />
+        ) : (
+          <EventSchedule events={events} />
+        )}
 
         {/* Past events */}
         <PastEvents upcomingIds={events.map((e) => e.id)} />
@@ -97,17 +106,6 @@ function EventSchedule({ events }: { events: EventRow_Event[] }) {
           </div>
         </section>
       ))}
-    </div>
-  );
-}
-
-// ── Empty state ───────────────────────────────────────────────────────────────
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center gap-4 py-24 text-center">
-      <Calendar className="h-8 w-8 text-red-900/40" strokeWidth={1} />
-      <p className="text-sm font-light tracking-widest text-white/60 uppercase">No upcoming events</p>
-      <p className="text-xs font-light text-white/60">Check back soon - we post new events regularly.</p>
     </div>
   );
 }

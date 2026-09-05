@@ -2,6 +2,7 @@ import { EventStatus } from 'generated/prisma';
 import { Calendar, Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 
+import { EmptyState } from '@/app/components/empty-state';
 import { CornerAccent } from '@/app/components/ui/corner-accent';
 import { AdminPageHeader } from '@/app/components/ui/page-header';
 import { SectionDivider } from '@/app/components/ui/section-divider';
@@ -72,10 +73,7 @@ export default async function AdminEventsPage() {
       />
 
       {events.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 py-24 text-center">
-          <Calendar className="h-8 w-8 text-red-900/30" strokeWidth={1} />
-          <p className="text-sm font-light tracking-widest text-white/60 uppercase">No events yet</p>
-        </div>
+        <EmptyState icon={Calendar} title="No events yet" />
       ) : (
         <div className="flex flex-col gap-10">
           {grouped.map(({ status, events: group }) => {
