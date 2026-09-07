@@ -1,11 +1,11 @@
 import { ExternalLink, Shield, Swords, Users } from 'lucide-react';
-import Link from 'next/link';
 
+import { DiscordAccessButton } from '@/app/components/auth/discord-access-button';
+import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { PageShell } from '@/app/components/ui/page-shell';
 import { db } from '@/server/db';
 import { getSettings } from '@/utils/settings';
-
-import { DiscordAccessButton } from '../components/auth/discord-access-button';
 
 async function getMemberCount() {
   return db.user.count({ where: { role: { notIn: ['GUEST'] } } });
@@ -35,23 +35,7 @@ export default async function JoinPage() {
   const hasInvite = !!settings.discordInvite;
 
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)' }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       <div className="relative z-10 mx-auto max-w-3xl px-6 py-16">
         {/* Header */}
         <div className="mb-14 text-center">
@@ -77,7 +61,7 @@ export default async function JoinPage() {
         <div className="mb-14 grid grid-cols-1 gap-5 sm:grid-cols-3">
           {WHAT_WE_OFFER.map((item) => (
             <div key={item.title} className="relative border border-red-900/20 bg-white/[0.02] p-6">
-              <div className="absolute top-0 left-0 h-4 w-4 border-t border-l border-red-700/30" />
+              <CornerAccentTL />
               <item.icon className="mb-4 h-5 w-5 text-red-600/80" strokeWidth={1.5} />
               <h3 className="mb-2 text-xs font-light tracking-widest text-red-400/80 uppercase">{item.title}</h3>
               <p className="text-sm leading-relaxed font-light text-white/60">{item.body}</p>
@@ -125,6 +109,6 @@ export default async function JoinPage() {
           </p>
         </div>
       </div>
-    </main>
+    </PageShell>
   );
 }

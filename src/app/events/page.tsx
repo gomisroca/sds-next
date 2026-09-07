@@ -2,7 +2,9 @@ import { EventStatus } from 'generated/prisma';
 import { Calendar, Pencil } from 'lucide-react';
 import Link from 'next/link';
 
-import OrnamentalRule from '@/app/components/ui/ornamental-rule';
+import { EmptyState } from '@/app/components/empty-state';
+import { PageHeader } from '@/app/components/ui/page-header';
+import { PageShell } from '@/app/components/ui/page-shell';
 import EventRow from '@/app/events/event-row';
 import PastEvents from '@/app/events/past-events';
 import { auth } from '@/server/auth';
@@ -39,54 +41,37 @@ export default async function EventsPage() {
   const events = await getEvents(session?.user?.id);
 
   return (
-    <main
-      className="min-h-screen bg-[#060404] pt-14 text-white"
-      style={{ fontFamily: "'Cormorant Garamond', 'Palatino Linotype', serif" }}>
-      {/* Background */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background: 'radial-gradient(ellipse 90% 75% at 50% 35%, #200504 0%, #0d0202 55%, #030101 100%)',
-        }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(200,50,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,50,0,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+    <PageShell>
       <div className="relative z-10 mx-auto max-w-4xl px-6 py-16">
-        {/* Header */}
-        <div className="mb-12">
-          <p className="mb-3 text-xs font-light tracking-[0.35em] text-red-800/70 uppercase">Sleeping Dragons</p>
-          <h1 className="mb-6 text-4xl font-extralight tracking-[0.1em] text-white/90 uppercase md:text-5xl">Events</h1>
-          <OrnamentalRule className="max-w-xs" />
-          <div className="flex justify-between">
-            <p className="mt-6 max-w-lg text-sm leading-relaxed font-light text-white/60">
-              Upcoming gatherings, raids, and social nights for the Free Company. All times shown in your local
-              timezone.
-            </p>
-            {session?.user?.id && session.user.role !== 'GUEST' && (
-              <Link
-                href={`/events/new`}
-                className="my-auto flex h-fit items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">
-                <Pencil className="h-3 w-3" strokeWidth={1.5} />
-                Create Event
-              </Link>
-            )}
-          </div>
-        </div>
+        <PageHeader
+          title="Events"
+          subtitle="Upcoming gatherings, raids, and social nights for the Free Company.  All times shown in your local
+              timezone.">
+          {session?.user?.id && session.user.role !== 'GUEST' && (
+            <Link
+              href={`/events/new`}
+              className="mt-2 flex h-fit w-fit items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">
+              <Pencil className="h-3 w-3" strokeWidth={1.5} />
+              Create Event
+            </Link>
+          )}
+        </PageHeader>
 
         {/* Schedule */}
-        {events.length === 0 ? <EmptyState /> : <EventSchedule events={events} />}
+        {events.length === 0 ? (
+          <EmptyState
+            icon={Calendar}
+            title="No upcoming events"
+            subtitle="Check back soon - we post new events regularly."
+          />
+        ) : (
+          <EventSchedule events={events} />
+        )}
 
         {/* Past events */}
         <PastEvents upcomingIds={events.map((e) => e.id)} />
       </div>
-    </main>
+    </PageShell>
   );
 }
 
@@ -121,17 +106,6 @@ function EventSchedule({ events }: { events: EventRow_Event[] }) {
           </div>
         </section>
       ))}
-    </div>
-  );
-}
-
-// ── Empty state ───────────────────────────────────────────────────────────────
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center gap-4 py-24 text-center">
-      <Calendar className="h-8 w-8 text-red-900/40" strokeWidth={1} />
-      <p className="text-sm font-light tracking-widest text-white/60 uppercase">No upcoming events</p>
-      <p className="text-xs font-light text-white/60">Check back soon - we post new events regularly.</p>
     </div>
   );
 }
