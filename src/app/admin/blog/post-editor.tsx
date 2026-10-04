@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
+import { FieldLabel } from '@/app/components/ui/form-fields';
 import RichTextEditor from '@/app/components/ui/rich-text-editor';
 
 interface PostEditorProps {
@@ -37,15 +38,6 @@ function slugify(title: string) {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .slice(0, 200);
-}
-
-function Label({ children, hint }: { children: React.ReactNode; hint?: string }) {
-  return (
-    <div className="mb-2">
-      <label className="block text-xs font-light tracking-[0.25em] text-white/80 uppercase">{children}</label>
-      {hint && <p className="mt-0.5 text-xs font-light text-white/60">{hint}</p>}
-    </div>
-  );
 }
 
 function Input({
@@ -187,13 +179,15 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
     <div className="flex flex-col gap-8">
       {/* Title */}
       <div>
-        <Label>Title *</Label>
+        <FieldLabel>Title *</FieldLabel>
         <Input value={form.title} onChange={handleTitleChange} placeholder="A New Chapter Begins" maxLength={200} />
       </div>
 
       {/* Slug */}
       <div>
-        <Label hint="Used in the URL: /blog/your-slug — lowercase letters, numbers and hyphens only.">Slug *</Label>
+        <FieldLabel hint="Used in the URL: /blog/your-slug — lowercase letters, numbers and hyphens only.">
+          Slug *
+        </FieldLabel>
         <Input
           value={form.slug}
           onChange={(v) => {
@@ -207,7 +201,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
 
       {/* Excerpt */}
       <div>
-        <Label hint="Short summary shown in listings and the homepage card.">Excerpt</Label>
+        <FieldLabel hint="Short summary shown in listings and the homepage card.">Excerpt</FieldLabel>
         <Textarea
           value={form.excerpt}
           onChange={(v) => patch({ excerpt: v })}
@@ -219,7 +213,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
 
       {/* Cover image */}
       <div>
-        <Label>Cover Image</Label>
+        <FieldLabel>Cover Image</FieldLabel>
         {form.coverImage ? (
           <div className="relative h-40 w-full overflow-hidden border border-red-900/25">
             <img src={form.coverImage} alt="Cover" className="h-full w-full object-cover" />
@@ -257,7 +251,7 @@ export default function PostEditor({ mode, postId, initial }: PostEditorProps) {
 
       {/* Content */}
       <div>
-        <Label>Content *</Label>
+        <FieldLabel>Content *</FieldLabel>
         <RichTextEditor
           content={form.content}
           onChange={(json) => patch({ content: json })}
