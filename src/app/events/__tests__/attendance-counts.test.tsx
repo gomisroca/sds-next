@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { AttendanceCounts } from '@/app/events/[id]/attendance-counts';
+import { AttendanceCounts } from '@/app/events/[slug]/attendance-counts';
 
 describe('AttendanceCounts Component', () => {
   const mockAttendance = {

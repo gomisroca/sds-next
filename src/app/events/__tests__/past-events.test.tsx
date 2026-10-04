@@ -26,6 +26,7 @@ const firstPage = {
     {
       id: '1',
       name: 'Treasure Hunt',
+      slug: 'treasure-hunt',
       description: 'Maps and loot!',
       location: 'Gridania',
       imageUrl: null,
@@ -36,6 +37,7 @@ const firstPage = {
     {
       id: '2',
       name: 'Extreme Trial',
+      slug: 'extreme-trial',
       description: null,
       location: 'Limsa Lominsa',
       imageUrl: null,
@@ -203,8 +205,8 @@ describe('PastEvents', () => {
     const links = await screen.findAllByRole('link');
 
     expect(links).toHaveLength(2);
-    expect(links[0]).toHaveAttribute('href', '/events/1');
-    expect(links[1]).toHaveAttribute('href', '/events/2');
+    expect(links[0]).toHaveAttribute('href', '/events/treasure-hunt');
+    expect(links[1]).toHaveAttribute('href', '/events/extreme-trial');
   });
 
   it('renders attendance counts and locations', async () => {

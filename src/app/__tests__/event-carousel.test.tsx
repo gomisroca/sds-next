@@ -43,6 +43,7 @@ const mockEvents: FeaturedEvent[] = [
   {
     id: 'evt-1',
     name: 'Savage Progress: M1S',
+    slug: 'savage-progress-m1s',
     description: 'Clearing floor one before the weekly lock reset.',
     location: 'Discord VC Group A',
     imageUrl: 'https://cdn.example.com/m1s.png',
@@ -53,6 +54,7 @@ const mockEvents: FeaturedEvent[] = [
   {
     id: 'evt-2',
     name: 'FC Summer Beach Party',
+    slug: 'fc-summer-beach-party',
     description: 'Gather at Costa del Sol for minigames, glam contests, and prizes!',
     location: 'Costa del Sol - Ward 12, Plot 5',
     imageUrl: 'https://cdn.example.com/beach.png',

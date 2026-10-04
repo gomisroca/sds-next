@@ -5,17 +5,13 @@ import type { Activity, Job, Playstyle } from 'generated/prisma';
 import { X } from 'lucide-react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
+import { FieldError } from '@/app/components/ui/form-fields';
 import type { ProfileFormData } from '@/app/members/profile-wizard/types';
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META } from '@/utils/profile';
 
 // ── Shared primitives ─────────────────────────────────────────────────────────
 function Label({ children }: { children: React.ReactNode }) {
   return <label className="mb-2 block text-xs font-light tracking-[0.25em] text-white/60 uppercase">{children}</label>;
-}
-
-function FieldError({ message }: { message?: string }) {
-  if (!message) return null;
-  return <p className="mt-1.5 text-xs font-light text-red-400/80">{message}</p>;
 }
 
 function Input({
