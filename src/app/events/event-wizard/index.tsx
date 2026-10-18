@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Calendar, Check, FileText, Loader2, Send, Type }
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { PrimaryButton, SecondaryButton } from '@/app/components/ui/form-fields';
 import { StepTemplateSelect } from '@/app/events/event-wizard/step-template-select';
 import { type FormData, INITIAL_FORM_DATA, validateStep } from '@/app/events/event-wizard/types';
 import { StepDetails, StepPublish, StepTime } from '@/app/events/event-wizard/wizard-steps';
@@ -222,23 +223,12 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
         </button>
 
         {!isLastStep ? (
-          <motion.button
-            type="button"
-            onClick={next}
-            className="flex items-center gap-2 border border-red-800/50 bg-red-950/20 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400/85 uppercase transition-all hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}>
+          <SecondaryButton onClick={next}>
             Next
             <ArrowRight className="h-3 w-3" strokeWidth={1.5} />
-          </motion.button>
+          </SecondaryButton>
         ) : (
-          <motion.button
-            type="button"
-            onClick={submit}
-            disabled={submitting}
-            className="flex items-center gap-2 border border-red-700/60 bg-red-950/30 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all hover:border-red-600/80 hover:bg-red-900/40 disabled:opacity-50"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}>
+          <PrimaryButton onClick={submit} disabled={submitting}>
             {submitting ? (
               <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
             ) : data.isTemplate ? (
@@ -247,7 +237,7 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
               <Check className="h-3 w-3" strokeWidth={2} />
             )}
             {submitLabel()}
-          </motion.button>
+          </PrimaryButton>
         )}
       </div>
 

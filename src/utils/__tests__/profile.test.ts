@@ -88,9 +88,9 @@ describe('Profile Utilities Metadata Configurations', () => {
     it('checks dictionary exhaustive record lookups for all system Roles', () => {
       const keys = Object.keys(ROLE_META) as Role[];
       expect(keys).toContain('GUEST');
-      expect(keys).toContain('DRAGON');
-      expect(keys).toContain('WYRM');
-      expect(keys).toContain('ANCIENT');
+      expect(keys).toContain('MEMBER');
+      expect(keys).toContain('OFFICER');
+      expect(keys).toContain('LEADER');
     });
   });
 

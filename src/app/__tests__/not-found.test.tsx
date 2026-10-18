@@ -37,7 +37,7 @@ describe('NotFound Global 404 Component', () => {
     expect(homeLink).toHaveAttribute('href', '/');
 
     // Assert signature aesthetic styles are loaded onto the navigation button
-    expect(homeLink).toHaveClass('uppercase', 'tracking-[0.25em]', 'text-red-400/85');
+    expect(homeLink).toHaveClass('uppercase', 'tracking-[0.25em]', 'text-red-400');
   });
 
   it('contains structural background layers and decorative design elements', () => {

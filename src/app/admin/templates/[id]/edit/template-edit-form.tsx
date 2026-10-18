@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
+import { PrimaryButton } from '@/app/components/ui/form-fields';
 
 interface TemplateEditFormProps {
   template: {
@@ -197,18 +198,14 @@ export default function TemplateEditForm({ template }: TemplateEditFormProps) {
           Cancel
         </button>
 
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={submitting}
-          className="flex items-center gap-2 border border-red-700/60 bg-red-950/30 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all hover:border-red-600/80 hover:bg-red-900/40 disabled:opacity-50">
+        <PrimaryButton onClick={handleSave} disabled={submitting}>
           {submitting ? (
             <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
           ) : (
             <Check className="h-3 w-3" strokeWidth={2} />
           )}
           {submitting ? 'Saving…' : 'Save Changes'}
-        </button>
+        </PrimaryButton>
       </div>
     </div>
   );

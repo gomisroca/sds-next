@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Check, MapPin, X } from 'lucide-react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
+import { FieldError, FieldLabel, TextArea, TextInput } from '@/app/components/ui/form-fields';
 import type { FormData } from '@/app/events/event-wizard//types';
-import { FieldError, Input, Label, Textarea } from '@/app/events/event-wizard/form-fields';
 
 // ── Step 1: Details ───────────────────────────────────────────────────────────
 export function StepDetails({
@@ -23,13 +23,18 @@ export function StepDetails({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Label>Event Name *</Label>
-        <Input value={data.name} onChange={(v) => onChange({ name: v })} placeholder="The Dragonsong Vigil" required />
+        <FieldLabel>Event Name *</FieldLabel>
+        <TextInput
+          value={data.name}
+          onChange={(v) => onChange({ name: v })}
+          placeholder="The Dragonsong Vigil"
+          required
+        />
         <FieldError message={errors.name} />
       </div>
       <div>
-        <Label>Description</Label>
-        <Textarea
+        <FieldLabel>Description</FieldLabel>
+        <TextArea
           value={data.description}
           onChange={(v) => onChange({ description: v })}
           placeholder="What's happening? Who should come? What should they bring?"
@@ -37,8 +42,8 @@ export function StepDetails({
         />
       </div>
       <div>
-        <Label>Location</Label>
-        <Input
+        <FieldLabel>Location</FieldLabel>
+        <TextInput
           value={data.location}
           onChange={(v) => onChange({ location: v })}
           placeholder="Estate Yard, The Goblet"
@@ -46,7 +51,7 @@ export function StepDetails({
       </div>
       {/* Banner image upload */}
       <div>
-        <Label>Banner Image</Label>
+        <FieldLabel>Banner Image</FieldLabel>
 
         {data.imageUrl ? (
           <div className="relative h-40 w-full overflow-hidden border border-red-900/25">
@@ -101,7 +106,7 @@ export function StepDetails({
               <Check className="h-3 w-3" strokeWidth={2} />
             </button>
             <div>
-              <Label>Save as reusable template</Label>
+              <FieldLabel>Save as reusable template</FieldLabel>
               <p className="text-xs font-light text-white/60">
                 Templates can be used as a starting point for future events. No date or Discord post required.
               </p>
@@ -110,8 +115,8 @@ export function StepDetails({
 
           {data.isTemplate && (
             <div className="mt-4">
-              <Label>Template Name *</Label>
-              <Input
+              <FieldLabel>Template Name *</FieldLabel>
+              <TextInput
                 value={data.templateName}
                 onChange={(v) => onChange({ templateName: v })}
                 placeholder="e.g. Monthly Social Night"
@@ -150,13 +155,13 @@ export function StepTime({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Label>Start Date *</Label>
+        <FieldLabel>Start Date *</FieldLabel>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Input type="date" value={data.startsAtDate} onChange={(v) => onChange({ startsAtDate: v })} required />
+            <TextInput type="date" value={data.startsAtDate} onChange={(v) => onChange({ startsAtDate: v })} required />
             <FieldError message={errors.startsAtDate} />
           </div>
-          <Input type="time" value={data.startsAtTime} onChange={(v) => onChange({ startsAtTime: v })} />
+          <TextInput type="time" value={data.startsAtTime} onChange={(v) => onChange({ startsAtTime: v })} />
         </div>
       </div>
 
@@ -172,7 +177,7 @@ export function StepTime({
             }`}>
             <Check className="h-3 w-3" strokeWidth={2} />
           </button>
-          <Label>Add end time</Label>
+          <FieldLabel>Add end time</FieldLabel>
         </div>
 
         <AnimatePresence>
@@ -183,8 +188,8 @@ export function StepTime({
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}>
               <div className="grid grid-cols-2 gap-3">
-                <Input type="date" value={data.endsAtDate} onChange={(v) => onChange({ endsAtDate: v })} />
-                <Input type="time" value={data.endsAtTime} onChange={(v) => onChange({ endsAtTime: v })} />
+                <TextInput type="date" value={data.endsAtDate} onChange={(v) => onChange({ endsAtDate: v })} />
+                <TextInput type="time" value={data.endsAtTime} onChange={(v) => onChange({ endsAtTime: v })} />
               </div>
               <FieldError message={errors.endsAtDate} />
             </motion.div>

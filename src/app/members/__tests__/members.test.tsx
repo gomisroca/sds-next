@@ -59,7 +59,7 @@ describe('MembersPage', () => {
       id: '3',
       name: 'Charlie',
       image: null,
-      role: 'DRAGON',
+      role: 'MEMBER',
       profile: {
         name: null,
         bio: null,
@@ -91,7 +91,7 @@ describe('MembersPage', () => {
     expect(findManyMock).toHaveBeenCalledWith({
       orderBy: [{ role: 'asc' }, { name: 'asc' }],
       where: {
-        role: { in: ['ANCIENT', 'WYRM', 'DRAGON'] },
+        role: { in: ['LEADER', 'OFFICER', 'MEMBER'] },
       },
       select: {
         id: true,
@@ -103,6 +103,7 @@ describe('MembersPage', () => {
             name: true,
             bio: true,
             portrait: true,
+            slug: true,
             job: true,
             activities: true,
             playstyle: true,

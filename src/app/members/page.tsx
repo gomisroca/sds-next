@@ -63,7 +63,7 @@ export default async function MembersPage() {
         {/* Members */}
         {regulars.length > 0 && (
           <div>
-            {leadership.length > 0 && <SectionLabel label="Members" />}
+            <SectionLabel label="Members" />
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {regulars.map((m, i) => (
                 <MemberCard key={m.id} member={m} index={i} />

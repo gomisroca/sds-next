@@ -3,6 +3,7 @@
 import { Check, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
+import { PrimaryButton } from '@/app/components/ui/form-fields';
 import { SectionDivider } from '@/app/components/ui/section-divider';
 import type { SiteSettings } from '@/utils/settings';
 
@@ -224,18 +225,14 @@ export default function SettingsForm({ initialSettings, isLeader }: SettingsForm
 
       {isLeader && (
         <div className="flex items-center gap-4">
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center gap-2 border border-red-700/60 bg-red-950/30 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-300/90 uppercase transition-all hover:border-red-600/80 hover:bg-red-900/40 disabled:opacity-50">
+          <PrimaryButton onClick={handleSave} disabled={saving}>
             {saving ? (
               <Loader2 className="h-3 w-3 animate-spin" strokeWidth={1.5} />
             ) : (
               <Check className="h-3 w-3" strokeWidth={2} />
             )}
             {saving ? 'Saving…' : 'Save Settings'}
-          </button>
+          </PrimaryButton>
           {saved && <span className="text-xs font-light tracking-widest text-emerald-400/70 uppercase">✓ Saved</span>}
         </div>
       )}

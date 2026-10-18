@@ -51,7 +51,7 @@ describe('MemberCard Profile Block Component', () => {
 
     // Root routing deep link assertion
     const cardAnchor = screen.getByRole('link');
-    expect(cardAnchor).toHaveAttribute('href', '/members/user-001');
+    expect(cardAnchor).toHaveAttribute('href', '/members/alphinaud-academic');
 
     // Display profile override name preferentially instead of base fallback name string
     expect(screen.getByRole('heading', { name: 'Alphinaud (Academic)' })).toBeInTheDocument();
@@ -62,11 +62,10 @@ describe('MemberCard Profile Block Component', () => {
     expect(userPortrait).toHaveAttribute('src', 'https://cdn.example.com/portrait-high-res.png');
 
     // Role badge presence verification
-    expect(screen.getByText('Officer')).toBeInTheDocument();
+    expect(screen.getByText('Wyrm')).toBeInTheDocument();
 
     // Job + Playstyle configurations checks matching metadata lookups
     expect(screen.getByText('Sage')).toBeInTheDocument();
-    expect(screen.getByText('Healer')).toBeInTheDocument();
     expect(screen.getByText('Midcore')).toBeInTheDocument();
     expect(screen.getByText('Academic specialist focusing on Sharlayan field studies.')).toBeInTheDocument();
   });

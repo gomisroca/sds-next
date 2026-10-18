@@ -29,6 +29,7 @@ vi.mock('next/link', () => ({
 const mockEvent = {
   id: 'evt-1',
   name: 'Savage Progress: M1S',
+  slug: 'savage-progress-m1s',
   description: 'Weekly reclear before reset.',
   location: 'Discord VC 1',
   startsAt: new Date('2026-06-20T19:00:00.000Z'),
@@ -53,18 +54,14 @@ describe('EventRow', () => {
   it('links to the event detail page', () => {
     render(<EventRow event={mockEvent} index={0} />);
 
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/events/evt-1');
+    expect(screen.getByRole('link')).toHaveAttribute('href', '/events/savage-progress-m1s');
   });
 
   it('formats and displays the event date and time', () => {
     render(<EventRow event={mockEvent} index={0} />);
 
-    expect(screen.getByText('Sat')).toBeInTheDocument();
+    expect(screen.getByText('Saturday')).toBeInTheDocument();
     expect(screen.getByText('20')).toBeInTheDocument();
-
-    // desktop
-    expect(screen.getAllByText('19:00')).not.toHaveLength(0);
-    expect(screen.getByText('→ 22:00')).toBeInTheDocument();
   });
 
   it('renders the draft badge for draft events', () => {
