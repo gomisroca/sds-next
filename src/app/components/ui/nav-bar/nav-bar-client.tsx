@@ -133,7 +133,7 @@ function UserDropdown({
               {profileInfo?.userId && <DropdownLink href={`/members/${profileInfo.slug}`}>View Profile</DropdownLink>}
 
               {profileInfo?.profileId && (
-                <DropdownLink href={`/profile/${profileInfo.profileId}/edit`}>Edit Profile</DropdownLink>
+                <DropdownLink href={`/members/${profileInfo.slug}/edit`}>Edit Profile</DropdownLink>
               )}
 
               {!profileInfo?.profileId && profileInfo?.userId && (
@@ -197,7 +197,9 @@ function AuthButton({ isOfficerPlus }: { isOfficerPlus: boolean }) {
 // ── Mobile auth row ───────────────────────────────────────────────────────────
 function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
   const { data: session, status } = useSession();
-  const [profileInfo, setProfileInfo] = useState<{ userId: string; profileId: string | null } | null>(null);
+  const [profileInfo, setProfileInfo] = useState<{ userId: string; profileId: string | null; slug: string } | null>(
+    null
+  );
 
   const pathname = usePathname();
 
@@ -205,7 +207,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
     if (!session?.user?.id) return;
     fetch('/api/me/profile')
       .then((r) => r.json())
-      .then((data: { userId: string; profileId: string | null } | { error: string }) => {
+      .then((data: { userId: string; profileId: string | null; slug: string } | { error: string }) => {
         if ('userId' in data) setProfileInfo(data);
       })
       .catch(() => null);
@@ -236,7 +238,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
 
         {profileInfo?.userId && (
           <Link
-            href={`/members/${profileInfo.userId}`}
+            href={`/members/${profileInfo.slug}`}
             className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
             <span className="h-px w-4 bg-red-900/40" />
             View Profile
@@ -244,7 +246,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
         )}
         {profileInfo?.profileId && (
           <Link
-            href={`/profile/${profileInfo.profileId}/edit`}
+            href={`/members/${profileInfo.slug}/edit`}
             className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
             <span className="h-px w-4 bg-red-900/40" />
             Edit Profile
