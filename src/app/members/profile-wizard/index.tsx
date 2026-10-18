@@ -116,7 +116,7 @@ export default function ProfileWizard(props: ProfileWizardProps) {
 
     try {
       type ProfileResponse =
-        | { success: true; profile: { id: string; userId: string } }
+        | { success: true; profile: { id: string; userId: string; slug: string } }
         | { success: false; error: string };
 
       const payload = {
@@ -142,7 +142,7 @@ export default function ProfileWizard(props: ProfileWizardProps) {
       }
 
       // Redirect to the member detail page for the profile's owner
-      router.push(`/members/${json.profile.userId}`);
+      router.push(`/members/${json.profile.slug}`);
     } catch {
       setSubmitError('Network error - please check your connection and try again.');
     } finally {

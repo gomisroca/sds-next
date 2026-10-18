@@ -22,7 +22,7 @@ async function getMembers() {
       image: true,
       role: true,
       createdAt: true,
-      profile: { select: { id: true, name: true } },
+      profile: { select: { id: true, name: true, slug: true } },
       accounts: {
         where: { provider: 'discord' },
         select: { providerAccountId: true },
@@ -141,7 +141,7 @@ export default async function AdminMembersPage() {
                     )}
                     {hasProfile && (
                       <Link
-                        href={`/members/${member.id}`}
+                        href={`/members/${member.profile!.slug}`}
                         className="hidden shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90 sm:flex">
                         View
                       </Link>

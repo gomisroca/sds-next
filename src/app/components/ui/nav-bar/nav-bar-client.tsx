@@ -51,9 +51,10 @@ function NavSigil() {
 interface ProfileInfo {
   userId: string;
   profileId: string | null;
+  slug: string;
 }
 
-type ProfileResponse = { userId: string; profileId: string | null } | { error: string };
+type ProfileResponse = { userId: string; profileId: string | null; slug: string } | { error: string };
 
 function UserDropdown({
   session,
@@ -129,7 +130,7 @@ function UserDropdown({
 
             {/* Links */}
             <div className="py-1">
-              {profileInfo?.userId && <DropdownLink href={`/members/${profileInfo.userId}`}>View Profile</DropdownLink>}
+              {profileInfo?.userId && <DropdownLink href={`/members/${profileInfo.slug}`}>View Profile</DropdownLink>}
 
               {profileInfo?.profileId && (
                 <DropdownLink href={`/profile/${profileInfo.profileId}/edit`}>Edit Profile</DropdownLink>

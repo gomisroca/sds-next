@@ -11,7 +11,7 @@ export async function GET(): Promise<Response> {
 
   const profile = await db.profile.findUnique({
     where: { userId: session.user.id },
-    select: { id: true },
+    select: { id: true, slug: true },
   });
 
   return NextResponse.json({

@@ -15,6 +15,7 @@ async function getMember(slug: string) {
     where: { slug },
     select: {
       id: true,
+      slug: true,
       name: true,
       bio: true,
       portrait: true,
@@ -67,7 +68,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
 
           {canEdit && profile && (
             <Link
-              href={`/members/${profile.id}/edit`}
+              href={`/members/${profile.slug}/edit`}
               className="flex items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">
               <Pencil className="h-3 w-3" strokeWidth={1.5} />
               Edit Profile

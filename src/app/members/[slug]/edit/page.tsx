@@ -19,6 +19,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
     where: { slug },
     select: {
       id: true,
+      slug: true,
       userId: true,
       name: true,
       bio: true,
@@ -40,7 +41,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
   const isOwner = profile.userId === session.user.id;
   const isLeader = editor?.role === 'LEADER';
 
-  if (!isOwner && !isLeader) redirect(`/members/${profile.userId}`);
+  if (!isOwner && !isLeader) redirect(`/members/${profile.slug}`);
 
   const initialData: ProfileFormData = {
     name: profile.name,
