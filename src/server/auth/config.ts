@@ -30,6 +30,7 @@ export const authConfig = {
     DiscordProvider({
       clientId: env.DISCORD_ID,
       clientSecret: env.DISCORD_SECRET,
+      issuer: 'https://discord.com',
     }),
   ],
 
