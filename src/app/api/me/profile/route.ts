@@ -17,5 +17,6 @@ export async function GET(): Promise<Response> {
   return NextResponse.json({
     userId: session.user.id,
     profileId: profile?.id ?? null,
+    slug: profile?.slug ?? null,
   });
 }
