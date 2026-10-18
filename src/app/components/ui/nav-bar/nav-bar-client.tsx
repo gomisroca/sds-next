@@ -136,7 +136,7 @@ function UserDropdown({
               )}
 
               {!profileInfo?.profileId && profileInfo?.userId && (
-                <DropdownLink href={`/profile/new?userId=${profileInfo.userId}`} muted>
+                <DropdownLink href={`/members/new?userId=${profileInfo.userId}`} muted>
                   Set up Profile
                 </DropdownLink>
               )}
@@ -251,7 +251,7 @@ function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
         )}
         {!profileInfo?.profileId && profileInfo?.userId && (
           <Link
-            href={`/profile/new?userId=${profileInfo.userId}`}
+            href={`/members/new?userId=${profileInfo.userId}`}
             className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
             <span className="h-px w-4 bg-red-900/40" />
             Set up Profile

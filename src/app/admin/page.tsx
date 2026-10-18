@@ -68,7 +68,7 @@ export default async function AdminPage() {
         />
         <AdminQuickLink href="/blog/new" icon={Newspaper} title="New Blog Post" description="Create a new blog post." />
         <AdminQuickLink
-          href="/profile/new"
+          href="/members/new"
           icon={Users}
           title="New Profile"
           description="Create a profile for a member who doesn't have one yet."

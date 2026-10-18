@@ -133,7 +133,7 @@ export default async function AdminMembersPage() {
                     {/* Profile shortcut */}
                     {!hasProfile && member.role !== 'GUEST' && (
                       <Link
-                        href={`/profile/new?userId=${member.id}`}
+                        href={`/members/new?userId=${member.id}`}
                         className="hidden shrink-0 items-center gap-1.5 border border-red-900/20 px-3 py-1.5 text-[10px] font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/35 hover:text-white/90 sm:flex">
                         <UserPlus className="h-3 w-3" strokeWidth={1.5} />
                         Profile
