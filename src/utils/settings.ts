@@ -7,7 +7,6 @@ export interface SiteSettings {
   welcomeText: string;
   discordInvite: string | null;
   eventChannelId: string | null;
-  showLatestPost: boolean;
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -18,7 +17,6 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     "Sleeping Dragons is a friendly home for adventurers of all kinds - whether you're here to clear savage tier, tend your garden, or simply share a glass of Ul'dahn wine by the hearth. Pull up a chair.",
   discordInvite: null,
   eventChannelId: null,
-  showLatestPost: false,
 };
 
 /**
@@ -36,7 +34,6 @@ export async function getSettings(): Promise<SiteSettings> {
       welcomeText: row.welcomeText,
       discordInvite: row.discordInvite,
       eventChannelId: row.eventChannelId,
-      showLatestPost: row.showLatestPost,
     };
   } catch {
     // Gracefully fall back to defaults if DB is unavailable

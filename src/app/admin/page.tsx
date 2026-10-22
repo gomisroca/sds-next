@@ -61,13 +61,6 @@ export default async function AdminPage() {
           description="Create a new event or use an existing template."
         />
         <AdminQuickLink
-          href="/admin/blog"
-          icon={Newspaper}
-          title="Manage Blog Posts"
-          description="View all blog posts — drafts and published."
-        />
-        <AdminQuickLink href="/blog/new" icon={Newspaper} title="New Blog Post" description="Create a new blog post." />
-        <AdminQuickLink
           href="/members/new"
           icon={Users}
           title="New Profile"
