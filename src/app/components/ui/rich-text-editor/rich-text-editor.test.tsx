@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import RichTextEditor from '@/app/components/ui/rich-text-editor'; // Adjust this import path to match your project structure
+import RichTextEditor from '@/app/components/ui/rich-text-editor';
 
 // Standardized types matching Tiptap core methods chain outputs
 interface MockEditorChain {

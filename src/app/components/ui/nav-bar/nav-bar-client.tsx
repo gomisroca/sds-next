@@ -12,7 +12,6 @@ import { DiscordAccessButton } from '../../auth/discord-access-button';
 const LINKS = [
   { href: '/', label: 'Home' },
   { href: '/events', label: 'Events' },
-  { href: '/blog', label: 'News' },
   { href: '/members', label: 'Members' },
 ];
 

@@ -17,7 +17,6 @@ async function getSettings() {
     welcomeText: row.welcomeText,
     discordInvite: row.discordInvite,
     eventChannelId: row.eventChannelId,
-    showLatestPost: row.showLatestPost,
   };
 }
 

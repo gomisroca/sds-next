@@ -2,7 +2,6 @@ import { EventStatus } from 'generated/prisma';
 
 import EventCarousel from '@/app/event-carousel';
 import HomeHero from '@/app/hero';
-import LatestBlogPost from '@/app/latest-post';
 import { db } from '@/server/db';
 import { getSettings } from '@/utils/settings';
 
@@ -86,9 +85,6 @@ async function WelcomeSection() {
 
         {/* Featured events carousel */}
         <EventCarousel events={events} />
-
-        {/* Latest blog post if enabled */}
-        {settings.showLatestPost && <LatestBlogPost />}
 
         {/* Info cards */}
         <InfoCards />
