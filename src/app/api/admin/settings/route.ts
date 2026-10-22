@@ -21,12 +21,11 @@ export async function GET(): Promise<Response> {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  if (!user || (user.role !== 'OFFICER' && user.role !== 'LEADER')) {
+  if (!editor) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -41,14 +40,12 @@ export async function PATCH(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: 'LEADER' },
   });
 
-  // Only leaders can save settings
-  if (!user || user.role !== 'LEADER') {
-    return NextResponse.json({ error: 'Forbidden - only leaders can update settings' }, { status: 403 });
+  if (!editor) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const parsed = UpdateSettingsSchema.safeParse(await req.json());

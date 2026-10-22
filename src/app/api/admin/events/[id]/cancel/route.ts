@@ -10,15 +10,12 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  // Cancelling a published event is a leader-only action -
-  // officers can create and publish but shouldn't unilaterally cancel
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  if (!user || user.role !== 'LEADER') {
-    return NextResponse.json({ error: 'Forbidden - only leaders can cancel published events' }, { status: 403 });
+  if (!editor) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const { id } = await params;

@@ -1,6 +1,5 @@
 import { ExternalLink, Shield, Swords, Users } from 'lucide-react';
 
-import { DiscordAccessButton } from '@/app/components/auth/discord-access-button';
 import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { PageShell } from '@/app/components/ui/page-shell';
@@ -101,12 +100,6 @@ export default async function JoinPage() {
               Discord invite coming soon
             </div>
           )}
-
-          <p className="mt-6 text-xs font-light text-white/60">
-            Already a member?{' '}
-            <DiscordAccessButton className="mx-auto flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300" />
-            to access your profile and RSVP to events.
-          </p>
         </div>
       </div>
     </PageShell>

@@ -46,10 +46,9 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
   const roleMeta = ROLE_META[profile.user.role];
 
   // Show edit button to profile owner or leaders
-  const currentUser = session?.user?.id
-    ? await db.user.findUnique({ where: { id: session.user.id }, select: { role: true } })
+  const editor = session?.user?.id
+    ? await db.user.findUnique({ where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } } })
     : null;
-  const canEdit = profile && (session?.user?.id === profile.user.id || currentUser?.role === 'LEADER');
 
   return (
     <PageShell>
@@ -66,7 +65,7 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
         <div className="mb-10 flex items-center justify-between">
           <BackLink href="/members" label="All Members" />
 
-          {canEdit && profile && (
+          {editor && (
             <Link
               href={`/members/${profile.slug}/edit`}
               className="flex items-center gap-2 border border-red-900/25 bg-white/[0.02] px-4 py-1.5 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-all hover:border-red-800/40 hover:text-white/90">

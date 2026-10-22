@@ -17,11 +17,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   // Only leaders can change roles - officers can view but not promote
   const editor = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+    where: { id: session.user.id, role: 'LEADER' },
   });
 
-  if (!editor || editor.role !== 'LEADER') {
+  if (!editor) {
     return NextResponse.json({ error: 'Forbidden - only leaders can change roles' }, { status: 403 });
   }
 
