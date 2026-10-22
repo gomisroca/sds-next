@@ -6,11 +6,11 @@ import { CornerAccentTL } from '@/app/components/ui/corner-accent';
 import OrnamentalRule from '@/app/components/ui/ornamental-rule';
 import { PageShell } from '@/app/components/ui/page-shell';
 import { EventActions } from '@/app/events/[slug]/event-actions';
-import { EventDetailClient } from '@/app/events/[slug]/event-detail-client';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { formatEventDate, getEventAttendanceCounts } from '@/utils/events';
 
+import { AttendanceCounts } from './attendance-counts';
 import { EventTime } from './event-time';
 
 export const revalidate = 30;
@@ -54,18 +54,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const attendance = await getEventAttendanceCounts(event.id, db);
 
   // Look up the current user's existing RSVP and role if signed in
-  const [existingRSVP, currentUser] = await Promise.all([
-    session?.user?.id
-      ? db.eventAttendance.findUnique({
-          where: { eventId_userId: { eventId: event.id, userId: session.user.id } },
-          select: { status: true },
-        })
-      : null,
-    session?.user?.id ? db.user.findUnique({ where: { id: session.user.id }, select: { role: true } }) : null,
-  ]);
-
-  const isOfficerPlus = currentUser?.role === 'OFFICER' || currentUser?.role === 'LEADER';
-  const isLeader = currentUser?.role === 'LEADER';
+  const editor = await db.user.findUnique({
+    where: { id: session?.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
+  });
   const isDraft = event.status === 'DRAFT';
   const isPublished = event.status === 'PUBLISHED';
   const isCancelled = event.status === 'CANCELLED';
@@ -159,22 +150,16 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               )}
             </div>
 
-            {/* Attendance + RSVP — hidden for past and cancelled events */}
-            <EventDetailClient
-              eventSlug={event.slug!}
-              startsAt={event.startsAt!}
-              initialAttendance={attendance}
-              initialStatus={existingRSVP?.status ?? null}
-              isAuthenticated={!!session?.user?.id && !isCancelled && !isPast}
-            />
+            {/* Attendance */}
+            <AttendanceCounts attendance={attendance} />
 
             {/* Officer action bar */}
             <EventActions
               eventId={event.id}
-              canEdit={isOfficerPlus && isDraft}
-              canPublish={isOfficerPlus && isDraft}
-              canCancel={isLeader && isPublished}
-              canDelete={isOfficerPlus && (isDraft || isCancelled)}
+              canEdit={editor && isDraft}
+              canPublish={editor && isDraft}
+              canCancel={editor && isPublished}
+              canDelete={editor && (isDraft || isCancelled)}
             />
           </div>
         </div>
