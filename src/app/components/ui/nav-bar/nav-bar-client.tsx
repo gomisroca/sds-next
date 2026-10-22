@@ -1,13 +1,9 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { signOut, useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
-
-import { DiscordAccessButton } from '../../auth/discord-access-button';
+import { useEffect, useState } from 'react';
 
 const LINKS = [
   { href: '/', label: 'Home' },
@@ -46,256 +42,6 @@ function NavSigil() {
   );
 }
 
-// ── User dropdown ─────────────────────────────────────────────────────────────
-interface ProfileInfo {
-  userId: string;
-  profileId: string | null;
-  slug: string | null;
-}
-
-type ProfileResponse = { userId: string; profileId: string | null; slug: string | null } | { error: string };
-
-function UserDropdown({
-  session,
-  isOfficerPlus,
-}: {
-  session: NonNullable<ReturnType<typeof useSession>['data']>;
-  isOfficerPlus: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    fetch('/api/me/profile')
-      .then((r) => r.json())
-      .then((data: ProfileResponse) => {
-        if ('userId' in data) setProfileInfo(data);
-      })
-      .catch(() => null);
-  }, []);
-
-  function handleMouseEnter() {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setOpen(true);
-  }
-
-  function handleMouseLeave() {
-    timerRef.current = setTimeout(() => setOpen(false), 120);
-  }
-
-  const user = session.user;
-
-  return (
-    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      {/* Trigger */}
-      <button
-        type="button"
-        className="flex cursor-pointer items-center gap-2 border border-transparent px-2 py-1 text-xs font-light tracking-[0.15em] text-white/60 uppercase transition-all duration-200 hover:border-red-900/30 hover:text-white/60">
-        {user.image ? (
-          <Image
-            src={user.image}
-            alt={user.name ?? 'Avatar'}
-            width={22}
-            height={22}
-            className="rounded-full ring-1 ring-red-900/40"
-          />
-        ) : (
-          <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400 ring-1 ring-red-900/40">
-            {user.name?.[0]?.toUpperCase() ?? '?'}
-          </span>
-        )}
-        <span className="hidden sm:inline">{user.name?.split(' ')[0]}</span>
-        <span className="text-white/60 transition-colors">▾</span>
-      </button>
-
-      {/* Dropdown panel */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="absolute top-full right-0 z-50 mt-1 w-48 border border-red-900/25 bg-[#080202]/95 py-1 shadow-lg"
-            style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
-            initial={{ opacity: 0, y: -4, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.97 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}>
-            {/* User info header */}
-            <div className="border-b border-red-900/20 px-4 py-3">
-              <p className="truncate text-xs font-light text-white/80">{user.name}</p>
-              <p className="mt-0.5 text-[10px] font-light tracking-widest text-white/60 uppercase">
-                {user.role ?? 'Dragon'}
-              </p>
-            </div>
-
-            {/* Links */}
-            <div className="py-1">
-              {profileInfo?.slug && (
-                <>
-                  <DropdownLink href={`/members/${profileInfo.slug}`}>View Profile</DropdownLink>
-                  <DropdownLink href={`/members/${profileInfo.slug}/edit`}>Edit Profile</DropdownLink>
-                </>
-              )}
-
-              {!profileInfo?.profileId && profileInfo?.userId && (
-                <DropdownLink href={`/members/new?userId=${profileInfo.userId}`} muted>
-                  Set up Profile
-                </DropdownLink>
-              )}
-
-              {isOfficerPlus && (
-                <>
-                  <div className="my-1 h-px bg-red-900/15" />
-                  <DropdownLink href="/admin">Admin Panel</DropdownLink>
-                </>
-              )}
-
-              <div className="my-1 h-px bg-red-900/15" />
-
-              <button
-                type="button"
-                onClick={() => signOut()}
-                className="flex w-full cursor-pointer items-center px-4 py-2 text-xs font-light tracking-[0.2em] text-white/60 uppercase transition-colors hover:bg-red-950/20 hover:text-white/90">
-                Sign Out
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function DropdownLink({ href, children, muted }: { href: string; children: React.ReactNode; muted?: boolean }) {
-  return (
-    <Link
-      href={href}
-      className={`flex items-center px-4 py-2 text-xs font-light tracking-[0.2em] uppercase transition-colors hover:bg-red-950/20 ${
-        muted ? 'text-white/60 hover:text-white/90' : 'text-white/80 hover:text-white/95'
-      }`}>
-      {children}
-    </Link>
-  );
-}
-
-// ── Auth button ───────────────────────────────────────────────────────────────
-function AuthButton({ isOfficerPlus }: { isOfficerPlus: boolean }) {
-  const { data: session, status } = useSession();
-
-  if (status === 'loading') {
-    return <div className="h-6 w-20 animate-pulse rounded-sm bg-red-900/20" />;
-  }
-
-  if (session) {
-    return <UserDropdown session={session} isOfficerPlus={isOfficerPlus} />;
-  }
-
-  return (
-    <DiscordAccessButton className="flex cursor-pointer items-center gap-2 border border-red-800/50 bg-red-950/20 px-2 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300" />
-  );
-}
-
-// ── Mobile auth row ───────────────────────────────────────────────────────────
-function MobileAuthRow({ isOfficerPlus }: { isOfficerPlus: boolean }) {
-  const { data: session, status } = useSession();
-  const [profileInfo, setProfileInfo] = useState<{ userId: string; profileId: string | null; slug: string } | null>(
-    null
-  );
-
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (!session?.user?.id) return;
-    fetch('/api/me/profile')
-      .then((r) => r.json())
-      .then((data: { userId: string; profileId: string | null; slug: string } | { error: string }) => {
-        if ('userId' in data) setProfileInfo(data);
-      })
-      .catch(() => null);
-  }, [session?.user?.id]);
-
-  if (status === 'loading') return null;
-
-  if (session?.user) {
-    return (
-      <div className="mt-1 flex flex-col gap-1 border-t border-red-900/20 pt-4">
-        {/* User info */}
-        <div className="mb-2 flex items-center gap-2.5 px-1">
-          {session.user.image ? (
-            <Image
-              src={session.user.image}
-              alt={session.user.name ?? 'Avatar'}
-              width={24}
-              height={24}
-              className="rounded-full ring-1 ring-red-900/40"
-            />
-          ) : (
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-950/60 text-[10px] text-red-400 ring-1 ring-red-900/40">
-              {session.user.name?.[0]?.toUpperCase() ?? '?'}
-            </span>
-          )}
-          <span className="text-sm font-light text-white/60">{session.user.name}</span>
-        </div>
-
-        {profileInfo?.userId && (
-          <Link
-            href={`/members/${profileInfo.slug}`}
-            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-            <span className="h-px w-4 bg-red-900/40" />
-            View Profile
-          </Link>
-        )}
-        {profileInfo?.profileId && (
-          <Link
-            href={`/members/${profileInfo.slug}/edit`}
-            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-            <span className="h-px w-4 bg-red-900/40" />
-            Edit Profile
-          </Link>
-        )}
-        {!profileInfo?.profileId && profileInfo?.userId && (
-          <Link
-            href={`/members/new?userId=${profileInfo.userId}`}
-            className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-            <span className="h-px w-4 bg-red-900/40" />
-            Set up Profile
-          </Link>
-        )}
-        {isOfficerPlus && (
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: (LINKS.length + 0.5) * 0.06, duration: 0.2 }}>
-            <Link
-              href="/admin"
-              className={`flex items-center gap-4 py-3 text-sm font-light tracking-[0.25em] uppercase transition-colors duration-200 ${
-                pathname.startsWith('/admin') ? 'text-white/90' : 'text-white/60 hover:text-white/90'
-              }`}>
-              <span
-                className={`h-px w-4 transition-colors duration-200 ${
-                  pathname.startsWith('/admin') ? 'bg-red-700' : 'bg-red-900/40'
-                }`}
-              />
-              Admin
-            </Link>
-          </motion.div>
-        )}
-        <button
-          onClick={() => signOut()}
-          className="flex items-center gap-4 py-2 text-sm font-light tracking-[0.25em] text-white/60 uppercase transition-colors hover:text-white/90">
-          <span className="h-px w-4 bg-red-900/40" />
-          Sign Out
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="mt-1 border-t border-red-900/20 pt-4">
-      <DiscordAccessButton className="flex items-center gap-2 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-colors hover:text-red-300" />
-    </div>
-  );
-}
-
 // ── Hamburger ─────────────────────────────────────────────────────────────────
 function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
@@ -330,12 +76,8 @@ interface NavBarProps {
 }
 
 export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · Light · Phoenix' }: NavBarProps) {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const isOfficerPlus = session?.user?.role === 'OFFICER' || session?.user?.role === 'LEADER';
-  const isGuestOrSignedOut = !session?.user || session.user.role === 'GUEST';
 
   useEffect(() => {
     setMenuOpen(false);
@@ -404,23 +146,16 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
               );
             })}
 
-            {/* Join — guests and signed-out users only */}
-            {isGuestOrSignedOut && (
-              <>
-                <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-                <Link href="/join">
-                  <motion.span
-                    className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}>
-                    Join
-                  </motion.span>
-                </Link>
-              </>
-            )}
-
+            {/* Join */}
             <div className="mx-3 h-3.5 w-px bg-red-900/40" />
-            <AuthButton isOfficerPlus={isOfficerPlus} />
+            <Link href="/join">
+              <motion.span
+                className="inline-block border border-red-800/50 bg-red-950/25 px-5 py-1.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}>
+                Join
+              </motion.span>
+            </Link>
           </div>
 
           {/* Mobile: auth + hamburger */}
@@ -481,26 +216,16 @@ export default function NavBar({ fcName = 'Sleeping Dragons', subtitle = 'EU · 
 
                 <div className="my-3 h-px bg-red-900/20" />
 
-                {/* Join Us — guests and signed-out only */}
-                {isGuestOrSignedOut && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
-                    <Link
-                      href="/join"
-                      className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
-                      Join
-                    </Link>
-                  </motion.div>
-                )}
-
-                {/* Auth */}
+                {/* Join Us */}
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: (LINKS.length + 1) * 0.06, duration: 0.2 }}>
-                  <MobileAuthRow isOfficerPlus={isOfficerPlus} />
+                  transition={{ delay: LINKS.length * 0.06, duration: 0.2 }}>
+                  <Link
+                    href="/join"
+                    className="inline-block border border-red-800/50 bg-red-950/25 px-8 py-2.5 text-xs font-light tracking-[0.25em] text-red-400 uppercase transition-all duration-300 hover:border-red-700/70 hover:bg-red-900/30 hover:text-red-300">
+                    Join
+                  </Link>
                 </motion.div>
               </div>
             </motion.div>
