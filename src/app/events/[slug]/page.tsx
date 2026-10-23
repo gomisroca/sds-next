@@ -54,9 +54,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const attendance = await getEventAttendanceCounts(event.id, db);
 
   // Look up the current user's existing RSVP and role if signed in
-  const editor = await db.user.findUnique({
-    where: { id: session?.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
-  });
+  const editor = session?.user?.id
+    ? await db.user.findFirst({
+        where: {
+          id: session.user.id,
+          role: { notIn: ['GUEST', 'MEMBER'] },
+        },
+        select: { id: true },
+      })
+    : null;
   const isDraft = event.status === 'DRAFT';
   const isPublished = event.status === 'PUBLISHED';
   const isCancelled = event.status === 'CANCELLED';
@@ -156,10 +162,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             {/* Officer action bar */}
             <EventActions
               eventId={event.id}
-              canEdit={editor && isDraft}
-              canPublish={editor && isDraft}
-              canCancel={editor && isPublished}
-              canDelete={editor && (isDraft || isCancelled)}
+              canEdit={!!editor && isDraft}
+              canPublish={!!editor && isDraft}
+              canCancel={!!editor && isPublished}
+              canDelete={!!editor && (isDraft || isCancelled)}
             />
           </div>
         </div>
