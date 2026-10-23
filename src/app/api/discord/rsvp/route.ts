@@ -56,7 +56,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   // Rate-limit + idempotency check
   const existing = await db.eventAttendance.findUnique({
-    where: { eventId_userId: { eventId, userId: discordUserId } },
+    where: { eventId_discordId: { eventId, discordId: discordUserId } },
   });
 
   if (existing) {
@@ -72,9 +72,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   // Upsert attendance
   await db.eventAttendance.upsert({
-    where: { eventId_userId: { eventId, userId: discordUserId } },
+    where: { eventId_discordId: { eventId, discordId: discordUserId } },
     update: { status },
-    create: { eventId, userId: discordUserId, status },
+    create: { eventId, discordId: discordUserId, status },
   });
 
   const eventForEmbed = {

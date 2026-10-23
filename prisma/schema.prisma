@@ -268,15 +268,16 @@ model EventAttendance {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  eventId String
-  userId  String
-  status  AttendanceStatus
+  eventId   String
+  discordId String
+  status    AttendanceStatus
 
-  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event  Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
   // One row per user per event
-  @@unique([eventId, userId])
+  @@unique([eventId, discordId])
   @@map("event_attendances")
 }
 
