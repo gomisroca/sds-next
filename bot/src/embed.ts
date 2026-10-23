@@ -35,13 +35,6 @@ export function renderRSVPButtons(eventId: string, isClosed: boolean) {
           custom_id: `rsvp:${eventId}:MAYBE`,
           disabled: isClosed,
         },
-        {
-          type: 2,
-          label: '❌ Not attending',
-          style: 4,
-          custom_id: `rsvp:${eventId}:NOT_ATTENDING`,
-          disabled: isClosed,
-        },
       ],
     },
   ];
@@ -50,7 +43,6 @@ export function renderRSVPButtons(eventId: string, isClosed: boolean) {
 // ── Attendance status labels ──────────────────────────────────────────────────
 const ATTENDANCE_LABELS: Record<string, string> = {
   ATTENDING: '✅ Attending',
-  NOT_ATTENDING: '❌ Not Attending',
   MAYBE: '❓ Maybe',
 };
 

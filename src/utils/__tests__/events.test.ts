@@ -61,11 +61,8 @@ describe('Events Utility Module', () => {
       endsAt: new Date('2026-06-16T22:00:00.000Z'),
       createdByName: 'Guild Master',
       attendance: {
-        attending: 2,
-        maybe: 0,
-        notAttending: 1,
-        attendingNames: ['Alice', 'Bob'],
-        maybeNames: [],
+        attending: ['Alice', 'Bob'],
+        maybe: [],
       },
     };
 
@@ -87,10 +84,8 @@ describe('Events Utility Module', () => {
         endsAt: null,
         location: null,
         attendance: {
-          attending: 0,
-          maybe: 22,
-          notAttending: 0,
-          attendingNames: [],
+          attending: [],
+          maybe: ['User_0', 'User_1', 'User_2', 'User_3', 'User_4', 'User_5', 'User_6', 'User_7', 'User_8'],
           maybeNames: Array.from({ length: 20 }, (_, idx) => `User_${idx}`),
         },
       };
@@ -115,7 +110,7 @@ describe('Events Utility Module', () => {
       startsAt: new Date('2026-06-17T18:00:00.000Z'),
       endsAt: null,
       createdByName: null,
-      attendance: { attending: 0, maybe: 0, notAttending: 0, attendingNames: [], maybeNames: [] },
+      attendance: { attending: [], maybe: [] },
     };
 
     it('returns null and outputs a warning log if target channel configs are absent', async () => {

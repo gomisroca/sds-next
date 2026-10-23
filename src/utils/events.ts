@@ -6,7 +6,6 @@ export const RATE_LIMIT_MS = 5_000;
 // ── Types ────────────────────────────────────────────────────────────────────
 export interface AttendanceCounts {
   attending: number;
-  notAttending: number;
   maybe: number;
 }
 
@@ -34,18 +33,15 @@ export async function getEventAttendanceCounts(eventId: string, db: PrismaClient
   });
 
   const attending = rows.filter((r) => r.status === 'ATTENDING');
-  const notAttending = rows.filter((r) => r.status === 'NOT_ATTENDING');
   const maybe = rows.filter((r) => r.status === 'MAYBE');
 
   return {
     attending: attending.length,
-    notAttending: notAttending.length,
     maybe: maybe.length,
   };
 }
 export interface AttendanceNames {
   attending: string[];
-  notAttending: string[];
   maybe: string[];
 }
 export async function getEventAttendanceNames(eventId: string, db: PrismaClient): Promise<AttendanceNames> {
@@ -66,7 +62,6 @@ export async function getEventAttendanceNames(eventId: string, db: PrismaClient)
 
   return {
     attending: getNames('ATTENDING'),
-    notAttending: getNames('NOT_ATTENDING'),
     maybe: getNames('MAYBE'),
   };
 }
@@ -74,7 +69,6 @@ export async function getEventAttendanceNames(eventId: string, db: PrismaClient)
 const STATUS_EMOJI = {
   attending: '✅',
   maybe: '❓',
-  notAttending: '❌',
 };
 
 function formatNameList(names: string[]): string {
@@ -108,11 +102,6 @@ export function renderEventEmbed(event: EventForEmbed): object {
     {
       name: `${STATUS_EMOJI.maybe} Maybe (${event.attendance.maybe.length})`,
       value: formatNameList(event.attendance.maybe),
-      inline: true,
-    },
-    {
-      name: `${STATUS_EMOJI.notAttending} Not Attending`,
-      value: String(event.attendance.notAttending.length),
       inline: true,
     },
   ];

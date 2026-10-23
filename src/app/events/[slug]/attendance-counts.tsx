@@ -7,11 +7,10 @@ import type { AttendanceCounts as AttendanceCountsType } from '@/utils/events';
 const STATUSES = [
   { key: 'attending' as const, label: 'Attending', emoji: '✅', barClass: 'bg-emerald-800/40' },
   { key: 'maybe' as const, label: 'Maybe', emoji: '❓', barClass: 'bg-yellow-800/40' },
-  { key: 'notAttending' as const, label: 'Not Attending', emoji: '❌', barClass: 'bg-red-800/40' },
 ];
 
 export function AttendanceCounts({ attendance }: { attendance: AttendanceCountsType }) {
-  const total = attendance.attending + attendance.maybe + attendance.notAttending;
+  const total = attendance.attending + attendance.maybe;
 
   return (
     <div className="flex flex-col gap-3 border border-red-900/20 bg-white/[0.02] p-5">

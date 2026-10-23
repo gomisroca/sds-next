@@ -7,7 +7,6 @@ describe('AttendanceCounts Component', () => {
   const mockAttendance = {
     attending: 5,
     maybe: 3,
-    notAttending: 2,
     attendingNames: ['John Doe', 'Jane Doe'],
     maybeNames: ['Jane Doe'],
   };
@@ -28,14 +27,10 @@ describe('AttendanceCounts Component', () => {
     // Check Maybe row
     expect(screen.getByText(/❓ Maybe/i)).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
-
-    // Check Not Attending row
-    expect(screen.getByText(/❌ Not Attending/i)).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
   });
 
   it('correctly applies styles and avoids Division by Zero errors when total is 0', () => {
-    const zeroAttendance = { attending: 0, maybe: 0, notAttending: 0, attendingNames: [], maybeNames: [] };
+    const zeroAttendance = { attending: 0, maybe: 0, attendingNames: [], maybeNames: [] };
     const { container } = render(<AttendanceCounts attendance={zeroAttendance} />);
 
     // The component should render fine without crashing
