@@ -16,6 +16,7 @@ async function handleInteraction(interaction: Interaction, frontendUrl: string, 
   const eventId = parts[1];
   const status = parts[2];
   const discordUserId = interaction.user.id;
+  const discordUserName = interaction.user.displayName;
 
   if (!eventId || !status) return;
 
@@ -27,7 +28,7 @@ async function handleInteraction(interaction: Interaction, frontendUrl: string, 
       ephemeral: true,
     });
 
-    void updateRsvp(frontendUrl, botSecret, { eventId, discordUserId, status });
+    void updateRsvp(frontendUrl, botSecret, { eventId, discordUserId, discordUserName, status });
   } catch (err) {
     logError('[interaction] Handler error:', err);
   }
@@ -36,6 +37,7 @@ async function handleInteraction(interaction: Interaction, frontendUrl: string, 
 type RsvpPayload = {
   eventId: string;
   discordUserId: string;
+  discordUserName: string;
   status: string;
 };
 
