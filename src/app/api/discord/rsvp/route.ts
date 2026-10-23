@@ -4,12 +4,13 @@ import { z } from 'zod';
 
 import { env } from '@/env';
 import { db } from '@/server/db';
-import { RATE_LIMIT_MS, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
+import { getEventAttendanceNames, RATE_LIMIT_MS, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
 
 // ── Validation ───────────────────────────────────────────────────────────────
 const DiscordRSVPSchema = z.object({
   eventId: z.string(),
   discordUserId: z.string(),
+  discordUserName: z.string(),
   status: z.enum(AttendanceStatus),
 });
 
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { eventId, discordUserId, status } = parsed.data;
+  const { eventId, discordUserId, discordUserName, status } = parsed.data;
 
   // Load event with just enough to check it exists and is still active
   const event = await db.event.findUnique({
@@ -56,15 +57,10 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   // Rate-limit + idempotency check
   const existing = await db.eventAttendance.findUnique({
-    where: { eventId_userId: { eventId, userId: discordUserId } },
+    where: { eventId_discordId: { eventId, discordId: discordUserId } },
   });
 
-  if (existing) {
-    // Same status - nothing to do
-    if (existing.status === status) {
-      return NextResponse.json({ success: true });
-    }
-    // Changed too recently
+  if (existing && existing.status !== status) {
     if (Date.now() - existing.updatedAt.getTime() < RATE_LIMIT_MS) {
       return NextResponse.json({ error: 'Rate limited - please wait before changing your RSVP' }, { status: 429 });
     }
@@ -72,10 +68,25 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   // Upsert attendance
   await db.eventAttendance.upsert({
-    where: { eventId_userId: { eventId, userId: discordUserId } },
-    update: { status },
-    create: { eventId, userId: discordUserId, status },
+    where: {
+      eventId_discordId: {
+        eventId,
+        discordId: discordUserId,
+      },
+    },
+    update: {
+      status,
+      discordName: discordUserName,
+    },
+    create: {
+      eventId,
+      discordId: discordUserId,
+      discordName: discordUserName,
+      status,
+    },
   });
+
+  const attendance = await getEventAttendanceNames(event.id, db);
 
   const eventForEmbed = {
     id: event.id,
@@ -86,6 +97,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     startsAt: event.startsAt!,
     endsAt: event.endsAt,
     createdByName: event.createdBy.name,
+    attendance,
   };
 
   const embed = renderEventEmbed(eventForEmbed);
