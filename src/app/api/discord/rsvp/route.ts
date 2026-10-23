@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { env } from '@/env';
 import { db } from '@/server/db';
-import { getEventAttendanceCounts, RATE_LIMIT_MS, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
+import { RATE_LIMIT_MS, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
 
 // ── Validation ───────────────────────────────────────────────────────────────
 const DiscordRSVPSchema = z.object({
@@ -54,19 +54,9 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Event is not accepting RSVPs' }, { status: 409 });
   }
 
-  // Resolve the Discord user to a site user via the linked OAuth account
-  const account = await db.account.findFirst({
-    where: { provider: 'discord', providerAccountId: discordUserId },
-    select: { userId: true },
-  });
-
-  if (!account) {
-    return NextResponse.json({ error: 'Discord account not linked to a site account' }, { status: 404 });
-  }
-
   // Rate-limit + idempotency check
   const existing = await db.eventAttendance.findUnique({
-    where: { eventId_userId: { eventId, userId: account.userId } },
+    where: { eventId_userId: { eventId, userId: discordUserId } },
   });
 
   if (existing) {
@@ -82,13 +72,10 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   // Upsert attendance
   await db.eventAttendance.upsert({
-    where: { eventId_userId: { eventId, userId: account.userId } },
+    where: { eventId_userId: { eventId, userId: discordUserId } },
     update: { status },
-    create: { eventId, userId: account.userId, status },
+    create: { eventId, userId: discordUserId, status },
   });
-
-  // Rebuild attendance counts and push updated embed to Discord
-  const attendance = await getEventAttendanceCounts(eventId, db);
 
   const eventForEmbed = {
     id: event.id,
@@ -99,7 +86,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     startsAt: event.startsAt!,
     endsAt: event.endsAt,
     createdByName: event.createdBy.name,
-    attendance,
   };
 
   const embed = renderEventEmbed(eventForEmbed);

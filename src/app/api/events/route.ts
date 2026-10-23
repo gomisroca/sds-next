@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-import { getEventAttendanceCounts, postEventToDiscord } from '@/utils/events';
+import { postEventToDiscord } from '@/utils/events';
 
 function slugify(name: string): string {
   const slug = name
@@ -119,8 +119,6 @@ export async function POST(req: NextRequest): Promise<Response> {
   });
 
   if (publishNow) {
-    const attendance = await getEventAttendanceCounts(event.id, db);
-
     const eventForEmbed = {
       id: event.id,
       name: event.name,
@@ -130,7 +128,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       startsAt: event.startsAt!,
       endsAt: event.endsAt,
       createdByName: editor.name,
-      attendance,
     };
 
     const botResult = await postEventToDiscord(eventForEmbed);
