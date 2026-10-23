@@ -1,4 +1,4 @@
-import { type Client, Events, type Interaction } from 'discord.js';
+import { type Client, Events, GuildMember, type Interaction } from 'discord.js';
 
 import { labelAttendanceStatus } from './embed.js';
 
@@ -16,7 +16,8 @@ async function handleInteraction(interaction: Interaction, frontendUrl: string, 
   const eventId = parts[1];
   const status = parts[2];
   const discordUserId = interaction.user.id;
-  const discordUserName = interaction.user.displayName;
+  const discordUserName =
+    interaction.member instanceof GuildMember ? interaction.member.displayName : interaction.user.displayName;
 
   if (!eventId || !status) return;
 
