@@ -19,6 +19,7 @@ export interface EventForEmbed {
   startsAt: Date;
   endsAt: Date | null;
   createdByName: string | null;
+  attendance: AttendanceNames;
 }
 
 function formatDiscordTimestamp(date: Date): string {
@@ -42,6 +43,49 @@ export async function getEventAttendanceCounts(eventId: string, db: PrismaClient
     maybe: maybe.length,
   };
 }
+export interface AttendanceNames {
+  attending: string[];
+  notAttending: string[];
+  maybe: string[];
+}
+export async function getEventAttendanceNames(eventId: string, db: PrismaClient): Promise<AttendanceNames> {
+  const rows = await db.eventAttendance.findMany({
+    where: { eventId },
+    select: {
+      status: true,
+      discordId: true,
+      discordName: true,
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
+
+  const getNames = (status: string): string[] =>
+    rows.filter((row) => row.status === status).map((row) => String(row.discordName ?? `User ${row.discordId}`));
+
+  return {
+    attending: getNames('ATTENDING'),
+    notAttending: getNames('NOT_ATTENDING'),
+    maybe: getNames('MAYBE'),
+  };
+}
+
+const STATUS_EMOJI = {
+  attending: '✅',
+  maybe: '❓',
+  notAttending: '❌',
+};
+
+function formatNameList(names: string[]): string {
+  if (names.length === 0) return '0';
+
+  const maxNames = 20;
+  const shown = names.slice(0, maxNames);
+  const extra = names.length - shown.length;
+
+  return extra > 0 ? `${shown.join('\n')}\n*+${extra} more*` : shown.join('\n');
+}
 
 /**
  * Renders a Discord embed object for an event.
@@ -55,6 +99,21 @@ export function renderEventEmbed(event: EventForEmbed): object {
     },
     ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDiscordTimestamp(event.endsAt), inline: true }] : []),
     ...(event.location ? [{ name: '📍 Location', value: event.location, inline: true }] : []),
+    {
+      name: `${STATUS_EMOJI.attending} Attending (${event.attendance.attending.length})`,
+      value: formatNameList(event.attendance.attending),
+      inline: true,
+    },
+    {
+      name: `${STATUS_EMOJI.maybe} Maybe (${event.attendance.maybe.length})`,
+      value: formatNameList(event.attendance.maybe),
+      inline: true,
+    },
+    {
+      name: `${STATUS_EMOJI.notAttending} Not Attending (${event.attendance.notAttending.length})`,
+      value: formatNameList(event.attendance.notAttending),
+      inline: true,
+    },
   ];
 
   return {

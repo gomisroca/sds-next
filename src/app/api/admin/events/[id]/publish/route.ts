@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-import { postEventToDiscord } from '@/utils/events';
+import { getEventAttendanceNames, postEventToDiscord } from '@/utils/events';
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
   const session = await auth();
@@ -50,6 +50,8 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Event must have a start date before publishing' }, { status: 400 });
   }
 
+  const attendance = await getEventAttendanceNames(event.id, db);
+
   const eventForEmbed = {
     id: event.id,
     name: event.name,
@@ -59,6 +61,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     startsAt: event.startsAt,
     endsAt: event.endsAt,
     createdByName: event.createdBy.name,
+    attendance,
   };
 
   const botResult = await postEventToDiscord(eventForEmbed);
