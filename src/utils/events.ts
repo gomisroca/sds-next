@@ -99,6 +99,7 @@ export function renderEventEmbed(event: EventForEmbed): object {
     },
     ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDiscordTimestamp(event.endsAt), inline: true }] : []),
     ...(event.location ? [{ name: '📍 Location', value: event.location, inline: true }] : []),
+    { name: '\u200b', value: '\u200b', inline: false }, // spacer
     {
       name: `${STATUS_EMOJI.attending} Attending (${event.attendance.attending.length})`,
       value: formatNameList(event.attendance.attending),
@@ -110,8 +111,8 @@ export function renderEventEmbed(event: EventForEmbed): object {
       inline: true,
     },
     {
-      name: `${STATUS_EMOJI.notAttending} Not Attending (${event.attendance.notAttending.length})`,
-      value: formatNameList(event.attendance.notAttending),
+      name: `${STATUS_EMOJI.notAttending} Not Attending`,
+      value: String(event.attendance.notAttending.length),
       inline: true,
     },
   ];
