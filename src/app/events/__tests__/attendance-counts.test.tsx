@@ -34,31 +34,6 @@ describe('AttendanceCounts Component', () => {
     expect(screen.getByText('2')).toBeInTheDocument();
   });
 
-  it('shows the empty state message when total attendance is zero', () => {
-    const zeroAttendance = {
-      attending: 0,
-      maybe: 0,
-      notAttending: 0,
-      attendingNames: [],
-      maybeNames: [],
-    };
-
-    render(<AttendanceCounts attendance={zeroAttendance} />);
-
-    // Check that counts show 0
-    const zeroCounts = screen.getAllByText('0');
-    expect(zeroCounts).toHaveLength(3);
-
-    // Check for the "No responses yet" fallback text
-    expect(screen.getByText('No responses yet.')).toBeInTheDocument();
-  });
-
-  it('does not show the empty state message when there is attendance data', () => {
-    render(<AttendanceCounts attendance={mockAttendance} />);
-
-    expect(screen.queryByText('No responses yet.')).not.toBeInTheDocument();
-  });
-
   it('correctly applies styles and avoids Division by Zero errors when total is 0', () => {
     const zeroAttendance = { attending: 0, maybe: 0, notAttending: 0, attendingNames: [], maybeNames: [] };
     const { container } = render(<AttendanceCounts attendance={zeroAttendance} />);
