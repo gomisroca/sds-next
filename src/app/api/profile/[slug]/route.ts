@@ -33,15 +33,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ sl
   }
 
   const editor = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  const isOwner = profile.userId === session.user.id;
-  const isLeader = editor?.role === 'LEADER';
-
-  if (!isOwner && !isLeader) {
-    return NextResponse.json({ error: 'Forbidden - profile owner or leader only' }, { status: 403 });
+  if (!editor) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const parsed = UpdateProfileSchema.safeParse(await req.json());

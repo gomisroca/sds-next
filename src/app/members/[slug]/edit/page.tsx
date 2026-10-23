@@ -34,14 +34,10 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
   if (!profile) redirect('/members');
 
   const editor = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  const isOwner = profile.userId === session.user.id;
-  const isLeader = editor?.role === 'LEADER';
-
-  if (!isOwner && !isLeader) redirect(`/members/${profile.slug}`);
+  if (!editor) redirect(`/members/${profile.slug}`);
 
   const initialData: ProfileFormData = {
     name: profile.name,

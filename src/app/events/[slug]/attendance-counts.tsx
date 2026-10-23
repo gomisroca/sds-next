@@ -47,8 +47,6 @@ export function AttendanceCounts({ attendance }: { attendance: AttendanceCountsT
           </div>
         );
       })}
-
-      {total === 0 && <p className="text-xs font-light text-white/60 italic">No responses yet.</p>}
     </div>
   );
 }

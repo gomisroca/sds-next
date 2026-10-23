@@ -7,10 +7,10 @@ import { useState } from 'react';
 
 interface EventActionsProps {
   eventId: string;
-  canEdit: boolean; // officer+, draft only
-  canPublish: boolean; // officer+, draft only
-  canCancel: boolean; // leader only, published only
-  canDelete: boolean; // officer+, draft or cancelled
+  canEdit: boolean | null; // officer+, draft only
+  canPublish: boolean | null; // officer+, draft only
+  canCancel: boolean | null; // leader only, published only
+  canDelete: boolean | null; // officer+, draft or cancelled
 }
 
 export function EventActions({ eventId, canEdit, canPublish, canCancel, canDelete }: EventActionsProps) {

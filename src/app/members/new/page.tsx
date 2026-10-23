@@ -15,11 +15,10 @@ export default async function NewProfilePage({ searchParams }: { searchParams: P
   }
 
   const creator = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  if (!creator || (creator.role !== 'OFFICER' && creator.role !== 'LEADER')) {
+  if (!creator) {
     redirect('/members');
   }
 

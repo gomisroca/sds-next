@@ -44,13 +44,12 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const creator = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  if (!creator || (creator.role !== 'OFFICER' && creator.role !== 'LEADER')) {
-    return NextResponse.json({ error: 'Forbidden - officers and above only' }, { status: 403 });
+  if (!editor) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const parsed = CreateProfileSchema.safeParse(await req.json());

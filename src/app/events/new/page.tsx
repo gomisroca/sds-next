@@ -12,11 +12,10 @@ export default async function NewEventPage() {
   }
 
   const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+    where: { id: session.user.id, role: { notIn: ['GUEST'] } },
   });
 
-  if (!user || (user.role !== 'MEMBER' && user.role !== 'OFFICER' && user.role !== 'LEADER')) {
+  if (!user) {
     redirect('/events');
   }
 

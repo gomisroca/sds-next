@@ -1,4 +1,4 @@
-import type { PrismaClient } from 'generated/prisma';
+import { type PrismaClient } from 'generated/prisma';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 export const RATE_LIMIT_MS = 5_000;
@@ -8,8 +8,6 @@ export interface AttendanceCounts {
   attending: number;
   notAttending: number;
   maybe: number;
-  attendingNames: string[];
-  maybeNames: string[];
 }
 
 export interface EventForEmbed {
@@ -21,63 +19,34 @@ export interface EventForEmbed {
   startsAt: Date;
   endsAt: Date | null;
   createdByName: string | null;
-  attendance: AttendanceCounts;
 }
-
-// ── Attendance helpers ───────────────────────────────────────────────────────
-const MAX_NAMES_IN_EMBED = 20;
-
-/**
- * Fetch and shape attendance counts + name lists for a given event.
- * Imported by both the RSVP route and the event creation route.
- */
-export async function getEventAttendanceCounts(eventId: string, db: PrismaClient): Promise<AttendanceCounts> {
-  const rows = await db.eventAttendance.findMany({
-    where: { eventId },
-    select: { status: true, user: { select: { name: true } } },
-  });
-
-  const attending = rows.filter((r) => r.status === 'ATTENDING');
-  const notAttending = rows.filter((r) => r.status === 'NOT_ATTENDING');
-  const maybe = rows.filter((r) => r.status === 'MAYBE');
-
-  const toNames = (list: { user: { name: string | null } }[]): string[] =>
-    list.map((r) => r.user.name ?? 'Unknown').slice(0, MAX_NAMES_IN_EMBED);
-
-  return {
-    attending: attending.length,
-    notAttending: notAttending.length,
-    maybe: maybe.length,
-    attendingNames: toNames(attending),
-    maybeNames: toNames(maybe),
-  };
-}
-
-// ── Discord embed ─────────────────────────────────────────────────────────────
-const STATUS_EMOJI = {
-  attending: '✅',
-  maybe: '❓',
-  notAttending: '❌',
-};
 
 function formatDiscordTimestamp(date: Date): string {
   // Discord timestamp format - renders in the user's local timezone
   return `<t:${Math.floor(date.getTime() / 1000)}:F>`;
 }
 
-function formatNameList(names: string[], total: number): string {
-  if (total === 0) return '*No one yet*';
-  const shown = names.join(', ');
-  const extra = total - names.length;
-  return extra > 0 ? `${shown} *+${extra} more*` : shown;
+export async function getEventAttendanceCounts(eventId: string, db: PrismaClient): Promise<AttendanceCounts> {
+  const rows = await db.eventAttendance.findMany({
+    where: { eventId },
+    select: { status: true },
+  });
+
+  const attending = rows.filter((r) => r.status === 'ATTENDING');
+  const notAttending = rows.filter((r) => r.status === 'NOT_ATTENDING');
+  const maybe = rows.filter((r) => r.status === 'MAYBE');
+
+  return {
+    attending: attending.length,
+    notAttending: notAttending.length,
+    maybe: maybe.length,
+  };
 }
 
 /**
  * Renders a Discord embed object for an event.
  */
 export function renderEventEmbed(event: EventForEmbed): object {
-  const { attendance } = event;
-
   const fields = [
     {
       name: '📅 Starts',
@@ -86,22 +55,6 @@ export function renderEventEmbed(event: EventForEmbed): object {
     },
     ...(event.endsAt ? [{ name: '🏁 Ends', value: formatDiscordTimestamp(event.endsAt), inline: true }] : []),
     ...(event.location ? [{ name: '📍 Location', value: event.location, inline: true }] : []),
-    { name: '\u200b', value: '\u200b', inline: false }, // spacer
-    {
-      name: `${STATUS_EMOJI.attending} Attending (${attendance.attending})`,
-      value: formatNameList(attendance.attendingNames, attendance.attending),
-      inline: true,
-    },
-    {
-      name: `${STATUS_EMOJI.maybe} Maybe (${attendance.maybe})`,
-      value: formatNameList(attendance.maybeNames, attendance.maybe),
-      inline: true,
-    },
-    {
-      name: `${STATUS_EMOJI.notAttending} Not Attending (${attendance.notAttending})`,
-      value: String(attendance.notAttending),
-      inline: true,
-    },
   ];
 
   return {

@@ -39,12 +39,11 @@ export default async function AdminEventEditPage({ params }: { params: Promise<{
     redirect('/?toast=unauthorized');
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  if (!user || (user.role !== 'OFFICER' && user.role !== 'LEADER')) {
+  if (!editor) {
     redirect('/admin');
   }
 

@@ -1,7 +1,6 @@
-import type { PrismaClient } from 'generated/prisma';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getEventAttendanceCounts, postEventToDiscord, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
+import { postEventToDiscord, renderEventEmbed, updateEventOnDiscord } from '@/utils/events';
 
 // Interface describing the shape returned by renderEventEmbed
 interface DiscordEmbed {
@@ -49,58 +48,6 @@ describe('Events Utility Module', () => {
 
   afterEach(function (this: void) {
     vi.useRealTimers();
-  });
-
-  describe('getEventAttendanceCounts', () => {
-    it('accurately shapes counts and isolates user name data lists', async () => {
-      const databaseRows = [
-        { status: 'ATTENDING' as const, user: { name: 'Alice' } },
-        { status: 'ATTENDING' as const, user: { name: 'Bob' } },
-        { status: 'MAYBE' as const, user: { name: 'Charlie' } },
-        { status: 'NOT_ATTENDING' as const, user: { name: null } },
-      ];
-
-      const findManyMock = vi.fn().mockResolvedValue(databaseRows);
-      const mockPrisma = {
-        eventAttendance: {
-          findMany: findManyMock,
-        },
-      } as unknown as PrismaClient;
-
-      const result = await getEventAttendanceCounts('event-123', mockPrisma);
-
-      expect(findManyMock).toHaveBeenCalledWith({
-        where: { eventId: 'event-123' },
-        select: { status: true, user: { select: { name: true } } },
-      });
-
-      expect(result).toEqual({
-        attending: 2,
-        maybe: 1,
-        notAttending: 1,
-        attendingNames: ['Alice', 'Bob'],
-        maybeNames: ['Charlie'],
-      });
-    });
-
-    it('enforces a strict cap of 20 names inside embed lists', async () => {
-      const databaseRows = Array.from({ length: 25 }, (_, idx) => ({
-        status: 'ATTENDING' as const,
-        user: { name: `User_${idx}` },
-      }));
-
-      const mockPrisma = {
-        eventAttendance: {
-          findMany: vi.fn().mockResolvedValue(databaseRows),
-        },
-      } as unknown as PrismaClient;
-
-      const result = await getEventAttendanceCounts('event-max-cap', mockPrisma);
-
-      expect(result.attending).toBe(25);
-      expect(result.attendingNames).toHaveLength(20);
-      expect(result.attendingNames[0]).toBe('User_0');
-    });
   });
 
   describe('renderEventEmbed', () => {

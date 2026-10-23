@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-import { getEventAttendanceCounts, postEventToDiscord } from '@/utils/events';
+import { postEventToDiscord } from '@/utils/events';
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
   const session = await auth();
@@ -11,12 +11,11 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true, name: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: { notIn: ['GUEST', 'MEMBER'] } },
   });
 
-  if (!user || (user.role !== 'OFFICER' && user.role !== 'LEADER')) {
+  if (!editor) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -51,8 +50,6 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Event must have a start date before publishing' }, { status: 400 });
   }
 
-  const attendance = await getEventAttendanceCounts(event.id, db);
-
   const eventForEmbed = {
     id: event.id,
     name: event.name,
@@ -62,7 +59,6 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     startsAt: event.startsAt,
     endsAt: event.endsAt,
     createdByName: event.createdBy.name,
-    attendance,
   };
 
   const botResult = await postEventToDiscord(eventForEmbed);

@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
-import { getEventAttendanceCounts, postEventToDiscord } from '@/utils/events';
+import { postEventToDiscord } from '@/utils/events';
 
 function slugify(name: string): string {
   const slug = name
@@ -48,14 +48,14 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { id: true, name: true, role: true },
+  const editor = await db.user.findUnique({
+    where: { id: session.user.id, role: { notIn: ['GUEST'] } },
   });
 
-  if (!user || (user.role !== 'MEMBER' && user.role !== 'OFFICER' && user.role !== 'LEADER')) {
-    return NextResponse.json({ error: 'Forbidden: Only members can create events' }, { status: 403 });
+  if (!editor) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
+
   const parsed = CreateEventSchema.safeParse(await req.json());
 
   if (!parsed.success) {
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'endsAt must be after startsAt' }, { status: 400 });
   }
 
-  if (isTemplate && user.role !== 'OFFICER' && user.role !== 'LEADER') {
+  if (isTemplate && editor.role !== 'OFFICER' && editor.role !== 'LEADER') {
     return NextResponse.json({ error: 'Forbidden: Only officers and leaders can create templates' }, { status: 403 });
   }
   if (isTemplate && !templateName) {
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         status: EventStatus.DRAFT,
         isTemplate: true,
         templateName,
-        createdById: user.id,
+        createdById: editor.id,
       },
     });
     return NextResponse.json({ success: true, event: template });
@@ -114,13 +114,11 @@ export async function POST(req: NextRequest): Promise<Response> {
       startsAt: startDate!,
       endsAt: endDate,
       status: EventStatus.DRAFT,
-      createdById: user.id,
+      createdById: editor.id,
     },
   });
 
   if (publishNow) {
-    const attendance = await getEventAttendanceCounts(event.id, db);
-
     const eventForEmbed = {
       id: event.id,
       name: event.name,
@@ -129,8 +127,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       location: event.location,
       startsAt: event.startsAt!,
       endsAt: event.endsAt,
-      createdByName: user.name,
-      attendance,
+      createdByName: editor.name,
     };
 
     const botResult = await postEventToDiscord(eventForEmbed);
