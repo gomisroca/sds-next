@@ -61,7 +61,7 @@ export default async function AdminEventEditPage({ params }: { params: Promise<{
     description: event.description ?? '',
     location: event.location ?? '',
     imageUrl: event.imageUrl ?? '',
-    imagePosition: (event.imagePosition as string | null) ?? '50% 50%',
+    imagePosition: event.imagePosition ?? '50% 50%',
     isTemplate: false,
     templateName: '',
     startsAtDate: formatDateInput(event.startsAt),

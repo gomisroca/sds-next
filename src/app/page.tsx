@@ -22,6 +22,7 @@ async function getUpcomingEvents() {
       description: true,
       location: true,
       imageUrl: true,
+      imagePosition: true,
       startsAt: true,
       endsAt: true,
       _count: { select: { attendances: true } },

@@ -94,7 +94,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             <img
               src={event.imageUrl}
               alt={event.name}
-              style={{ objectPosition: (event.imagePosition as string | null) ?? '50% 50%' }}
+              style={{ objectPosition: event.imagePosition ?? '50% 50%' }}
               className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#060404] via-transparent to-transparent" />
