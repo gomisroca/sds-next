@@ -3,6 +3,7 @@
 import { UploadButton } from '@uploadthing/react';
 import type { Activity, Job, Playstyle } from 'generated/prisma';
 import { X } from 'lucide-react';
+import { useRef } from 'react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
 import { FieldError } from '@/app/components/ui/form-fields';
@@ -73,29 +74,92 @@ function Textarea({
 function ImageUploadField({
   label,
   value,
-  onChange,
+  position = '50% 50%',
+  onValueChange,
+  onPositionChange,
   endpoint,
   aspectClass,
 }: {
   label: string;
   value: string;
-  onChange: (v: string) => void;
+  position?: string;
+  onValueChange: (v: string) => void;
+  onPositionChange: (pos: string) => void;
   endpoint: 'profilePortrait' | 'profileBanner';
   aspectClass: string;
 }) {
+  const isDragging = useRef(false);
+  const startRef = useRef({ x: 0, y: 0, posX: 50, posY: 50 });
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Parse "42% 28%" → [42, 28]
+  const parsedPos = position.split(' ').map(parseFloat);
+  let posX = parsedPos[0] ?? 50;
+  let posY = parsedPos[1] ?? 50;
+
+  const SENSITIVITY = 0.15; // % per pixel; tune to taste
+
+  function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    isDragging.current = true;
+    startRef.current = { x: e.clientX, y: e.clientY, posX, posY };
+    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+  }
+
+  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!isDragging.current) return;
+    const { x, y, posX: sx, posY: sy } = startRef.current;
+    const newX = Math.round(Math.min(100, Math.max(0, sx - (e.clientX - x) * SENSITIVITY)));
+    const newY = Math.round(Math.min(100, Math.max(0, sy - (e.clientY - y) * SENSITIVITY)));
+    // Update the img directly for zero-lag drag feel
+    if (imgRef.current) imgRef.current.style.objectPosition = `${newX}% ${newY}%`;
+    posX = newX;
+    posY = newY;
+  }
+
+  function onPointerUp() {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    onPositionChange(`${posX}% ${posY}%`);
+  }
+
   return (
     <div>
       <Label>{label}</Label>
-
       {value ? (
-        <div className={`relative w-full overflow-hidden border border-red-900/25 ${aspectClass}`}>
-          <img src={value} alt={label} className="h-full w-full object-cover object-top" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <div
+          className={`relative w-full cursor-grab overflow-hidden border border-red-900/25 active:cursor-grabbing ${aspectClass}`}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}>
+          <img
+            ref={imgRef}
+            src={value}
+            alt={label}
+            draggable={false}
+            className="pointer-events-none h-full w-full object-cover"
+            style={{ objectPosition: position }}
+          />
+          {/* crosshair hint */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity hover:opacity-100"
+            style={{
+              background: `
+                linear-gradient(to bottom, transparent calc(50% - 0.5px), rgba(255,255,255,0.2) calc(50% - 0.5px), rgba(255,255,255,0.2) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+                linear-gradient(to right,  transparent calc(50% - 0.5px), rgba(255,255,255,0.2) calc(50% - 0.5px), rgba(255,255,255,0.2) calc(50% + 0.5px), transparent calc(50% + 0.5px))
+              `,
+            }}
+          />
+          <span className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 text-[10px] tracking-wide text-white opacity-0 transition-opacity group-hover:opacity-100 hover:opacity-100">
+            Drag to reposition
+          </span>
           <button
             type="button"
-            onClick={() => onChange('')}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={() => onValueChange('')}
             aria-label={`Remove ${label}`}
-            className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80">
+            className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80 hover:bg-red-900/70">
             <X className="h-3 w-3" />
           </button>
         </div>
@@ -104,7 +168,10 @@ function ImageUploadField({
           endpoint={endpoint}
           onClientUploadComplete={(res) => {
             const url = res?.[0]?.ufsUrl;
-            if (url) onChange(url);
+            if (url) {
+              onValueChange(url);
+              onPositionChange('50% 50%');
+            }
           }}
           appearance={{
             container: 'flex flex-col items-start w-full',
@@ -261,15 +328,19 @@ export function StepVisuals({
       <ImageUploadField
         label="Portrait"
         value={data.portrait}
-        onChange={(v) => onChange({ portrait: v })}
+        position={data.portraitPosition}
+        onValueChange={(v) => onChange({ portrait: v })}
+        onPositionChange={(pos) => onChange({ portraitPosition: pos })}
         endpoint="profilePortrait"
-        aspectClass="h-64"
+        aspectClass="aspect-[3/4] max-w-[220px]"
       />
 
       <ImageUploadField
         label="Banner"
         value={data.banner}
-        onChange={(v) => onChange({ banner: v })}
+        position={data.bannerPosition}
+        onValueChange={(v) => onChange({ banner: v })}
+        onPositionChange={(pos) => onChange({ bannerPosition: pos })}
         endpoint="profileBanner"
         aspectClass="h-36"
       />

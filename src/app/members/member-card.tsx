@@ -17,6 +17,7 @@ interface MemberCardProps {
       slug: string;
       bio: string | null;
       portrait: string | null;
+      portraitPosition: string | null;
       job: Job;
       activities: Activity[];
       playstyle: Playstyle;
@@ -54,6 +55,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
               <img
                 src={portrait}
                 alt={displayName}
+                style={{ objectPosition: member.profile?.portraitPosition ?? '50% 50%' }}
                 className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
             ) : (

@@ -24,6 +24,7 @@ async function getMembers() {
           slug: true,
           bio: true,
           portrait: true,
+          portraitPosition: true,
           job: true,
           activities: true,
           playstyle: true,

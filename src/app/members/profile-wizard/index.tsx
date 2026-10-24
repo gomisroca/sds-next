@@ -124,6 +124,8 @@ export default function ProfileWizard(props: ProfileWizardProps) {
         bio: data.bio.trim() || undefined,
         portrait: data.portrait || undefined,
         banner: data.banner || undefined,
+        portraitPosition: data.portraitPosition,
+        bannerPosition: data.bannerPosition,
         job: data.job,
         activities: data.activities,
         playstyle: data.playstyle,

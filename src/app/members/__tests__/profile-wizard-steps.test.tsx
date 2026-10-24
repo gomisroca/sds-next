@@ -53,6 +53,8 @@ const initialMockData: ProfileFormData = {
   activities: ['RAIDING'],
   portrait: '',
   banner: '',
+  portraitPosition: '',
+  bannerPosition: '',
 };
 
 describe('Profile Setup Wizard Steps Component Suite', () => {
