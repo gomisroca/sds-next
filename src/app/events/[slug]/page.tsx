@@ -25,6 +25,7 @@ async function getEvent(slug: string, userId?: string) {
       description: true,
       location: true,
       imageUrl: true,
+      imagePosition: true,
       startsAt: true,
       endsAt: true,
       status: true,
@@ -50,6 +51,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const session = await auth();
   const event = await getEvent(slug, session?.user?.id);
   if (!event) notFound();
+
+  const creatorName = (event as unknown as { createdBy: { name: string | null } }).createdBy.name;
 
   const attendance = await getEventAttendanceCounts(event.id, db);
 
@@ -88,7 +91,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
         {event.imageUrl && (
           <div
             className={`relative mb-10 h-56 w-full overflow-hidden rounded-sm border border-red-900/20 md:h-72 ${isCancelled ? 'opacity-40 grayscale' : ''}`}>
-            <img src={event.imageUrl} alt={event.name} className="h-full w-full object-cover" />
+            <img
+              src={event.imageUrl}
+              alt={event.name}
+              style={{ objectPosition: event.imagePosition ?? '50% 50%' }}
+              className="h-full w-full object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-[#060404] via-transparent to-transparent" />
           </div>
         )}
@@ -112,10 +120,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             ) : (
               <p className="text-sm font-light text-white/60 italic">No description provided.</p>
             )}
-            {event.createdBy.name && (
-              <p className="mt-8 text-xs font-light tracking-widest text-white/60 uppercase">
-                Posted by {event.createdBy.name}
-              </p>
+            {creatorName && (
+              <p className="mt-8 text-xs font-light tracking-widest text-white/60 uppercase">Posted by {creatorName}</p>
             )}
           </div>
 
@@ -162,7 +168,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             {/* Officer action bar */}
             <EventActions
               eventId={event.id}
-              canEdit={!!editor && isDraft}
+              canEdit={!!editor}
               canPublish={!!editor && isDraft}
               canCancel={!!editor && isPublished}
               canDelete={!!editor && (isDraft || isCancelled)}

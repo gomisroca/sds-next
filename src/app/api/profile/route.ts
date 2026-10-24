@@ -33,6 +33,8 @@ const CreateProfileSchema = z.object({
   bio: z.string().max(500).optional(),
   portrait: z.url().optional(),
   banner: z.url().optional(),
+  portraitPosition: z.string().optional(),
+  bannerPosition: z.string().optional(),
   job: z.enum(Job),
   activities: z.array(z.enum(Activity)).default([]),
   playstyle: z.enum(Playstyle),
@@ -57,7 +59,8 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { userId, name, bio, portrait, banner, job, activities, playstyle } = parsed.data;
+  const { userId, name, bio, portrait, banner, portraitPosition, bannerPosition, job, activities, playstyle } =
+    parsed.data;
 
   const slug = await uniqueProfileSlug(slugify(name));
 
@@ -81,7 +84,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   const profile = await db.profile.create({
-    data: { userId, name, slug, bio, portrait, banner, job, activities, playstyle },
+    data: { userId, name, slug, bio, portrait, banner, portraitPosition, bannerPosition, job, activities, playstyle },
   });
 
   return NextResponse.json({ success: true, profile });

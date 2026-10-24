@@ -25,6 +25,8 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
       bio: true,
       portrait: true,
       banner: true,
+      portraitPosition: true,
+      bannerPosition: true,
       job: true,
       activities: true,
       playstyle: true,
@@ -47,6 +49,8 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
     activities: profile.activities,
     portrait: profile.portrait ?? '',
     banner: profile.banner ?? '',
+    portraitPosition: profile.portraitPosition ?? '50% 50%',
+    bannerPosition: profile.bannerPosition ?? '50% 50%',
   };
 
   return (

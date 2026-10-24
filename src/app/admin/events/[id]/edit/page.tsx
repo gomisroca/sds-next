@@ -16,6 +16,7 @@ async function getEvent(id: string) {
       description: true,
       location: true,
       imageUrl: true,
+      imagePosition: true,
       startsAt: true,
       endsAt: true,
       status: true,
@@ -52,11 +53,6 @@ export default async function AdminEventEditPage({ params }: { params: Promise<{
 
   if (!event) notFound();
 
-  // Only draft events are editable
-  if (event.status !== 'DRAFT') {
-    redirect(`/events/${id}`);
-  }
-
   const hasEndTime = !!event.endsAt;
 
   const initialData: FormData = {
@@ -65,6 +61,7 @@ export default async function AdminEventEditPage({ params }: { params: Promise<{
     description: event.description ?? '',
     location: event.location ?? '',
     imageUrl: event.imageUrl ?? '',
+    imagePosition: event.imagePosition ?? '50% 50%',
     isTemplate: false,
     templateName: '',
     startsAtDate: formatDateInput(event.startsAt),

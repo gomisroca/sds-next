@@ -7,6 +7,7 @@ export interface FormData {
   description: string;
   location: string;
   imageUrl: string;
+  imagePosition: string;
   isTemplate: boolean;
   templateName: string;
 
@@ -27,6 +28,7 @@ export const INITIAL_FORM_DATA: FormData = {
   description: '',
   location: '',
   imageUrl: '',
+  imagePosition: '50% 50%',
   isTemplate: false,
   templateName: '',
   startsAtDate: '',

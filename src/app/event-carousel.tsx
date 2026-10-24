@@ -17,6 +17,7 @@ export interface FeaturedEvent {
   description: string | null;
   location: string | null;
   imageUrl: string | null;
+  imagePosition: string | null;
   startsAt: Date | null;
   endsAt: Date | null;
   _count: { attendances: number };
@@ -67,6 +68,7 @@ function EventSlide({ event, direction }: { event: FeaturedEvent; direction: num
             <img
               src={event.imageUrl}
               alt={event.name}
+              style={{ objectPosition: event.imagePosition ?? '50% 50%' }}
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 hidden bg-gradient-to-r from-transparent via-transparent to-black/70 md:block" />

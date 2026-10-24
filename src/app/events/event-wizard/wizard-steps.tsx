@@ -3,10 +3,11 @@
 import { UploadButton } from '@uploadthing/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Check, MapPin, X } from 'lucide-react';
+import { useRef } from 'react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
 import { FieldError, FieldLabel, TextArea, TextInput } from '@/app/components/ui/form-fields';
-import type { FormData } from '@/app/events/event-wizard//types';
+import type { FormData } from '@/app/events/event-wizard/types';
 
 // ── Step 1: Details ───────────────────────────────────────────────────────────
 export function StepDetails({
@@ -20,6 +21,43 @@ export function StepDetails({
   onChange: (patch: Partial<FormData>) => void;
   isEdit?: boolean;
 }) {
+  const isDragging = useRef(false);
+  const startRef = useRef({ x: 0, y: 0, posX: 50, posY: 50 });
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  const SENSITIVITY = 0.15;
+
+  // Parse current position string → numbers
+  const [posX = 50, posY = 50] = (data.imagePosition ?? '50% 50%').split(/\s+/).map((value) => {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 50;
+  });
+
+  function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    isDragging.current = true;
+    startRef.current = { x: e.clientX, y: e.clientY, posX, posY };
+    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+  }
+
+  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!isDragging.current) return;
+    const { x, y, posX: sx, posY: sy } = startRef.current;
+    const newX = Math.round(Math.min(100, Math.max(0, sx - (e.clientX - x) * SENSITIVITY)));
+    const newY = Math.round(Math.min(100, Math.max(0, sy - (e.clientY - y) * SENSITIVITY)));
+    if (imgRef.current) imgRef.current.style.objectPosition = `${newX}% ${newY}%`;
+  }
+
+  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    const { x, y, posX: sx, posY: sy } = startRef.current;
+    const newX = Math.round(Math.min(100, Math.max(0, sx - (e.clientX - x) * SENSITIVITY)));
+    const newY = Math.round(Math.min(100, Math.max(0, sy - (e.clientY - y) * SENSITIVITY)));
+    onChange({ imagePosition: `${newX}% ${newY}%` });
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -52,14 +90,29 @@ export function StepDetails({
       {/* Banner image upload */}
       <div>
         <FieldLabel>Banner Image</FieldLabel>
-
         {data.imageUrl ? (
-          <div className="relative h-40 w-full overflow-hidden border border-red-900/25">
-            <img src={data.imageUrl} alt="Event banner preview" className="h-full w-full object-cover" />
+          <div
+            className="relative h-40 w-full cursor-grab overflow-hidden border border-red-900/25 active:cursor-grabbing"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}>
+            <img
+              ref={imgRef}
+              src={data.imageUrl}
+              alt="Event banner preview"
+              draggable={false}
+              className="pointer-events-none h-full w-full object-cover"
+              style={{ objectPosition: data.imagePosition ?? '50% 50%' }}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            {/* drag hint */}
+            <span className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 text-[10px] tracking-wide text-white/80 opacity-0 transition-opacity group-hover:opacity-100">
+              Drag to reposition
+            </span>
             <button
               type="button"
-              onClick={() => onChange({ imageUrl: '' })}
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={() => onChange({ imageUrl: '', imagePosition: '50% 50%' })}
               className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center border border-white/20 bg-black/60 text-white/80 transition-colors hover:bg-black/80 hover:text-white">
               <X className="h-3 w-3" strokeWidth={2} />
             </button>
@@ -69,7 +122,7 @@ export function StepDetails({
             endpoint="eventBanner"
             onClientUploadComplete={(res) => {
               const url = res?.[0]?.ufsUrl;
-              if (url) onChange({ imageUrl: url });
+              if (url) onChange({ imageUrl: url, imagePosition: '50% 50%' });
             }}
             onUploadError={(err) => console.error('Upload error:', err)}
             appearance={{

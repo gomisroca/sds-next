@@ -34,6 +34,7 @@ const CreateEventSchema = z.object({
   description: z.string().max(2000).optional(),
   location: z.string().max(200).optional(),
   imageUrl: z.url().optional(),
+  imagePosition: z.string().optional(),
   startsAt: z.union([z.iso.datetime(), z.undefined()]),
   endsAt: z.union([z.iso.datetime(), z.undefined()]),
   publishNow: z.boolean().default(false),
@@ -62,7 +63,18 @@ export async function POST(req: NextRequest): Promise<Response> {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { name, description, location, imageUrl, startsAt, endsAt, publishNow, isTemplate, templateName } = parsed.data;
+  const {
+    name,
+    description,
+    location,
+    imageUrl,
+    imagePosition,
+    startsAt,
+    endsAt,
+    publishNow,
+    isTemplate,
+    templateName,
+  } = parsed.data;
 
   const slug = await uniqueEventSlug(slugify(name));
 
@@ -93,6 +105,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         description,
         location,
         imageUrl,
+        imagePosition,
         startsAt: startDate ?? new Date(0),
         endsAt: endDate,
         status: EventStatus.DRAFT,
@@ -111,6 +124,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       description,
       location,
       imageUrl,
+      imagePosition,
       startsAt: startDate!,
       endsAt: endDate,
       status: EventStatus.DRAFT,
@@ -185,6 +199,7 @@ export async function GET(req: NextRequest): Promise<Response> {
         description: true,
         location: true,
         imageUrl: true,
+        imagePosition: true,
         startsAt: true,
         endsAt: true,
         _count: { select: { attendances: true } },
@@ -212,6 +227,7 @@ export async function GET(req: NextRequest): Promise<Response> {
       description: true,
       location: true,
       imageUrl: true,
+      imagePosition: true,
       startsAt: true,
       endsAt: true,
       status: true,

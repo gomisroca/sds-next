@@ -1,4 +1,3 @@
-import { EventStatus } from 'generated/prisma';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -10,6 +9,7 @@ const UpdateEventDetailsSchema = z.object({
   description: z.string().max(2000).optional(),
   location: z.string().max(200).optional(),
   imageUrl: z.union([z.url(), z.literal(''), z.undefined()]),
+  imagePosition: z.string().optional(),
   startsAt: z.iso.datetime(),
   endsAt: z.union([z.iso.datetime(), z.undefined()]),
 });
@@ -41,16 +41,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (event.isTemplate) {
     return NextResponse.json({ error: 'Use PATCH /api/admin/events/[id] for templates' }, { status: 400 });
   }
-  if (event.status !== EventStatus.DRAFT) {
-    return NextResponse.json({ error: 'Only draft events can be edited - cancel the event first' }, { status: 409 });
-  }
 
   const parsed = UpdateEventDetailsSchema.safeParse(await req.json());
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { name, description, location, imageUrl, startsAt, endsAt } = parsed.data;
+  const { name, description, location, imageUrl, imagePosition, startsAt, endsAt } = parsed.data;
 
   const startDate = new Date(startsAt);
   const endDate = endsAt ? new Date(endsAt) : undefined;
@@ -66,6 +63,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       description: description ?? null,
       location: location ?? null,
       imageUrl: imageUrl ?? null,
+      imagePosition: imagePosition ?? null,
       startsAt: startDate,
       endsAt: endDate ?? null,
     },

@@ -39,6 +39,7 @@ const mockFullyPopulatedMember = {
     slug: 'alphinaud-academic',
     bio: 'Academic specialist focusing on Sharlayan field studies.',
     portrait: 'https://cdn.example.com/portrait-high-res.png',
+    portraitPosition: '50% 50%',
     job: 'SGE' as const, // Sage
     playstyle: 'MIDCORE' as const,
     activities: ['RAIDING', 'SAVAGE', 'DUNGEONS', 'GLAMOUR', 'HOUSING', 'PVP'] as Activity[], // 6 items

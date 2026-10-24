@@ -185,8 +185,10 @@ model Profile {
   bio  String?
 
   // Visuals
-  portrait String?
-  banner   String?
+  portrait         String?
+  banner           String?
+  portraitPosition String? @default("50% 50%")
+  bannerPosition   String? @default("50% 50%")
 
   // Gameplay
   job        Job
@@ -235,13 +237,14 @@ model Event {
   reminderSentAt DateTime?
 
   // Core info
-  name        String
-  slug        String?   @unique
-  description String?
-  location    String? // "Estate Yard" or a zone name
-  imageUrl    String? // banner image for the event card
-  startsAt    DateTime?
-  endsAt      DateTime?
+  name          String
+  slug          String?   @unique
+  description   String?
+  location      String? // "Estate Yard" or a zone name
+  imageUrl      String? // banner image for the event card
+  imagePosition String? // banner image position for the event card
+  startsAt      DateTime?
+  endsAt        DateTime?
 
   status EventStatus @default(DRAFT)
 

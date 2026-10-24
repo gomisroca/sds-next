@@ -18,6 +18,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
       description: true,
       location: true,
       imageUrl: true,
+      imagePosition: true,
       startsAt: true,
       endsAt: true,
       status: true,
@@ -41,6 +42,7 @@ const UpdateTemplateSchema = z.object({
   description: z.string().max(2000).optional(),
   location: z.string().max(200).optional(),
   imageUrl: z.union([z.url(), z.literal(''), z.undefined()]),
+  imagePosition: z.string().optional(),
 });
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ slug: string }> }): Promise<Response> {
@@ -76,7 +78,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ sl
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { name, templateName, description, location, imageUrl } = parsed.data;
+  const { name, templateName, description, location, imageUrl, imagePosition } = parsed.data;
 
   const updated = await db.event.update({
     where: { slug },
@@ -86,6 +88,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ sl
       description: description ?? null,
       location: location ?? null,
       imageUrl: imageUrl ?? null,
+      imagePosition: imagePosition ?? null,
     },
   });
 

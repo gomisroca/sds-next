@@ -20,6 +20,8 @@ async function getMember(slug: string) {
       bio: true,
       portrait: true,
       banner: true,
+      portraitPosition: true,
+      bannerPosition: true,
       job: true,
       activities: true,
       playstyle: true,
@@ -55,7 +57,13 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
       {/* Banner */}
       {profile?.banner && (
         <div className="relative h-48 w-full overflow-hidden md:h-64">
-          <img src={profile.banner} alt="" aria-hidden className="h-full w-full object-cover" />
+          <img
+            src={profile.banner}
+            alt=""
+            aria-hidden
+            className="h-full w-full object-cover"
+            style={{ objectPosition: profile.bannerPosition ?? '50% 50%' }}
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#060404]" />
         </div>
       )}
@@ -81,7 +89,12 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
             {/* Portrait */}
             <div className="relative h-48 w-36 overflow-hidden border border-red-900/25 bg-red-950/20">
               {portrait ? (
-                <img src={portrait} alt={displayName} className="h-full w-full object-cover object-top" />
+                <img
+                  src={portrait}
+                  alt={displayName}
+                  style={{ objectPosition: profile.portraitPosition ?? '50% 50%' }}
+                  className="h-full w-full object-cover object-top"
+                />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
                   <span className="text-5xl font-extralight text-red-900/40">{displayName[0]?.toUpperCase()}</span>

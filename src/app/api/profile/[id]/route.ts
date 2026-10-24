@@ -10,21 +10,23 @@ const UpdateProfileSchema = z.object({
   bio: z.string().max(500).optional(),
   portrait: z.url().optional().nullable(),
   banner: z.url().optional().nullable(),
+  portraitPosition: z.string().optional().nullable(),
+  bannerPosition: z.string().optional().nullable(),
   job: z.enum(Job),
   activities: z.array(z.enum(Activity)).default([]),
   playstyle: z.enum(Playstyle),
 });
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ slug: string }> }): Promise<Response> {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
   }
 
-  const { slug } = await params;
+  const { id } = await params;
 
   const profile = await db.profile.findUnique({
-    where: { slug },
+    where: { id },
     select: { userId: true },
   });
 
@@ -45,11 +47,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ sl
     return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 });
   }
 
-  const { name, bio, portrait, banner, job, activities, playstyle } = parsed.data;
+  const { name, bio, portrait, banner, portraitPosition, bannerPosition, job, activities, playstyle } = parsed.data;
 
   const updated = await db.profile.update({
-    where: { slug },
-    data: { name, bio, portrait, banner, job, activities, playstyle },
+    where: { id },
+    data: { name, bio, portrait, banner, portraitPosition, bannerPosition, job, activities, playstyle },
   });
 
   return NextResponse.json({ success: true, profile: updated });

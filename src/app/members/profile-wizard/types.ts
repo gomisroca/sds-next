@@ -11,6 +11,8 @@ export interface ProfileFormData {
   // Step 3 - visuals
   portrait: string;
   banner: string;
+  portraitPosition: string;
+  bannerPosition: string;
 }
 
 export const INITIAL_PROFILE_FORM_DATA: ProfileFormData = {
@@ -21,6 +23,8 @@ export const INITIAL_PROFILE_FORM_DATA: ProfileFormData = {
   activities: [],
   portrait: '',
   banner: '',
+  portraitPosition: '50% 50%',
+  bannerPosition: '50% 50%',
 };
 
 export function validateProfileStep(

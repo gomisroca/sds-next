@@ -126,6 +126,7 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
                   description: data.description.trim() || undefined,
                   location: data.location.trim() || undefined,
                   imageUrl: data.imageUrl.trim() || undefined,
+                  imagePosition: data.imagePosition.trim() || undefined,
                   startsAt,
                   endsAt,
                 }
@@ -134,6 +135,7 @@ export function CreateEventWizard(props: CreateEventWizardProps = {}) {
                   description: data.description.trim() || undefined,
                   location: data.location.trim() || undefined,
                   imageUrl: data.imageUrl.trim() || undefined,
+                  imagePosition: data.imagePosition.trim() || undefined,
                   startsAt,
                   endsAt,
                   publishNow: data.isTemplate ? false : data.publishNow,
