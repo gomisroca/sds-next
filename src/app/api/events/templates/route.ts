@@ -27,6 +27,7 @@ export async function GET(): Promise<Response> {
       description: true,
       location: true,
       imageUrl: true,
+      imagePosition: true,
       createdBy: { select: { name: true } },
     },
   });

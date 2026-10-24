@@ -12,6 +12,7 @@ type EventData = {
   description: string | null;
   location: string | null;
   imageUrl: string | null;
+  imagePosition: string | null;
   startsAt: Date;
   endsAt: Date | null;
   status: 'PUBLISHED' | 'DRAFT';
@@ -73,6 +74,7 @@ function mockEvent(overrides: Partial<EventData> = {}): EventData {
     description: null,
     location: null,
     imageUrl: null,
+    imagePosition: null,
     startsAt: new Date('2026-07-01T10:00:00Z'),
     endsAt: null,
     status: 'PUBLISHED',
