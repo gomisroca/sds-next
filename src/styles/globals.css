@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.rich-text-editor img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid rgba(180, 40, 0, 0.2);
+  margin-block: 0.5rem;
+}
+
 /* CookieYes */
 .cy-banner,
 .cy-dialog {
