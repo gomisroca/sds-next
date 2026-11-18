@@ -9,6 +9,7 @@ import {
   Bold,
   Heading2,
   Heading3,
+  Image as ImageIcon,
   Italic,
   Link as LinkIcon,
   List,
@@ -19,6 +20,9 @@ import {
   Strikethrough,
   Undo,
 } from 'lucide-react';
+import { useRef } from 'react';
+
+import { useUploadThing } from '@/utils/uploadthing';
 
 interface RichTextEditorProps {
   content: Record<string, unknown> | null;
@@ -60,6 +64,18 @@ function ToolbarDivider() {
 }
 
 export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { startUpload, isUploading } = useUploadThing('richTextImage', {
+    onClientUploadComplete(res) {
+      const url = res?.[0]?.ufsUrl;
+      if (url) editor?.chain().focus().setImage({ src: url }).run();
+    },
+    onUploadError(err) {
+      console.error('Image upload error:', err);
+    },
+  });
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -155,6 +171,22 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         <ToolbarButton title="Add link" onClick={addLink} active={editor.isActive('link')}>
           <LinkIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
         </ToolbarButton>
+
+        <ToolbarButton title="Insert image" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+          <ImageIcon className={`h-3.5 w-3.5 ${isUploading ? 'animate-pulse' : ''}`} strokeWidth={1.5} />
+        </ToolbarButton>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void startUpload([file]);
+            e.target.value = '';
+          }}
+        />
 
         <ToolbarDivider />
 
