@@ -181,8 +181,8 @@ model Profile {
 
   // Identity
   name String
-  slug String  @unique
-  bio  String?
+  slug String @unique
+  bio  Json?
 
   // Visuals
   portrait         String?
