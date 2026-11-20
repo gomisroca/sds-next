@@ -1,9 +1,9 @@
-import type { Activity, Job, Playstyle } from 'generated/prisma';
+import type { Activity, Job, Playstyle, Prisma } from 'generated/prisma';
 
 export interface ProfileFormData {
   // Step 1 - identity
   name: string;
-  bio: string;
+  bio: Prisma.JsonValue | null;
   // Step 2 - gameplay
   job: Job | '';
   playstyle: Playstyle | '';
@@ -17,7 +17,7 @@ export interface ProfileFormData {
 
 export const INITIAL_PROFILE_FORM_DATA: ProfileFormData = {
   name: '',
-  bio: '',
+  bio: null,
   job: '',
   playstyle: '',
   activities: [],

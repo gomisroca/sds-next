@@ -43,7 +43,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
 
   const initialData: ProfileFormData = {
     name: profile.name,
-    bio: profile.bio ?? '',
+    bio: profile.bio ?? null,
     job: profile.job,
     playstyle: profile.playstyle,
     activities: profile.activities,

@@ -57,12 +57,17 @@ vi.mock('framer-motion', () => ({
 // ── 2. INITIALIZE MOCK PAYLOAD BUILDERS ──────────────────────────────────────
 const mockEditInitialData = {
   name: 'Gora Tanaka',
-  bio: 'Master of the land and skies.',
+  bio: {
+    type: 'doc',
+    content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Master of the land and skies.' }] }],
+  },
   job: 'MIN' as const,
   playstyle: 'COLLECTOR' as const,
   activities: ['GATHERING'] as Activity[],
   portrait: 'https://img.com/portrait.png',
   banner: 'https://img.com/banner.png',
+  portraitPosition: '',
+  bannerPosition: '',
 };
 
 describe('ProfileWizard Flow Orchestration Suite', () => {
@@ -193,9 +198,14 @@ describe('ProfileWizard Flow Orchestration Suite', () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: 'Gora Tanaka',
-            bio: 'Master of the land and skies.',
+            bio: {
+              type: 'doc',
+              content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Master of the land and skies.' }] }],
+            },
             portrait: 'https://img.com/portrait.png',
+            portraitPosition: '',
             banner: 'https://img.com/banner.png',
+            bannerPosition: '',
             job: 'MIN',
             activities: ['GATHERING'],
             playstyle: 'COLLECTOR',

@@ -5,6 +5,7 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { type Prisma } from 'generated/prisma';
 import {
   Bold,
   Heading2,
@@ -25,7 +26,7 @@ import { useRef } from 'react';
 import { useUploadThing } from '@/utils/uploadthing';
 
 interface RichTextEditorProps {
-  content: Record<string, unknown> | null;
+  content: Prisma.JsonValue | null;
   onChange: (json: Record<string, unknown>) => void;
   placeholder?: string;
 }
@@ -85,7 +86,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         placeholder: placeholder ?? 'Write something…',
       }),
     ],
-    content: content ?? undefined,
+    content: (content ?? undefined) as Record<string, unknown> | undefined,
     onUpdate: ({ editor }) => {
       onChange(editor.getJSON() as Record<string, unknown>);
     },

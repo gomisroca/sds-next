@@ -121,7 +121,7 @@ export default function ProfileWizard(props: ProfileWizardProps) {
 
       const payload = {
         name: data.name.trim(),
-        bio: data.bio.trim() || undefined,
+        bio: data.bio ?? undefined,
         portrait: data.portrait || undefined,
         banner: data.banner || undefined,
         portraitPosition: data.portraitPosition,

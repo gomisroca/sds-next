@@ -1,4 +1,4 @@
-import { Activity, Job, Playstyle } from 'generated/prisma';
+import { Activity, Job, Playstyle, type Prisma } from 'generated/prisma';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -30,7 +30,7 @@ async function uniqueProfileSlug(base: string): Promise<string> {
 const CreateProfileSchema = z.object({
   userId: z.string(), // the user to create the profile for
   name: z.string().min(1).max(100),
-  bio: z.string().max(500).optional(),
+  bio: z.record(z.string(), z.unknown()).optional(),
   portrait: z.url().optional(),
   banner: z.url().optional(),
   portraitPosition: z.string().optional(),
@@ -84,7 +84,19 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   const profile = await db.profile.create({
-    data: { userId, name, slug, bio, portrait, banner, portraitPosition, bannerPosition, job, activities, playstyle },
+    data: {
+      userId,
+      name,
+      slug,
+      bio: bio ? (bio as Prisma.InputJsonValue) : undefined,
+      portrait,
+      banner,
+      portraitPosition,
+      bannerPosition,
+      job,
+      activities,
+      playstyle,
+    },
   });
 
   return NextResponse.json({ success: true, profile });

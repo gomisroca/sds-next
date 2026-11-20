@@ -1,4 +1,4 @@
-import { Activity, Job, Playstyle } from 'generated/prisma';
+import { Activity, Job, Playstyle, Prisma } from 'generated/prisma';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -7,7 +7,7 @@ import { db } from '@/server/db';
 
 const UpdateProfileSchema = z.object({
   name: z.string().min(1).max(100),
-  bio: z.string().max(500).optional(),
+  bio: z.record(z.string(), z.unknown()).optional().nullable(),
   portrait: z.url().optional().nullable(),
   banner: z.url().optional().nullable(),
   portraitPosition: z.string().optional().nullable(),
@@ -51,7 +51,17 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const updated = await db.profile.update({
     where: { id },
-    data: { name, bio, portrait, banner, portraitPosition, bannerPosition, job, activities, playstyle },
+    data: {
+      name,
+      bio: bio ? (bio as Prisma.InputJsonValue) : Prisma.JsonNull,
+      portrait,
+      banner,
+      portraitPosition,
+      bannerPosition,
+      job,
+      activities,
+      playstyle,
+    },
   });
 
   return NextResponse.json({ success: true, profile: updated });

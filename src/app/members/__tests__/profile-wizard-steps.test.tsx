@@ -47,7 +47,7 @@ vi.mock('@/utils/profile', () => ({
 // 3. Define standard clean state parameters for step data objects
 const initialMockData: ProfileFormData = {
   name: '',
-  bio: '',
+  bio: null,
   job: 'PLD',
   playstyle: 'CASUAL',
   activities: ['RAIDING'],
@@ -68,7 +68,7 @@ describe('Profile Setup Wizard Steps Component Suite', () => {
   // ── STEP 1: IDENTITY VIEW TESTING ──────────────────────────────────────────
   describe('StepIdentity SUB-STAGE', () => {
     it('populates fields cleanly with active state data inputs and characters bounds', () => {
-      const populatedData = { ...initialMockData, name: 'Graha Tia', bio: 'Crystal Exarch legacy.' };
+      const populatedData = { ...initialMockData, name: 'Graha Tia', bio: null };
       render(<StepIdentity data={populatedData} errors={{}} onChange={onChangeSpy} />);
 
       const nameInput = screen.getByPlaceholderText(/firstname lastname/i) as HTMLInputElement;
