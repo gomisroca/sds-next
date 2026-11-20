@@ -2,6 +2,38 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.rich-text-editor img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid rgba(180, 40, 0, 0.2);
+  margin-block: 0.5rem;
+}
+
+.member-bio p {
+  margin-bottom: 0.75rem;
+}
+.member-bio strong {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+.member-bio em {
+  font-style: italic;
+}
+.member-bio a {
+  color: rgba(200, 80, 60, 0.85);
+  text-decoration: underline;
+}
+.member-bio ul,
+.member-bio ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.member-bio img {
+  max-width: 100%;
+  border: 1px solid rgba(180, 40, 0, 0.2);
+  margin-block: 0.5rem;
+}
+
 /* CookieYes */
 .cy-banner,
 .cy-dialog {

@@ -1,12 +1,13 @@
 'use client';
 
 import { UploadButton } from '@uploadthing/react';
-import type { Activity, Job, Playstyle } from 'generated/prisma';
+import type { Activity, Job, Playstyle, Prisma } from 'generated/prisma';
 import { X } from 'lucide-react';
 import { useRef } from 'react';
 
 import type { UploadThingRouter } from '@/app/api/uploadthing/core';
 import { FieldError } from '@/app/components/ui/form-fields';
+import RichTextEditor from '@/app/components/ui/rich-text-editor';
 import type { ProfileFormData } from '@/app/members/profile-wizard/types';
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META } from '@/utils/profile';
 
@@ -215,12 +216,10 @@ export function StepIdentity({
 
       <div>
         <Label>Bio</Label>
-        <Textarea
-          value={data.bio}
-          onChange={(v) => onChange({ bio: v })}
+        <RichTextEditor
+          content={data.bio}
+          onChange={(json) => onChange({ bio: json as Prisma.JsonValue })}
           placeholder="Tell the FC a little about yourself and your character…"
-          rows={5}
-          maxLength={500}
         />
       </div>
     </div>

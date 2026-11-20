@@ -49,6 +49,16 @@ export const UploadThingRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       return { uploadedBy: metadata.userId, url: file.ufsUrl };
     }),
+
+  richTextImage: f({ image: { maxFileSize: '4MB', maxFileCount: 1 } })
+    .middleware(async ({ files }) => {
+      const metadata = await verifyRequest();
+      const fileOverrides = files.map((file) => ({ ...file, name: renameFile(file) }));
+      return { ...metadata, [UTFiles]: fileOverrides };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { uploadedBy: metadata.userId, url: file.ufsUrl };
+    }),
 } satisfies FileRouter;
 
 export type UploadThingRouter = typeof UploadThingRouter;

@@ -7,6 +7,7 @@ import { PageShell } from '@/app/components/ui/page-shell';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META, ROLE_META } from '@/utils/profile';
+import { tiptapToHtml } from '@/utils/tiptap';
 
 export const dynamic = 'force-dynamic';
 
@@ -141,7 +142,10 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ s
                 {profile.bio && (
                   <div>
                     <p className="mb-3 text-xs font-light tracking-[0.25em] text-white/60 uppercase">About</p>
-                    <p className="text-sm leading-relaxed font-light text-white/60">{profile.bio}</p>
+                    <div
+                      className="member-bio text-sm leading-relaxed font-light text-white/60"
+                      dangerouslySetInnerHTML={{ __html: tiptapToHtml(profile.bio) }}
+                    />
                   </div>
                 )}
 

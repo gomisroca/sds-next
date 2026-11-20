@@ -53,7 +53,6 @@ export const metadata: Metadata = {
 
 const worksans = Work_Sans({
   subsets: ['latin'],
-  weight: ['400', '600'],
 });
 
 export default async function RootLayout({

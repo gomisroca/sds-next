@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { Activity, Job, Playstyle, Role } from 'generated/prisma';
+import type { Activity, Job, Playstyle, Prisma, Role } from 'generated/prisma';
 import Link from 'next/link';
 
 import { ACTIVITY_LABEL, JOB_META, PLAYSTYLE_META, ROLE_META } from '@/utils/profile';
@@ -15,7 +15,7 @@ interface MemberCardProps {
     profile: {
       name: string;
       slug: string;
-      bio: string | null;
+      bio: Prisma.JsonValue | null;
       portrait: string | null;
       portraitPosition: string | null;
       job: Job;
@@ -28,6 +28,13 @@ interface MemberCardProps {
 
 // Show at most this many activity tags before truncating
 const MAX_ACTIVITIES = 4;
+
+function extractPlainText(node: Prisma.JsonValue): string {
+  if (!node || typeof node !== 'object' || Array.isArray(node)) return '';
+  if (typeof node.text === 'string') return node.text;
+  const children = Array.isArray(node.content) ? node.content : [];
+  return children.map(extractPlainText).join(' ').replace(/\s+/g, ' ').trim();
+}
 
 export default function MemberCard({ member, index }: MemberCardProps) {
   const profile = member.profile;
@@ -102,7 +109,9 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
                 {/* Bio */}
                 {profile.bio && (
-                  <p className="line-clamp-2 text-xs leading-relaxed font-light text-white/60">{profile.bio}</p>
+                  <p className="line-clamp-2 text-xs leading-relaxed font-light text-white/60">
+                    {extractPlainText(profile.bio)}
+                  </p>
                 )}
 
                 {/* Activities */}

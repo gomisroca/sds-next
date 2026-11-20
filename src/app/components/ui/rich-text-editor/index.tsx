@@ -5,10 +5,12 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { type Prisma } from 'generated/prisma';
 import {
   Bold,
   Heading2,
   Heading3,
+  Image as ImageIcon,
   Italic,
   Link as LinkIcon,
   List,
@@ -19,9 +21,12 @@ import {
   Strikethrough,
   Undo,
 } from 'lucide-react';
+import { useRef } from 'react';
+
+import { useUploadThing } from '@/utils/uploadthing';
 
 interface RichTextEditorProps {
-  content: Record<string, unknown> | null;
+  content: Prisma.JsonValue | null;
   onChange: (json: Record<string, unknown>) => void;
   placeholder?: string;
 }
@@ -60,6 +65,18 @@ function ToolbarDivider() {
 }
 
 export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { startUpload, isUploading } = useUploadThing('richTextImage', {
+    onClientUploadComplete(res) {
+      const url = res?.[0]?.ufsUrl;
+      if (url) editor?.chain().focus().setImage({ src: url }).run();
+    },
+    onUploadError(err) {
+      console.error('Image upload error:', err);
+    },
+  });
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -69,7 +86,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         placeholder: placeholder ?? 'Write something…',
       }),
     ],
-    content: content ?? undefined,
+    content: (content ?? undefined) as Record<string, unknown> | undefined,
     onUpdate: ({ editor }) => {
       onChange(editor.getJSON() as Record<string, unknown>);
     },
@@ -155,6 +172,22 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         <ToolbarButton title="Add link" onClick={addLink} active={editor.isActive('link')}>
           <LinkIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
         </ToolbarButton>
+
+        <ToolbarButton title="Insert image" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+          <ImageIcon className={`h-3.5 w-3.5 ${isUploading ? 'animate-pulse' : ''}`} strokeWidth={1.5} />
+        </ToolbarButton>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void startUpload([file]);
+            e.target.value = '';
+          }}
+        />
 
         <ToolbarDivider />
 
