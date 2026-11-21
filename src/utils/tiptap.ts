@@ -1,3 +1,24 @@
+import { Extension } from '@tiptap/core';
+
+export const ExitHeadingOnEnter = Extension.create({
+  name: 'exitHeadingOnEnter',
+  addKeyboardShortcuts() {
+    return {
+      Enter: ({ editor }) => {
+        const { state } = editor;
+        const { selection } = state;
+        const { $from } = selection;
+
+        if ($from.parent.type.name !== 'heading') return false;
+
+        if ($from.parentOffset !== $from.parent.nodeSize - 2) return false;
+
+        return editor.chain().splitBlock().setNode('paragraph').run();
+      },
+    };
+  },
+});
+
 export function renderNode(node: Record<string, unknown>): string {
   const type = node.type as string;
   const content = (node.content as Record<string, unknown>[] | undefined) ?? [];
