@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useRef } from 'react';
 
+import { ExitHeadingOnEnter } from '@/utils/tiptap';
 import { useUploadThing } from '@/utils/uploadthing';
 
 interface RichTextEditorProps {
@@ -80,6 +81,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
   const editor = useEditor({
     extensions: [
       StarterKit,
+      ExitHeadingOnEnter,
       Image,
       Link.configure({ openOnClick: false }),
       Placeholder.configure({
