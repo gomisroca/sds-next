@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   quality-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       DIRECT_URL: ${{ secrets.DIRECT_URL }}
